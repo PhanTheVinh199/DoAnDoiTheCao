@@ -61,9 +61,9 @@
             </i> </span> <span>▼</span>
         </a>
         <div id="menu2" class="collapse ps-3">
-            <a href="./doithecao_donhang.html">Đơn hàng</a>
-            <a href="./doithecao_donhang.html">Sản phẩm</a>
-            <a href="./doithecao_nhacungcap.html">Nhà cung cấp</a>
+            <a href="{{route('admin.doithecao.donhang')}}">Đơn hàng</a>
+            <a href="{{route('admin.doithecao.danhsach')}}">Sản phẩm</a>
+            <a href="{{route('admin.doithecao.nhacungcap')}}">Nhà cung cấp</a>
             <!-- <a href="#">Cấu hình</a> -->
         </div>
 
