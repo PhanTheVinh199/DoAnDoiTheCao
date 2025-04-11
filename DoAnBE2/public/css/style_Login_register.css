@@ -1,0 +1,123 @@
+body {
+    background-image: url("../image/bautroi3.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    height: 100vh;
+    /* Chiều cao toàn màn hình */
+    margin: 0;
+    /* Xóa margin mặc định */
+}
+
+.formlogin-container {
+    position: relative;
+    border: 2px solid black;
+    padding: 50px;
+    border-radius: 10px;
+    width: 300px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    /* Nền trắng trong suốt */
+    backdrop-filter: blur(10px);
+
+}
+
+.formlogin-container .form-login {
+    position: absolute;
+    top: 20%;
+    color: black;   
+}
+.formlogin-container .form-login input:not([type="checkbox"]):not([type="submit"]) {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.formlogin-container .form-login .submit {
+    background-color: rgb(112, 112, 250);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 30px;
+    width: 320px;
+}
+.title {
+    position: absolute;
+    top: 10px;
+    left: 140px;
+    color: black;   
+    font-size: 30px;
+}
+a {
+    color: black;   
+    text-decoration-line: none;
+}
+
+.formlogin-container .form-login .quenmk {
+    position: absolute;
+    right: 0;
+}
+
+
+.dk {
+    color: aqua;
+    text-decoration-line: underline;
+}
+
+.logo-text {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: black;
+
+}
+
+.toggle-password {
+    cursor: pointer;
+    margin-left: -30px;
+    position: relative;
+}
+/* Tạo hiệu ứng chớp mắt */
+.blink {
+    animation: blink-animation 0.2s ease-in-out;
+}
+
+/* Keyframe để chớp mắt */
+@keyframes blink-animation {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.register-container {
+    position: relative;
+    border: 2px solid black;
+    padding: 50px;
+    border-radius: 10px;
+    width: 300px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.1);
+    /* Nền trắng trong suốt */
+    backdrop-filter: blur(10px);
+
+}
+.register-container input:not([type="submit"]) {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.register-container .submit {
+    background-color: rgb(112, 112, 250);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 320px;
+    cursor: pointer;
+}
