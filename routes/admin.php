@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 
-Route::get('/main', function () {
+Route::get('/index', function () {
     return view('admin.main');
-})->name('main');
+})->name('index');
 
 
 Route::prefix('mathecao')->name('mathecao.')->group(function () {

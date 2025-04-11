@@ -2,47 +2,35 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
 
-Route::get('/header', function () {
-    return view('header');
-})->name('header');
+// Trang chủ
+Route::get('/', fn() => view('index'))->name('index');
 
-Route::get('/card', function () {
-    return view('card');
-})->name('card');
+// Các trang tĩnh khác
+Route::view('/header', 'header')->name('header');
+Route::view('/card', 'card')->name('card');
+Route::view('/ruttien', 'ruttien')->name('ruttien');
+Route::view('/naptien', 'naptien')->name('naptien');
+Route::view('/lichsu', 'lichsudoithe')->name('lichsudoithe');
+Route::view('/lichsumuathe', 'lichsumuathe')->name('lichsumuathe');
+Route::view('/lichsusodu', 'lichsusodu')->name('lichsusodu');
 
-Route::get('/ruttien', function () {
-    return view('ruttien');
-})->name('ruttien');
 
-Route::get('/naptien', function () {
-    return view('naptien');
-})->name('naptien');
+// Các trang login_register
 
-Route::get('/lichsu', function () {
-    return view('lichsudoithe');
-})->name('lichsudoithe');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
-Route::get('/lichsumuathe', function () {
-    return view('lichsumuathe');
-})->name('lichsumuathe');
-
-Route::get('/lichsusodu', function () {
-    return view('lichsusodu');
-})->name('lichsusodu');
-
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
-
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+Route::get('/logout', function () {
+    Auth::guard('thanhvien')->logout(); // Đăng xuất guard "thanhvien"
+    request()->session()->invalidate(); // Hủy session
+    request()->session()->regenerateToken(); // Tạo lại token CSRF
+
+    return redirect()->route('login')->with('message', 'Bạn đã đăng xuất.');
+})->name('logout');
+

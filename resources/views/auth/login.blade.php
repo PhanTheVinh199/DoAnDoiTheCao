@@ -11,18 +11,20 @@
 </head>
 
 <body>
-    <form class="formlogin-container" action="{{ route('login') }}" method="POST">
+    <form class="formlogin-container" method="POST" action="{{ route('login.submit') }}">
         @csrf
         <div class="title">Đăng Nhập</div>
         <div class="form-login">
 
-            <input type="text" name="username" id="username" placeholder="Tên tài khoản" required><br>
+            <!-- <input type="text" name="tai_khoan"  placeholder="Tên tài khoản" required><br> -->
+            <input type="text" name="login_input" id="username" placeholder="Email hoặc Tài khoản" required><br>
 
-            <input type="password" id="password" placeholder="Nhập mật khẩu" required>
+            <input type="password" name="mat_khau" id="password" placeholder="Nhập mật khẩu" required>
             <span class="toggle-password" onclick="togglePassword()">
                 <i id="eye-icon" class="fa-solid fa-eye"></i>
             </span><br>
-            <input type="checkbox" name="" id=""><label for="">Lưu Mật Khẩu</label>
+            <input type="checkbox" name="remember" id="remember">
+            <label for="remember">Lưu mật khẩu</label>
             <a class="quenmk" href="#">Quên mật khẩu ?</a><br>
             <input class="submit" type="submit" value="Đăng Nhập"><br>
             <a href="{{route('register')}}">Bạn chưa có tài khoản?<span class="dk">Đăng ký</span></a>

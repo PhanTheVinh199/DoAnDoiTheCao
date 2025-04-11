@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -141,37 +143,75 @@
             </ul>
         </div>
         <div class="header-user">
+            @if(Auth::guard('thanhvien')->check())
+            {{-- Nếu đã đăng nhập --}}
+            <div class="header-loggedin">
+                <a href="#" class="btn btn-small btn-account">
+                    <i class="fas fa-user"></i> Tài khoản
+                </a>
+                <a href="{{ route('logout') }}" class="btn btn-small btn-logout" style="margin-left: 10px;">
+                    <i class="fa fa-sign-out-alt"></i> Đăng xuất
+                </a>
+            </div>
+            @else
+            {{-- Nếu chưa đăng nhập --}}
             <div class="header-nologin">
-                <a href="{{route('register')}}" class="btn btn-small btn-register">
+                <a href="{{ route('register') }}" class="btn btn-small btn-register">
                     <i class="fas fa-user"></i> Đăng ký
                 </a>
-                <a href="{{route('login')}}" class="btn btn-small btn-login">
+                <a href="{{ route('login') }}" class="btn btn-small btn-login">
                     <i class="fas fa-lock"></i> Đăng nhập
                 </a>
             </div>
+            @endif
         </div>
+
         <div class="header-usermb">
-            <button type="button" class="btn" id="call-userMB"><i class="fas fa-user"></i>Tài khoản</button>
+            @if(Auth::guard('thanhvien')->check())
+            {{-- Mobile khi đã đăng nhập --}}
+            <button type="button" class="btn" id="call-userMB">
+                <i class="fas fa-user"></i> Tài khoản
+            </button>
             <div class="header-usermb_list">
                 <ul class="list-unstyled mb-0">
                     <li class="d-inline-block text-center header-usermb_list__logo">
                         <a href="">
-                            <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px"
-                                alt=" - Đổi Thẻ Cào Thành Tiền Mặt Tự Động Chiết Khấu Tốt Nhất Việt Nam">
+                            <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo">
                         </a>
                     </li>
                     <li class="d-inline-block">
-                        <a href="register.html">
+                        <a href="{{ route('logout') }}">
+                            <i class="fa fa-sign-out-alt"></i> <strong>Đăng xuất</strong>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            @else
+            {{-- Mobile khi chưa đăng nhập --}}
+            <button type="button" class="btn" id="call-userMB">
+                <i class="fas fa-user"></i> Tài khoản
+            </button>
+            <div class="header-usermb_list">
+                <ul class="list-unstyled mb-0">
+                    <li class="d-inline-block text-center header-usermb_list__logo">
+                        <a href="">
+                            <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo">
+                        </a>
+                    </li>
+                    <li class="d-inline-block">
+                        <a href="{{ route('register') }}">
                             <i class="fa fa-angle-right"></i> <strong>Đăng ký</strong>
                         </a>
                     </li>
                     <li class="d-inline-block">
-                        <a href="login.html">
+                        <a href="{{ route('login') }}">
                             <i class="fa fa-angle-right"></i> <strong>Đăng nhập</strong>
                         </a>
                     </li>
                 </ul>
             </div>
+            @endif
         </div>
+
     </nav>
 </header>
