@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('doithecao_nhacungcap', function (Blueprint $table) {
             $table->id('id_nhacungcap');
             $table->string('ten', 100);
-            $table->string('hinhanh', 255)->nullable();
+            $table->string('hinh_anh', 255)->nullable();
             $table->timestamp('ngay_tao')->useCurrent();
             $table->enum('trang_thai', ['hoat_dong', 'an'])->default('hoat_dong');
         });

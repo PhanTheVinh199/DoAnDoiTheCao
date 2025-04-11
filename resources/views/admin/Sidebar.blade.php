@@ -42,30 +42,43 @@
     <div id="sidebar" class="sidebar ">
         <div class="menu-title">Dasboard</div>
 
-        <a href="#menu1" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bx-credit-card'  >
-                Mã thẻ cào
-            </i> </span> <span>▼</span>
-            
-        </a>
-        <div id="menu1" class="collapse ps-3">
-            <a href="{{route('admin.mathecao.donhang')}}">Đơn hàng</a>
-            <a href="{{route('admin.mathecao.loaima')}}">Sản phẩm</a>
-            <a href="{{route('admin.mathecao.nhacungcap')}}">Nhà cung cấp</a>
-            <!-- <a href="#">Cấu hình</a> -->
-        </div>
-
-        <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-credit-card-alt'  >
-                Đổi thẻ cào
-            </i> </span> <span>▼</span>
-        </a>
-        <div id="menu2" class="collapse ps-3">
-            <a href="{{route('admin.doithecao.donhang')}}">Đơn hàng</a>
-            <a href="{{route('admin.doithecao.danhsach')}}">Sản phẩm</a>
-            <a href="{{route('admin.doithecao.nhacungcap')}}">Nhà cung cấp</a>
-            <!-- <a href="#">Cấu hình</a> -->
-        </div>
+        <ul class="list-unstyled">
+            <!-- Mã thẻ cào -->
+            <li>
+                <a href="#menu1" class="d-flex justify-content-between" data-bs-toggle="collapse">
+                    <span>
+                        <i class='bx bx-credit-card'></i> Mã thẻ cào
+                    </span>
+                    <span>▼</span>
+                </a>
+                <div id="menu1" class="collapse ps-3">
+                    <a href="{{ route('admin.mathecao.donhang') }}"
+                       class="{{ request()->routeIs('admin.mathecao.donhang') ? 'active' : '' }}">Đơn hàng</a>
+                    <a href="{{ route('admin.mathecao.loaima') }}"
+                       class="{{ request()->routeIs('admin.mathecao.loaima') ? 'active' : '' }}">Sản phẩm</a>
+                    <a href="{{ route('admin.mathecao.nhacungcap') }}"
+                       class="{{ request()->routeIs('admin.mathecao.nhacungcap') ? 'active' : '' }}">Nhà cung cấp</a>
+                </div>
+            </li>
+    
+            <!-- Đổi thẻ cào -->
+            <li>
+                <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
+                    <span>
+                        <i class='bx bxs-credit-card-alt'></i> Đổi thẻ cào
+                    </span>
+                    <span>▼</span>
+                </a>
+                <div id="menu2" class="collapse ps-3">
+                    <a href="{{ route('admin.doithecao.donhang') }}"
+                       class="{{ request()->routeIs('admin.doithecao.donhang') ? 'active' : '' }}">Đơn hàng</a>
+                    <a href="{{ route('admin.doithecao.danhsach.index') }}"
+                       class="{{ request()->routeIs('admin.doithecao.danhsach.index') ? 'active' : '' }}">Sản phẩm</a>
+                    <a href="{{ route('admin.doithecao.nhacungcap.index') }}"
+                       class="{{ request()->routeIs('admin.doithecao.nhacungcap.') ? 'active' : '' }}">Nhà cung cấp</a>
+                </div>
+            </li>
+        </ul>
 
 
 

@@ -49,7 +49,7 @@
         <div id="menu1" class="collapse ps-3">
             <a href="./mathecao_donhang.html">Đơn hàng</a>
             <a href="./mathecao_danhsach.html">Sản phẩm</a>
-            <a href="./mathecao_nhacungcap.html">Nhà cung cấp</a>
+            <a href="./mathecao_nhacungcap.blade.php">Nhà cung cấp</a>
             <!-- <a href="#">Cấu hình</a> -->
         </div>
 
@@ -59,9 +59,9 @@
                 </i> </span> <span>▼</span>
         </a>
         <div id="menu2" class="collapse ps-3">
-            <a href="./doithecao_donhang.html">Đơn hàng</a>
-            <a href="./doithecao_danhsach.html">Sản phẩm</a>
-            <a href="./doithecao_nhacungcap.html">Nhà cung cấp</a>
+            <a href="./doithecao_donhang.blade.php">Đơn hàng</a>
+            <a href="./doithecao_danhsach.blade.php">Sản phẩm</a>
+            <a href="./doithecao_nhacungcap.blade.php">Nhà cung cấp</a>
             <!-- <a href="#">Cấu hình</a> -->
         </div>
 
@@ -161,15 +161,10 @@
                                 </td>
 
                                 <td>
-                                    <a href="./doithecao_donhang_edit.html" class="btn btn-dark">Sửa</a>
+                                    <a href="./doithecao_donhang_edit.blade.php" class="btn btn-dark">Sửa</a>
                                     <button type="button" class="btn btn-dark">Xóa</button>
                                 </td>
-
-
-
                             </tr>
-
-
                         </tbody>
                     </table>
                     <!-- <div class="d-flex align-items-center mt-4">
@@ -179,13 +174,6 @@
                         <button class="btn btn-primary">Thực hiện</button>
                     </div> -->
                 </div>
-
-
-
-
-
-
-
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
                 <!-- <script src="https://cdn.tailwindcss.com"></script> -->

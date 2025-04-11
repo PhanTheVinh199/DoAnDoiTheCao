@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\admin\DoithecaoDanhsachController;
+use App\Http\Controllers\admin\DoithecaoNhacungcapController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -46,3 +48,45 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+// web.php(đổi thẻ cào nhà cung cấp)
+Route::prefix('admin/doithecao/nhacungcap')->name('admin.doithecao.nhacungcap.')->group(function () {
+
+    // Hiển thị danh sách nhà cung cấp
+        Route::get('/', [DoithecaoNhacungcapController::class, 'index'])->name('index');
+
+    // Hiển thị form thêm mới nhà cung cấp
+    Route::get('/add', [DoithecaoNhacungcapController::class, 'create'])->name('add');
+
+    // Xử lý dữ liệu gửi từ form thêm mới và lưu vào CSDL
+    Route::post('/them', [DoithecaoNhacungcapController::class, 'store'])->name('them');
+
+    // Hiển thị form chỉnh sửa nhà cung cấp theo ID
+    Route::get('/edit/{id}', [DoithecaoNhacungcapController::class, 'edit'])->name('edit');
+
+    // Cập nhật thông tin nhà cung cấp đã chỉnh sửa
+    Route::put('/update/{nhacungcap}', [DoithecaoNhacungcapController::class, 'update'])->name('update');
+
+    // Xoá nhà cung cấp khỏi hệ thống
+    Route::delete('/delete/{nhacungcap}', [DoithecaoNhacungcapController::class, 'destroy'])->name('delete');
+
+    // Ẩn nhà cung cấp (thay đổi trạng thái hoạt động)
+    Route::post('/hide/{id}', [DoithecaoNhacungcapController::class, 'hide'])->name('hide');
+
+    // Hiện nhà cung cấp (kích hoạt lại)
+    Route::post('/show/{id}', [DoithecaoNhacungcapController::class, 'show'])->name('show');
+
+});
+
+
+//web.php(đổi thẻ cào Danh Sách)
+Route::prefix('admin/doithecao/danhsach')->name('admin.doithecao.danhsach.')->group(function () {
+    Route::get('/', [DoithecaoDanhsachController::class, 'index'])->name('index');
+    Route::get('/create', [DoithecaoDanhsachController::class, 'create'])->name('create');
+    Route::post('/them', [DoithecaoDanhsachController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [DoithecaoDanhsachController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [DoithecaoDanhsachController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [DoithecaoDanhsachController::class, 'destroy'])->name('destroy');
+});
+
+
