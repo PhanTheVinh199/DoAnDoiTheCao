@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\admin\DoithecaoDanhsachController;
+
 use App\Http\Controllers\admin\DoithecaoNhacungcapController;
+use App\Http\Controllers\admin\DoithecaoDanhsachController;
+use App\Http\Controllers\admin\DoithecaoDonhangController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -87,6 +89,17 @@ Route::prefix('admin/doithecao/danhsach')->name('admin.doithecao.danhsach.')->gr
     Route::get('/edit/{id}', [DoithecaoDanhsachController::class, 'edit'])->name('edit');
     Route::put('/update/{id}', [DoithecaoDanhsachController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [DoithecaoDanhsachController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('admin/doithecao/donhang')->name('admin.doithecao.donhang.')->group(function () {
+    Route::get('/', [DoithecaoDonhangController::class, 'index'])->name('index');
+    // Xóa route tạo mới đơn hàng (create)
+    // Route::get('/create', [DoithecaoDonhangController::class, 'create'])->name('create');
+    Route::post('/them', [DoithecaoDonhangController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [DoithecaoDonhangController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [DoithecaoDonhangController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [DoithecaoDonhangController::class, 'destroy'])->name('destroy');
 });
 
 

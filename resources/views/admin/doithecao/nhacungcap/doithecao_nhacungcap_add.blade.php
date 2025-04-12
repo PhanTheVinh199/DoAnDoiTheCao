@@ -32,7 +32,7 @@
                 <label class="block text-gray-700 mb-2">Hình ảnh</label>
                 <input type="file" name="hinh_anh" accept="image/*" onchange="previewImage(event)"
                        class="w-full border rounded px-3 py-2" />
-                @error('hinhanh')
+                @error('hinh_anh')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
                 <div class="mt-2">

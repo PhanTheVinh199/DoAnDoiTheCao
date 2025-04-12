@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -51,7 +51,7 @@ class DoithecaoNhacungcapController extends Controller
 
     public function edit($id)
     {
-        $nhacungcap = DoiTheCaoNhaCungCap::findOrFail($id);
+        $nhacungcap = DoiTheCaoNhacungcap::findOrFail($id);
         return view('admin.doithecao.nhacungcap.doithecao_nhacungcap_edit', compact('nhacungcap'));
     }
 
