@@ -49,7 +49,7 @@
             
         </a>
         <div id="menu1" class="collapse ps-3">
-            <a href="{{route('admin.mathecao.donhang')}}">Đơn hàng</a>
+            <a href="{{route('admin.mathecao.donhang.index')}}">Đơn hàng</a>
             <a href="{{route('admin.mathecao.loaima.index')}}">Sản phẩm</a>
             <a href="{{ route('admin.mathecao.nhacungcap.index') }}">Nhà cung cấp</a>
             <!-- <a href="#">Cấu hình</a> -->

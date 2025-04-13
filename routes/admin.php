@@ -14,11 +14,10 @@ Route::get('/index', function () {
 Route::prefix('mathecao')->name('mathecao.')->group(function () {
     Route::get('/donhang', [MTC_DonHangController::class, 'index'])->name('donhang.index');
     Route::post('/donhang/store', [MTC_DonHangController::class, 'store'])->name('donhang.store');
-    Route::get('/donhang/{id}/edit', [MTC_DonHangController::class, 'edit'])->name('donhang.edit');
+    Route::get('/donhang/{id}/edit', [MTC_DonHangController::class, 'edit'])->name('donhang.edit'); 
     Route::put('/donhang/{id}', [MTC_DonHangController::class, 'update'])->name('donhang.update');
     Route::resource('/donhang', MTC_DonHangController::class);
-    // Route::get('/donhang/edit/{id}', fn($id) => view('admin.mathecao.donhang.mathecao_donhang_edit', ['id' => $id]))->name('donhang_edit');
-    Route::get('/donhang/edit', fn() => view('admin.mathecao.donhang.mathecao_donhang_edit'))->name('donhang_edit');
+    
 
     Route::get('/loaima', [MTC_SanPhamController::class, 'index'])->name('loaima.index');
     Route::get('/loaima/create', [MTC_SanPhamController::class, 'create'])->name('loaima.create');
