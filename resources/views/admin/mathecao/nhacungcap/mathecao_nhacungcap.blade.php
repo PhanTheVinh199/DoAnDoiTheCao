@@ -1,4 +1,5 @@
-@include('admin.sidebar');
+@include('admin.sidebar')
+
 <div class="main" style="margin-top: 10px; padding: 50px">
     <div class="container">
         <div class="row d-flex">
@@ -17,7 +18,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>
-                            <th>Sản Phẩm</th>
+                            <th>Nhà Cung Cấp</th>
                             <th>Hình Ảnh</th>
                             <th>Ngày Tạo</th>
                             <th>Trạng Thái</th>

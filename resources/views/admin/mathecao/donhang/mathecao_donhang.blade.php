@@ -1,4 +1,4 @@
-@include('admin.sidebar');
+@include('admin.sidebar')
 
     <div class="main" style="margin-top: 10px; padding: 30px">
         <div class="container">

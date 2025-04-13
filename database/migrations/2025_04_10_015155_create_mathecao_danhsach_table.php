@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('nhacungcap_id')->constrained('mathecao_nhacungcap', 'id_nhacungcap');
             $table->integer('menh_gia');
             $table->decimal('chiet_khau', 5, 2)->default(0);
-            $table->boolean('trang_thai')->default(true);
+            $table->enum('trang_thai', ['Hoạt động', 'Ẩn'])->default('Hoạt động');
         });
     }
 

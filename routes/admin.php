@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MTC_NhaCungCapController;
+use App\Http\Controllers\Admin\MTC_SanPhamController;
+use App\Http\Controllers\Admin\MTC_DonHangController;
 
 Route::get('/index', function () {
     return view('admin.main');
@@ -10,14 +12,21 @@ Route::get('/index', function () {
 
 
 Route::prefix('mathecao')->name('mathecao.')->group(function () {
-    Route::get('/donhang', fn() => view('admin.mathecao.donhang.mathecao_donhang'))->name('donhang');
+    Route::get('/donhang', [MTC_DonHangController::class, 'index'])->name('donhang.index');
+    Route::post('/donhang/store', [MTC_DonHangController::class, 'store'])->name('donhang.store');
+    Route::get('/donhang/{id}/edit', [MTC_DonHangController::class, 'edit'])->name('donhang.edit');
+    Route::put('/donhang/{id}', [MTC_DonHangController::class, 'update'])->name('donhang.update');
+    Route::resource('/donhang', MTC_DonHangController::class);
     // Route::get('/donhang/edit/{id}', fn($id) => view('admin.mathecao.donhang.mathecao_donhang_edit', ['id' => $id]))->name('donhang_edit');
     Route::get('/donhang/edit', fn() => view('admin.mathecao.donhang.mathecao_donhang_edit'))->name('donhang_edit');
 
-    Route::get('/loaima', fn() => view('admin.mathecao.loaima.mathecao_danhsach'))->name('loaima');
-    Route::get('/loaima/add', fn() => view('admin.mathecao.loaima.mathecao_danhsach_add'))->name('loaima_add');
-    Route::get('/loaima/edit', fn() => view('admin.mathecao.loaima.mathecao_danhsach_edit'))->name('loaima_edit');
-    // Route::get('/loaima/edit/{id}', fn($id) => view('admin.mathecao.loaima.mathecao_danhsach_edit', ['id' => $id]))->name('loaima_edit');
+    Route::get('/loaima', [MTC_SanPhamController::class, 'index'])->name('loaima.index');
+    Route::get('/loaima/create', [MTC_SanPhamController::class, 'create'])->name('loaima.create');
+    Route::post('/loaima/store', [MTC_SanPhamController::class, 'store'])->name('loaima.store');
+    Route::get('/loaima/{id}/edit', [MTC_SanPhamController::class, 'edit'])->name('loaima.edit');
+    Route::put('/loaima/{id}', [MTC_SanPhamController::class, 'update'])->name('loaima.update');
+    Route::resource('/loaima', MTC_SanPhamController::class);
+    
 
     Route::get('/nhacungcap', [MTC_NhaCungCapController::class, 'index'])->name('nhacungcap.index');
     Route::get('/nhacungcap/create', [MTC_NhaCungCapController::class, 'create'])->name('nhacungcap.create');
@@ -25,5 +34,5 @@ Route::prefix('mathecao')->name('mathecao.')->group(function () {
     Route::get('/nhacungcap/{id}/edit', [MTC_NhaCungCapController::class, 'edit'])->name('nhacungcap.edit');
     Route::put('/nhacungcap/{id}', [MTC_NhaCungCapController::class, 'update'])->name('nhacungcap.update');
     Route::resource('/nhacungcap', MTC_NhaCungCapController::class);
-    // Route::get('/nhacungcap/edit/{id}', fn($id) => view('admin.mathecao.nhacungcap.mathecao_edit', ['id' => $id]))->name('nhacungcap_edit');
+    
 });
