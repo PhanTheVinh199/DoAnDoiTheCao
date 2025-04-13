@@ -15,8 +15,9 @@
 
 
     <link rel="stylesheet" href="./public/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
     <style>
@@ -25,15 +26,16 @@
             padding: 5px;
             color: rgb(255, 245, 245);
         }
+
     </style>
 </head>
 
 <body>
-
+    
 
     <!-- Nút mở menu trên mobile -->
     <button id="menuToggle" class="menu-btn" style="margin-left: -15px; margin-top: 7px; font-size: 10px;">
-        <i class='bx bx-menu'></i>
+         <i class='bx bx-menu' ></i>
     </button>
 
     <!-- Sidebar -->
@@ -41,10 +43,10 @@
         <div class="menu-title">Dasboard</div>
 
         <a href="#menu1" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bx-credit-card'>
-                    Mã thẻ cào
-                </i> </span> <span>▼</span>
-
+            <span><i class='bx bx-credit-card'  >
+                Mã thẻ cào
+            </i> </span> <span>▼</span>
+            
         </a>
         <div id="menu1" class="collapse ps-3">
             <a href="./mathecao_donhang.html">Đơn hàng</a>
@@ -54,9 +56,9 @@
         </div>
 
         <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-credit-card-alt'>
-                    Đổi thẻ cào
-                </i> </span> <span>▼</span>
+            <span><i class='bx bxs-credit-card-alt'  >
+                Đổi thẻ cào
+            </i> </span> <span>▼</span>
         </a>
         <div id="menu2" class="collapse ps-3">
             <a href="./doithecao_donhang.html">Đơn hàng</a>
@@ -68,9 +70,9 @@
 
 
         <a href="#menu4" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-bank'>
-                    Ngân hàng
-                </i> </span> <span>▼</span>
+            <span><i class='bx bxs-bank' >
+                Ngân hàng
+            </i> </span> <span>▼</span>
         </a>
         <div id="menu4" class="collapse ps-3">
             <a href="./nganhang.html">Danh sách Ngân Hàng</a>
@@ -79,9 +81,9 @@
         </div>
 
         <a href="#menu5" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bx-user'>
-                    Thành Viên
-                </i> </span> <span>▼</span>
+            <span><i class='bx bx-user'  >
+                Thành Viên
+            </i>  </span> <span>▼</span>
         </a>
         <div id="menu5" class="collapse ps-3">
             <a href="./thanhvien.html">Danh Sách</a>
@@ -90,10 +92,10 @@
         </div>
 
         <a href="#menu6" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-cog'>Cấu hình</i> </span> <span>▼</span>
+            <span><i class='bx bxs-cog'   >Cấu hình</i> </span> <span>▼</span>
         </a>
         <div id="menu6" class="collapse ps-3">
-
+            
             <a href="./caidat_nganhang.html">Cổng Thanh Toán </a>
             <!-- <a href="#">Hệ Thống </a> -->
         </div>
@@ -109,24 +111,22 @@
             <div class="row d-flex">
 
                 <div class="bg-white p-3 rounded shadow">
-                    <h1 class="h2 mb-4">Danh Sách </h1>
-                    <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 850px;">
+                    <h1 class="h2 mb-4">Nhà Cung Cấp</h1>
+                    <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 1000px;">
 
                         <!-- <input type="text" placeholder="Sản Phẩm" class="form-control w-auto"> -->
-                        <input type="text" placeholder="Mã Đơn" class="form-control w-auto">
-                        <button class="btn btn-primary">Tìm kiếm</button>
+                        <a href="./mathecao_nhacungcap_add.html" class="btn btn-primary">Thêm Nhà Cung Cấp</a>
+
                         <!-- <button class="btn btn-danger">Bỏ lọc</button> -->
                     </div>
-
+                    
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
                                 <th>ID</th>
-                                <!-- <th>Mã Đơn</th> -->
-                                <th>Tài Khoản</th>
-                                <th>Ngân Hàng</th>
-                                <th>Số Tài Khoản</th>
-                                <th>Chủ TK</th>
+                                <th>Sản Phẩm</th>
+                                <th>Hình Ảnh</th>
+                                <th>Ngày Tạo</th>
                                 <th>Trạng Thái</th>
 
                                 <th>Hành động</th>
@@ -136,19 +136,62 @@
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>taikhoan1</td>
-                                <td>Mbbank</td>
-                                <td>123456789</td>
+                                <td>Viettel</td>
+                                <td>
+                                    <img src="./public/img/the-viettel.png" alt="img-the">
+                                </td>
 
-                                <td>NGUYEN THANH TU</td>
+
+                                <td>2025-04-01 12:08:30</td>
                                 <td>
                                     <button type="button" class="btn btn-success">Hoạt Động</button>
                                 </td>
 
                                 <td>
-                                    <!-- <a href="./doithecao_nhacungcap_edit.html" class="btn btn-dark">Sửa</a> -->
+                                    <a href="./mathecao_nhacungcap_edit.html" class="btn btn-dark">Sửa</a>
                                     <a href="" class="btn btn-dark">Xóa</a>
-                                    <!-- <a href="" class="btn btn-dark">Ẩn</a> -->
+                                    <a href="" class="btn btn-dark">Ẩn</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Mobifone</td>
+                                <td>
+                                    <img src="./public/img/the-mobifone.jpeg" alt="img-the">
+                                </td>
+
+
+                                <td>2025-04-01 12:08:30</td>
+                                <td>
+                                    <button type="button" class="btn btn-success">Hoạt Động</button>
+                                </td>
+
+                                <td>
+                                    <a href="./mathecao_nhacungcap_edit.html" class="btn btn-dark">Sửa</a>
+                                    <a href="" class="btn btn-dark">Xóa</a>
+                                    <a href="" class="btn btn-dark">Ẩn</a>
+                                    
+                                    <!-- <button type="button" class="btn btn-dark">Xóa</button>
+                                    <button type="button" class="btn btn-dark">Ẩn</button> -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Vinaphone</td>
+                                <td>
+                                    <img src="./public/img/the-vinaphone.jpeg" alt="img-the">
+                                </td>
+
+
+                                <td>2025-04-01 12:08:30</td>
+                                <td>
+                                    <button type="button" class="btn btn-success">Hoạt Động</button>
+                                </td>
+
+                                <td>
+                                    <a href="./mathecao_nhacungcap_edit.html" class="btn btn-dark">Sửa</a>
+                                    <a href="" class="btn btn-dark">Xóa</a>
+                                    <a href="" class="btn btn-dark">Ẩn</a>
                                 </td>
                             </tr>
 
@@ -162,6 +205,20 @@
                         <button class="btn btn-primary">Thực hiện</button>
                     </div> -->
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

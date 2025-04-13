@@ -1,5 +1,7 @@
 <?php
 
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -35,11 +37,12 @@ Route::get('/lichsusodu', function () {
     return view('lichsusodu');
 })->name('lichsusodu');
 
+// Sửa lỗi trùng tên route 'login'
 Route::get('/login', function () {
     return view('login');
-})->name('login');
+})->name('login.get'); // Đổi tên route GET là 'login.get'
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post'); // Đổi tên route POST là 'login.post'
 
 Route::get('/register', function () {
     return view('register');
