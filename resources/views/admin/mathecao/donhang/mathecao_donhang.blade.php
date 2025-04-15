@@ -41,7 +41,7 @@
                         <tr>
                             <td>{{$dh->id_donbanthe}}</td>
                             <td>{{$dh->ma_don}}</td>
-                            <td>{{$dh->sanpham->id_mathecao}}</td>
+                            <td>{{$dh->sanpham->nhacungcap->ten}}</td>
                             <!-- <td>72238866089289</td>
                                 <td>59850007774848</td> -->
                             <td>{{$dh->sanpham->menh_gia}}</td>

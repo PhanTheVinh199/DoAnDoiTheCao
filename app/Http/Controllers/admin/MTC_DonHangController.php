@@ -16,10 +16,12 @@ class MTC_DonHangController extends Controller
      */
     public function index()
     {
+        $dsDonHang = MaThe_DonHang::with('sanpham.nhacungcap')->get(); // eager load cả nhà cung cấp
         $dsSanPham = MaThe_SanPham::all();
-        $dsDonHang = MaThe_DonHang::all();
         $dsThanhVien = ThanhVien::all();
-        return view('admin.mathecao.donhang.mathecao_donhang', compact('dsSanPham', 'dsDonHang', 'dsThanhVien'));
+        $dsNhaCungCap = MaThe_NhaCungCap::all();
+
+        return view('admin.mathecao.donhang.mathecao_donhang', compact('dsDonHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap'));
     }
 
     /**
@@ -92,15 +94,15 @@ class MTC_DonHangController extends Controller
         $request->validate([
             'trang_thai' => 'required|in:Hoạt động,Chờ xử lý,Đã huỷ', // Chắc chắn rằng 'trang_thai' là một trường hợp hợp lệ
         ]);
-    
+
         // Tìm đơn hàng theo ID
         $donHang = MaThe_DonHang::findOrFail($id);
-    
+
         // Cập nhật đơn hàng
         $donHang->update([
             'trang_thai' => $request->trang_thai, // Cập nhật trạng thái
         ]);
-    
+
         // Quay lại trang danh sách với thông báo thành công
         return redirect()->route('admin.mathecao.donhang.index')->with('success', 'Cập nhật đơn hàng thành công!');
     }
