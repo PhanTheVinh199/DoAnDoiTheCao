@@ -28,11 +28,14 @@
                         <option value="Vinaphone">Vinaphone</option>
                     </select>
                 </div> -->
-
-                <div class="mb-4">
+                <em>
+                    <h1 style="text-align: center;">Nhà Cung Cấp</h1>
+                </em>
+                <b><label style="text-align: center;" class="block text-gray-700 mb-2">{{$nhaCungCap}}</label></b>
+                <!-- <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Nhà Cung Cấp</label>
                     <input type="text" class="w-full border rounded px-3 py-2" value="{{ $nhaCungCap }}" disabled />
-                </div>
+                </div> -->
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mệnh Giá </label>
                     <input type="text" class="w-full border rounded px-3 py-2" value="{{ $donHang->so_luong * $donHang->sanpham->menh_gia }}" disabled />
