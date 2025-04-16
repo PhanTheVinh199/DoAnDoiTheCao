@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
@@ -75,9 +76,11 @@
             </i> </span> <span>▼</span>
         </a>
         <div id="menu4" class="collapse ps-3">
-            <a href="./nganhang.html">Danh sách Ngân Hàng</a>
-            <a href="./nganhang_ruttien.html">Lịch sử rút</a>
-            <a href="./nganhang_naptien.html">Lịch sử nạp</a>
+            
+            <a href="{{route('admin.nganhang.index')}}">Danh sách Ngân Hàng</a>
+            <a href="{{route('admin.nganhang.ruttien.index')}}">Lịch sử rút</a>
+            <a href="{{ route('admin.nganhang.naptien.index') }}">Lịch sử nạp</a>
+
         </div>
 
         <a href="#menu5" class="d-flex justify-content-between" data-bs-toggle="collapse">
@@ -86,7 +89,7 @@
             </i>  </span> <span>▼</span>
         </a>
         <div id="menu5" class="collapse ps-3">
-            <a href="./thanhvien.html">Danh Sách</a>
+            <a href="{{ route('admin.thanhvien.danhsach') }}">Danh Sách</a>
             <!-- <a href="#">Quản trị viên</a> -->
             <!-- <a href="#">Cấu hình </a> -->
         </div>

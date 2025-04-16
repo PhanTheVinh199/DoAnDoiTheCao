@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('thanhvien_id')->constrained('thanhvien', 'id_thanhvien');
             $table->foreignId('danhsach_id')->constrained('nganhang', 'id_danhsach');
             $table->integer('so_tien_rut');
-            $table->timestamp('ngay_tao')->useCurrent();
+            $table->timestamps();
             $table->enum('trang_thai', ['cho_duyet', 'da_duyet', 'huy'])->default('cho_duyet');
         });
     }

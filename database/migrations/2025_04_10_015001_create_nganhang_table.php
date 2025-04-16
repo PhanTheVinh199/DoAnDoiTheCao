@@ -16,7 +16,10 @@ return new class extends Migration
             $table->foreignId('thanhvien_id')->constrained('thanhvien', 'id_thanhvien');
             $table->string('ten_ngan_hang', 100)->nullable();
             $table->string('chu_tai_khoan', 100)->nullable();
-            $table->boolean('trang_thai')->default(true);
+            $table->string('so_tai_khoan', 100)->nullable();
+            $table->enum('trang_thai', ['hoat_dong', 'da_huy', 'cho_xu_ly'])->default('cho_xu_ly');
+            $table->timestamps();
+           
         });
     }
 

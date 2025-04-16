@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('trang_thai', ['hoat_dong', 'da_huy', 'cho_xu_ly'])->default('cho_xu_ly');
         });
     }
+  
 
     /**
      * Reverse the migrations.

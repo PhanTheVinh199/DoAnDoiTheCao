@@ -2,43 +2,43 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
+use App\Models\ThanhVien; // Thêm dòng này
 
-class ThanhVien extends Authenticatable
+class ThanhVien extends Model
 {
-    use Notifiable;
+    use HasFactory;
 
     protected $table = 'thanhvien';
     protected $primaryKey = 'id_thanhvien';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
-        'tai_khoan',
-        'ho_ten',
-        'phone',
-        'email',
-        'mat_khau',
-        'so_du',
-        'quyen'
+        'ho_ten', 'tai_khoan', 'mat_khau', 'email', 'phone', 'so_du', 'quyen'
     ];
 
-    protected $hidden = [
-        'mat_khau',
-    ];
+    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+    public static function boot()
+    {
+        parent::boot();
 
-    public function username()
-    {
-        return 'tai_khoan'; // hoặc trả về 'email' nếu đăng nhập bằng email
+        static::saving(function ($thanhvien) {
+            if ($thanhvien->isDirty('mat_khau')) {
+                $thanhvien->mat_khau = Hash::make($thanhvien->mat_khau); // Mã hóa mật khẩu
+            }
+        });
     }
 
-    public function getAuthIdentifierName()
+    // Ví dụ về phương thức quan hệ với NganHang (nếu có)
+    public function nganHang()
     {
-        return $this->username();
+        return $this->hasMany(NganHang::class, 'thanhvien_id', 'id_thanhvien');
     }
-    
-    public function getAuthPassword()
-    {
-        return $this->mat_khau;
-    }
+    public function ruttiens()
+{
+    return $this->hasMany(RutTien::class, 'thanhvien_id');
+}
+
 }

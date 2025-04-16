@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('trang_thai')->default(true);
         });
     }
+    
 
     /**
      * Reverse the migrations.
