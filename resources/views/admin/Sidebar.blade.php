@@ -61,12 +61,12 @@
             <span>▼</span>
         </a>
         <div id="menu2" class="collapse ps-3">
-            <a href="{{ route('admin.doithecao.donhang') }}"
-                class="{{ request()->routeIs('admin.doithecao.donhang.index') ? 'active' : '' }}">Đơn hàng</a>
-            <a href="{{ route('admin.doithecao.danhsach') }}"
-                class="{{ request()->routeIs('admin.doithecao.danhsach.index') ? 'active' : '' }}">Sản phẩm</a>
-            <a href="{{ route('admin.doithecao.nhacungcap') }}"
-                class="{{ request()->routeIs('admin.doithecao.nhacungcap.') ? 'active' : '' }}">Nhà cung cấp</a>
+            <a href="{{ route('admin.doithecao.donhang.index') }}"
+                >Đơn hàng</a>
+            <a href="{{ route('admin.doithecao.danhsach.index') }}"
+                >Sản phẩm</a>
+            <a href="{{ route('admin.doithecao.nhacungcap.index') }}"
+               >Nhà cung cấp</a>
         </div>
 
 
