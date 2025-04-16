@@ -14,10 +14,10 @@
 
 
 
-        <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    
+        href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
     <style>
@@ -26,16 +26,15 @@
             padding: 5px;
             color: rgb(255, 245, 245);
         }
-
     </style>
 </head>
 
 <body>
-    
+
 
     <!-- Nút mở menu trên mobile -->
     <button id="menuToggle" class="menu-btn" style="margin-left: -15px; margin-top: 7px; font-size: 10px;">
-         <i class='bx bx-menu' ></i>
+        <i class='bx bx-menu'></i>
     </button>
 
     <!-- Sidebar -->
@@ -43,10 +42,10 @@
         <div class="menu-title">Dasboard</div>
 
         <a href="#menu1" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bx-credit-card'  >
-                Mã thẻ cào
-            </i> </span> <span>▼</span>
-            
+            <span><i class='bx bx-credit-card'>
+                    Mã thẻ cào
+                </i> </span> <span>▼</span>
+
         </a>
         <div id="menu1" class="collapse ps-3">
             <a href="{{route('admin.mathecao.donhang.index')}}">Đơn hàng</a>
@@ -55,30 +54,30 @@
             <!-- <a href="#">Cấu hình</a> -->
         </div>
 
-         <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
-                    <span>
-                        <i class='bx bxs-credit-card-alt'></i> Đổi thẻ cào
-                    </span>
-                    <span>▼</span>
-                </a>
-                <div id="menu2" class="collapse ps-3">
-                    <a href="{{ route('admin.doithecao.donhang.index') }}"
-                        class="{{ request()->routeIs('admin.doithecao.donhang.index') ? 'active' : '' }}">Đơn hàng</a>
-                    <a href="{{ route('admin.doithecao.danhsach.index') }}"
-                       class="{{ request()->routeIs('admin.doithecao.danhsach.index') ? 'active' : '' }}">Sản phẩm</a>
-                    <a href="{{ route('admin.doithecao.nhacungcap.index') }}"
-                       class="{{ request()->routeIs('admin.doithecao.nhacungcap.') ? 'active' : '' }}">Nhà cung cấp</a>
-                </div>
+        <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
+            <span>
+                <i class='bx bxs-credit-card-alt'> Đổi thẻ cào</i>
+            </span>
+            <span>▼</span>
+        </a>
+        <div id="menu2" class="collapse ps-3">
+            <a href="{{ route('admin.doithecao.donhang') }}"
+                class="{{ request()->routeIs('admin.doithecao.donhang.index') ? 'active' : '' }}">Đơn hàng</a>
+            <a href="{{ route('admin.doithecao.danhsach') }}"
+                class="{{ request()->routeIs('admin.doithecao.danhsach.index') ? 'active' : '' }}">Sản phẩm</a>
+            <a href="{{ route('admin.doithecao.nhacungcap') }}"
+                class="{{ request()->routeIs('admin.doithecao.nhacungcap.') ? 'active' : '' }}">Nhà cung cấp</a>
+        </div>
 
 
 
         <a href="#menu4" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-bank' >
-                Ngân hàng
-            </i> </span> <span>▼</span>
+            <span><i class='bx bxs-bank'>
+                    Ngân hàng
+                </i> </span> <span>▼</span>
         </a>
         <div id="menu4" class="collapse ps-3">
-            
+
             <a href="{{route('admin.nganhang.index')}}">Danh sách Ngân Hàng</a>
             <a href="{{route('admin.nganhang.ruttien.index')}}">Lịch sử rút</a>
             <a href="{{ route('admin.nganhang.naptien.index') }}">Lịch sử nạp</a>
@@ -86,9 +85,9 @@
         </div>
 
         <a href="#menu5" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bx-user'  >
-                Thành Viên
-            </i>  </span> <span>▼</span>
+            <span><i class='bx bx-user'>
+                    Thành Viên
+                </i> </span> <span>▼</span>
         </a>
         <div id="menu5" class="collapse ps-3">
             <a href="{{ route('admin.thanhvien.danhsach') }}">Danh Sách</a>
@@ -97,10 +96,10 @@
         </div>
 
         <a href="#menu6" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-cog'   >Cấu hình</i> </span> <span>▼</span>
+            <span><i class='bx bxs-cog'>Cấu hình</i> </span> <span>▼</span>
         </a>
         <div id="menu6" class="collapse ps-3">
-            
+
             <a href="./caidat_nganhang.html">Cổng Thanh Toán </a>
             <!-- <a href="#">Hệ Thống </a> -->
         </div>
@@ -109,14 +108,14 @@
     </div>
 
 
-<!-- Main -->
+    <!-- Main -->
 
 
 
 
-<!-- Main -->
+    <!-- Main -->
 
-                
+
 
 
 
@@ -126,7 +125,7 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script>
         // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
-        document.getElementById('menuToggle').addEventListener('click', function () {
+        document.getElementById('menuToggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('open');
         });
     </script>
