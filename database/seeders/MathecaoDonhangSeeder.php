@@ -18,5 +18,15 @@ class MathecaoDonhangSeeder extends Seeder
             'ngay_tao' => now(),
             'trang_thai' => 'Chờ xử lý',
         ]);
+
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD002',
+            'mathecao_id' => 1, // ID của thẻ cào trong bảng mathecao_danhsach
+            'so_luong' => 5,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, // ID thành viên có sẵn trong bảng thanhvien
+            'ngay_tao' => now(),
+            'trang_thai' => 'Chờ xử lý',
+        ]);
     }
 }

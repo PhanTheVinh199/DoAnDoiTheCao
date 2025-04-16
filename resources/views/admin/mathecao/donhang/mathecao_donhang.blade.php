@@ -6,12 +6,14 @@
 
             <div class="bg-white p-3 rounded shadow">
                 <h1 class="h2 mb-4">Đơn bán thẻ</h1>
-                <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 900px;">
+                <form method="GET" action="{{ route('admin.mathecao.donhang.index') }}" >
+                    <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 900px;">
 
-                    <input type="text" placeholder="Mã Đơn" class="form-control w-auto">
-                    <button class="btn btn-primary">Tìm kiếm</button>
-                    <!-- <button class="btn btn-danger">Bỏ lọc</button> -->
-                </div>
+                        <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto" value="{{ request('ma_don') }}">
+                        <button class="btn btn-primary">Tìm kiếm</button>
+                        <!-- <button class="btn btn-danger">Bỏ lọc</button> -->
+                    </div>
+                </form>
                 <div class="d-flex gap-4 mb-4" style="margin-left: 500px;">
 
                 </div>
@@ -41,17 +43,17 @@
                         <tr>
                             <td>{{$dh->id_donbanthe}}</td>
                             <td>{{$dh->ma_don}}</td>
-                            <td>{{$dh->sanpham->nhacungcap->ten}}</td>
+                            <td>{{ $dh->sanpham?->nhacungcap?->ten ?? 'Chưa có nhà cung cấp' }}</td>
                             <!-- <td>72238866089289</td>
                                 <td>59850007774848</td> -->
-                            <td>{{$dh->sanpham->menh_gia}}</td>
+                            <td>{{$dh->sanpham?->menh_gia ?? 'Chưa có mệnh giá' }}</td>
 
                             <td>{{$dh->so_luong}}</td>
-                            <td>{{$dh->sanpham->chiet_khau}}%</td>
-                            <td>{{ $dh->so_luong * $dh->sanpham->menh_gia }}</td>
+                            <td>{{$dh->sanpham?->chiet_khau ?? 'Chưa có Chiết Khấu' }}%</td>
+                            <td>{{ $dh->so_luong * $dh->sanpham?->menh_gia ?? 'Chưa có mênhk giá' }}</td>
 
-                            <td>{{$dh->thanhvien->tai_khoan}}</td>
-                            <td>{{$dh->thanhvien->email}}</td>
+                            <td>{{$dh->thanhvien?->tai_khoan ?? 'Chưa có Tài Khoản'}}</td>
+                            <td>{{$dh->thanhvien?->email ?? 'Chưa có email'}}</td>
                             <td>{{$dh->ngay_tao}}</td>
                             <td>
                                 <button type="button" class="btn btn-success" style="font-size: 13px;">{{$dh->trang_thai}}</button>
@@ -60,7 +62,7 @@
                             <td>
                                 <a href="{{ route('admin.mathecao.donhang.edit', $dh->id_donbanthe)}}" class="btn btn-dark">Sửa</a>
 
-                                
+
                                 <form action="{{ route('admin.mathecao.donhang.destroy', $dh->id_donbanthe) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa đơn hàng này?')">
                                     @csrf
                                     @method('DELETE')

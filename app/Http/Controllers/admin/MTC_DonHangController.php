@@ -14,8 +14,19 @@ class MTC_DonHangController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index( Request $request)
     {
+        $query = MaThe_DonHang::with('sanpham.nhacungcap');
+
+        if ($request->filled('ma_don')) {
+            $query->where('ma_don', 'like', '%' . $request->ma_don . '%');
+        }
+    
+        if ($request->filled('ten_san_pham')) {
+            $query->whereHas('sanpham', function ($q) use ($request) {
+                $q->where('ten_san_pham', 'like', '%' . $request->ten_san_pham . '%');
+            });
+        }
         $dsDonHang = MaThe_DonHang::with('sanpham.nhacungcap')->get(); // eager load cả nhà cung cấp
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
