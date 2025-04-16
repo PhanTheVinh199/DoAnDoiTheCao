@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use App\Models\ThanhVien; // Thêm dòng này
+use App\Models\NganHang;
 
 class ThanhVien extends Model
 {
@@ -16,7 +16,13 @@ class ThanhVien extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'ho_ten', 'tai_khoan', 'mat_khau', 'email', 'phone', 'so_du', 'quyen'
+        'ho_ten',
+        'tai_khoan',
+        'mat_khau',
+        'email',
+        'phone',
+        'so_du',
+        'quyen'
     ];
 
     // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
@@ -37,8 +43,7 @@ class ThanhVien extends Model
         return $this->hasMany(NganHang::class, 'thanhvien_id', 'id_thanhvien');
     }
     public function ruttiens()
-{
-    return $this->hasMany(RutTien::class, 'thanhvien_id');
-}
-
+    {
+        return $this->hasMany(RutTien::class, 'thanhvien_id');
+    }
 }

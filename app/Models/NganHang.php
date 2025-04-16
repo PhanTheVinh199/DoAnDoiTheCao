@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\NganHang; // Thêm dòng này
+ // Thêm dòng này
 
 class NganHang extends Model
 {
