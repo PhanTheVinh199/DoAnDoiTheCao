@@ -21,6 +21,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        
         $request->validate([
             'login_input' => 'required|string',
             'mat_khau' => 'required|string',

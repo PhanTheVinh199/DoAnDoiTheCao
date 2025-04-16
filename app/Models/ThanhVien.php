@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use App\Models\NganHang;
 
-class ThanhVien extends Model
+//login vs register
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class ThanhVien extends  Authenticatable
 {
     use HasFactory;
 
@@ -16,26 +21,35 @@ class ThanhVien extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'ho_ten',
         'tai_khoan',
-        'mat_khau',
-        'email',
+        'ho_ten',
         'phone',
+        'email',
+        'mat_khau',
         'so_du',
         'quyen'
     ];
 
-    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
-    public static function boot()
-    {
-        parent::boot();
+    protected $hidden = [
+        'mat_khau',
+    ];
 
-        static::saving(function ($thanhvien) {
-            if ($thanhvien->isDirty('mat_khau')) {
-                $thanhvien->mat_khau = Hash::make($thanhvien->mat_khau); // Mã hóa mật khẩu
-            }
-        });
+    public function username()
+    {
+        return 'tai_khoan'; // hoặc trả về 'email' nếu đăng nhập bằng email
     }
+
+    public function getAuthIdentifierName()
+    {
+        return $this->username();
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->mat_khau;
+    }
+    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+
 
     // Ví dụ về phương thức quan hệ với NganHang (nếu có)
     public function nganHang()
