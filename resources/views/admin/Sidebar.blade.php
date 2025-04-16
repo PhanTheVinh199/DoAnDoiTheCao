@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
@@ -56,17 +55,20 @@
             <!-- <a href="#">Cấu hình</a> -->
         </div>
 
-        <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
-            <span><i class='bx bxs-credit-card-alt'  >
-                Đổi thẻ cào
-            </i> </span> <span>▼</span>
-        </a>
-        <div id="menu2" class="collapse ps-3">
-            <a href="./doithecao_donhang.html">Đơn hàng</a>
-            <a href="./doithecao_donhang.html">Sản phẩm</a>
-            <a href="./doithecao_nhacungcap.html">Nhà cung cấp</a>
-            <!-- <a href="#">Cấu hình</a> -->
-        </div>
+         <a href="#menu2" class="d-flex justify-content-between" data-bs-toggle="collapse">
+                    <span>
+                        <i class='bx bxs-credit-card-alt'></i> Đổi thẻ cào
+                    </span>
+                    <span>▼</span>
+                </a>
+                <div id="menu2" class="collapse ps-3">
+                    <a href="{{ route('admin.doithecao.donhang.index') }}"
+                        class="{{ request()->routeIs('admin.doithecao.donhang.index') ? 'active' : '' }}">Đơn hàng</a>
+                    <a href="{{ route('admin.doithecao.danhsach.index') }}"
+                       class="{{ request()->routeIs('admin.doithecao.danhsach.index') ? 'active' : '' }}">Sản phẩm</a>
+                    <a href="{{ route('admin.doithecao.nhacungcap.index') }}"
+                       class="{{ request()->routeIs('admin.doithecao.nhacungcap.') ? 'active' : '' }}">Nhà cung cấp</a>
+                </div>
 
 
 

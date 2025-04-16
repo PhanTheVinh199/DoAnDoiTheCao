@@ -40,6 +40,20 @@ Route::prefix('mathecao')->name('mathecao.')->group(function () {
     
 });
 
+Route::prefix('doithecao')->name('doithecao.')->group(function (){
+    Route::get('/donhang' , fn() => view('admin.doithecao.donhang.doithecao_donhang'))->name('donhang');
+    Route::get('/donhang/edit' , fn() => view('admin.doithecao.donhang.doithecao_donhang_edit'))->name('donhang_edit');
+
+    Route::get('/danhsach',fn() => view('admin.doithecao.danhsach.doithecao_danhsach'))->name('danhsach');
+    Route::get('/danhsach/edit',fn() => view('admin.doithecao.danhsach.doithecao_danhsach_edit'))->name('danhsach_edit');
+    Route::get('/danhsach/add',fn() => view('admin.doithecao.danhsach.doithecao_danhsach_add'))->name('danhsach_add');
+
+    Route::get('/nhacungcap',fn() => view('admin.doithecao.nhacungcap.doithecao_nhacungcap_add'))->name('nhacungcap');
+    Route::get('/nhacungcap/add',fn() => view('admin.doithecao.nhacungcap.doithecao_nhacungcap_add'))->name('nhacungcap_add');
+    Route::get('/nhacungcap/edit',fn() => view('admin.doithecao.nhacungcap.doithecao_nhacungcap_edit'))->name('nhacungcap_edit');
+
+});
+
 Route::prefix('nganhang')->name('nganhang.')->group(function () {
     // Route hiển thị danh sách ngân hàng
     Route::get('/', [NganhangController::class, 'index'])->name('index');
