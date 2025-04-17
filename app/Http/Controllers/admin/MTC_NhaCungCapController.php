@@ -13,7 +13,8 @@ class MTC_NhaCungCapController extends Controller
      */
     public function index()
     {
-        $dsNhaCungCap = MaThe_NhaCungCap::all();
+        $dsNhaCungCap = MaThe_NhaCungCap::orderBy('ngay_tao', 'desc')->paginate(10);
+        
         return view('admin.mathecao.nhacungcap.mathecao_nhacungcap', compact('dsNhaCungCap'));
     }
 

@@ -14,7 +14,7 @@ class MTC_SanPhamController extends Controller
      */
     public function index()
     {
-        $dsSanPham = MaThe_SanPham::all();
+        $dsSanPham = MaThe_SanPham::orderBy('ngay_tao', 'desc')->paginate(10);
         $dsNhaCungCap = MaThe_NhaCungCap::all();
         return view('admin.mathecao.loaima.mathecao_danhsach', compact('dsSanPham','dsNhaCungCap'));
     }

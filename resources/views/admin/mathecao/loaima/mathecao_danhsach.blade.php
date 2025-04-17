@@ -60,13 +60,52 @@
 
 
 
-                <!-- <div class="d-flex align-items-center mt-4">
-                        <select class="form-select w-auto me-2">
-                            <option>-- Chọn thao tác --</option>
-                        </select>
-                        <button class="btn btn-primary">Thực hiện</button>
-                    </div> -->
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $dsSanPham->appends(request()->query())->links('pagination::bootstrap-5') }}
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <span>Đang hiển thị {{ $dsSanPham->count() }} Sản phẩm, tổng cộng {{ $dsSanPham->total() }} Sản Phẩm</span>
+                </div>
+
             </div>
+            <style>
+                .pagination {
+                    justify-content: center;
+                    margin-top: 20px;
+                }
+
+                .pagination .page-item .page-link {
+                    color: #007bff;
+                    border: 1px solid #dee2e6;
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    margin: 0 3px;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                .pagination .page-item.active .page-link {
+                    background-color: #007bff;
+                    color: white;
+                    border-color: #007bff;
+                    font-weight: bold;
+                    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+                }
+
+                .pagination .page-item.disabled .page-link {
+                    color: #6c757d;
+                }
+
+                .pagination .page-link:hover {
+                    background-color: #e9f5ff;
+                    border-color: #007bff;
+                }
+
+                .pagination-summary,
+                .small.text-muted {
+                    display: none !important;
+                }
+            </style>
+
 
 
 

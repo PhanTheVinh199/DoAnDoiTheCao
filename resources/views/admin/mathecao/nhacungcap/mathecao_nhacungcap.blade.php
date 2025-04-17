@@ -57,13 +57,51 @@
 
                     </tbody>
                 </table>
-                <!-- <div class="d-flex align-items-center mt-4">
-                        <select class="form-select w-auto me-2">
-                            <option>-- Chọn thao tác --</option>
-                        </select>
-                        <button class="btn btn-primary">Thực hiện</button>
-                    </div> -->
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $dsNhaCungCap->appends(request()->query())->links('pagination::bootstrap-5') }}
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <span>Đang hiển thị {{ $dsNhaCungCap->count() }} Nhà Cung Cấp, tổng cộng {{ $dsNhaCungCap->total() }} Nhà Cung Cấp</span>
+                </div>
+
             </div>
+            <style>
+                .pagination {
+                    justify-content: center;
+                    margin-top: 20px;
+                }
+
+                .pagination .page-item .page-link {
+                    color: #007bff;
+                    border: 1px solid #dee2e6;
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    margin: 0 3px;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                .pagination .page-item.active .page-link {
+                    background-color: #007bff;
+                    color: white;
+                    border-color: #007bff;
+                    font-weight: bold;
+                    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+                }
+
+                .pagination .page-item.disabled .page-link {
+                    color: #6c757d;
+                }
+
+                .pagination .page-link:hover {
+                    background-color: #e9f5ff;
+                    border-color: #007bff;
+                }
+
+                .pagination-summary,
+                .small.text-muted {
+                    display: none !important;
+                }
+            </style>
 
 
 
@@ -99,16 +137,16 @@
             </body>
 
             </html>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-                <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-                <script>
-                    // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
-                    document.getElementById('menuToggle').addEventListener('click', function () {
-                        document.getElementById('sidebar').classList.toggle('open');
-                    });
-                </script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+            <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+            <script>
+                // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
+                document.getElementById('menuToggle').addEventListener('click', function() {
+                    document.getElementById('sidebar').classList.toggle('open');
+                });
+            </script>
 
-</body>
+            </body>
 
-</html>
+            </html>

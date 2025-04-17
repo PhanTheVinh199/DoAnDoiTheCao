@@ -22,12 +22,12 @@ class MTC_DonHangController extends Controller
             $query->where('ma_don', 'like', '%' . $request->ma_don . '%');
         }
     
-        if ($request->filled('ten_san_pham')) {
-            $query->whereHas('sanpham', function ($q) use ($request) {
-                $q->where('ten_san_pham', 'like', '%' . $request->ten_san_pham . '%');
-            });
-        }
-        $dsDonHang = MaThe_DonHang::with('sanpham.nhacungcap')->get(); // eager load cả nhà cung cấp
+        // if ($request->filled('ten_nha_cung_cap')) {
+        //     $query->whereHas('sanpham.nhacungcap', function ($q) use ($request) {
+        //         $q->where('ten', 'like', '%' . $request->ten_nha_cung_cap . '%');
+        //     });
+        // }
+        $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(10);
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();
