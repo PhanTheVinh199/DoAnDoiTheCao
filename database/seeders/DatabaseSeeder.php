@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             NganHangSeeder::class,
             ThanhVienSeeder::class,
             RutTienSeeder::class,
+            NapTienSeeder::class,
+            MaTheCaoSeeder::class,
 
         ]);
         

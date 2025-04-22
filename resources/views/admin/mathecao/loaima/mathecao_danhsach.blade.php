@@ -38,7 +38,7 @@
                         @foreach($dsSanPham as $sp)
                         <tr>
                             <td>{{$sp ->id_mathecao}}</td>
-                            <td>{{$sp ->nhacungcap->ten}}</td>
+                            <td>{{$sp ->nhacungcap?->ten ?? 'Chưa có nhà cung cấp'}}</td>
                             <!-- <td><img src="./public/img/the-viettel.png" alt="img-the"></td> -->
                             <td>{{$sp ->menh_gia}}</td>
                             <td>{{$sp ->chiet_khau}}</td>

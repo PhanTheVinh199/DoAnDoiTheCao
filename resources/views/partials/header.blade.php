@@ -170,7 +170,7 @@
             @if(Auth::guard('thanhvien')->check())
             {{-- Mobile khi đã đăng nhập --}}
             <button type="button" class="btn" id="call-userMB">
-                <i class="fas fa-user"></i> Tài khoản
+                <i class="fas fa-user">Tài khoản</i> 
             </button>
             <div class="header-usermb_list">
                 <ul class="list-unstyled mb-0">
