@@ -32,7 +32,9 @@
                             <td>{{ $ncc->id_nhacungcap }}</td>
                             <td>{{ $ncc->ten }}</td>
                             <td>
-                                <img src="{{ asset($ncc->hinhanh) }}" alt="img-the">
+                                <div style="position: relative; width: 200px; height: 100px;" >
+                                    <img  src="{{ asset($ncc->hinhanh) }}" alt="img-the" style="position: absolute; width: 100%; height: 100%;">
+                                </div>
                             </td>
 
 

@@ -12,12 +12,28 @@ class MTC_SanPhamController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dsSanPham = MaThe_SanPham::orderBy('ngay_tao', 'desc')->paginate(10);
+        
+        $supplierId = $request->query('supplier_id', 'all'); 
+        $perPage = $request->query('per_page', 10); 
+
+        
+        $page = $request->query('page', 1); 
+
+        $dsSanPham = MaThe_SanPham::when($supplierId !== 'all', function ($query) use ($supplierId) {
+            return $query->where('nhacungcap_id', $supplierId);
+        })
+        ->orderBy('ngay_tao', 'desc')
+        ->paginate($perPage, ['*'], 'page', $page); 
+
+        // Lấy danh sách nhà cung cấp
         $dsNhaCungCap = MaThe_NhaCungCap::all();
-        return view('admin.mathecao.loaima.mathecao_danhsach', compact('dsSanPham','dsNhaCungCap'));
+
+
+        return view('admin.mathecao.loaima.mathecao_danhsach', compact('dsSanPham', 'dsNhaCungCap', 'supplierId', 'perPage'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,21 +65,13 @@ class MTC_SanPhamController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $dsSanPham = MaThe_SanPham::findOrFail($id);
         $dsNhaCungCap = MaThe_NhaCungCap::all();
-        return view('admin.mathecao.loaima.mathecao_danhsach_edit', compact('dsSanPham','dsNhaCungCap'));
+        return view('admin.mathecao.loaima.mathecao_danhsach_edit', compact('dsSanPham', 'dsNhaCungCap'));
     }
 
     /**
@@ -75,7 +83,6 @@ class MTC_SanPhamController extends Controller
             'menh_gia' => 'required|numeric|min:1000',
             'chiet_khau' => 'required|numeric|min:0|max:100',
             'trang_thai' => 'required|in:Hoạt động,Ẩn',
-            
         ]);
     
         $dsSanPham = MaThe_SanPham::findOrFail($id);
