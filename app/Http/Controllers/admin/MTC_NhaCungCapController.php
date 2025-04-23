@@ -79,7 +79,8 @@ class MTC_NhaCungCapController extends Controller
     {
         $request->validate([
             'ten' => 'required|string|max:255',
-            'hinhanh' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'hinhanh' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'trang_thai' => 'required|in:Hoạt động,Ẩn'
         ]);
 
         $ncc = MaThe_NhaCungCap::findOrFail($id);
@@ -100,6 +101,7 @@ class MTC_NhaCungCapController extends Controller
         }
 
         $ncc->ten = $request->ten;
+        $ncc->trang_thai = $request->trang_thai;
         $ncc->save();
 
         return redirect()->route('admin.mathecao.nhacungcap.index')->with('success', 'Cập nhật thành công!');

@@ -51,7 +51,7 @@
                                     <button type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
 
-                                <a href="" class="btn btn-dark">Ẩn</a>
+            
                             </td>
                         </tr>
                         @endforeach

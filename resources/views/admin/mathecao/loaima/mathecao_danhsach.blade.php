@@ -45,7 +45,7 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Xóa</button>
                                     </form>
-                                    <button type="button" class="btn btn-dark">Ẩn</button>
+                                    
                                 </td>
                             </tr>
                         @endforeach

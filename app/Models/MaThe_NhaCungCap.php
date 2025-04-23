@@ -12,5 +12,5 @@ class MaThe_NhaCungCap extends Model
     
     protected $primaryKey = 'id_nhacungcap';
 
-    protected $fillable = ['ten', 'hinhanh'];
+    protected $fillable = ['ten', 'hinhanh', 'trang_thai'];
 }
