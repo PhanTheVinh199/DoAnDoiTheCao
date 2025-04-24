@@ -16,6 +16,7 @@ class DoithecaoDonhang extends Model
         'ma_the',
         'serial',
         'doithecao_id',
+        'thanhvien_id', // Add this line
         'so_luong',
         'thanh_tien',
         'ngay_tao',

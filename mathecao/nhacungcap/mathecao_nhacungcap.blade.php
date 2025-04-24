@@ -1,70 +1,69 @@
 @include('admin.sidebar')
 
-
 <div class="main" style="margin-top: 10px; padding: 50px">
     <div class="container">
         <div class="row d-flex">
 
             <div class="bg-white p-3 rounded shadow">
-                <h1 class="h2 mb-4">Danh Sách Thẻ</h1>
-
-                <div class="d-flex flex-wrap gap-2 mb-4 " style="margin-left: 1000px;">
+                <h1 class="h2 mb-4">Nhà Cung Cấp</h1>
+                <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 1000px;">
 
                     <!-- <input type="text" placeholder="Sản Phẩm" class="form-control w-auto"> -->
-                    <a href="{{ route('admin.mathecao.loaima.create') }}" class="btn btn-danger">Thêm Sản Phẩm </a>
+                    <a href="{{ route('admin.mathecao.nhacungcap.create') }}" class="btn btn-primary">Thêm Nhà Cung Cấp</a>
 
                     <!-- <button class="btn btn-danger">Bỏ lọc</button> -->
                 </div>
-                @foreach($dsNhaCungCap as $ncc)
-                <button class="btn btn-dark" onclick="showTable('Viettel')">{{$ncc->ten}}</button>
-                @endforeach
 
-                <br><br>
-
-                <!-- Bảng giá Viettel -->
-                <table class="table table-bordered" id="Viettel" style="display:table;">
+                <table class="table table-bordered">
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>
-                            <th>Sản Phẩm</th>
-                            <!-- <th>Hình Ảnh</th> -->
-                            <th>Mệnh Giá</th>
-                            <th>Chiết Khấu</th>
+                            <th>Nhà Cung Cấp</th>
+                            <th>Hình Ảnh</th>
+                            <th>Ngày Tạo</th>
                             <th>Trạng Thái</th>
                             <th>Hành động</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dsSanPham as $sp)
+                        @foreach($dsNhaCungCap as $ncc)
                         <tr>
-                            <td>{{$sp ->id_mathecao}}</td>
-                            <td>{{$sp ->nhacungcap?->ten ?? 'Chưa có nhà cung cấp'}}</td>
-                            <!-- <td><img src="./public/img/the-viettel.png" alt="img-the"></td> -->
-                            <td>{{$sp ->menh_gia}}</td>
-                            <td>{{$sp ->chiet_khau}}</td>
-                            <td><button type="button" class="btn btn-success">{{$sp ->trang_thai}}</button></td>
+                            <td>{{ $ncc->id_nhacungcap }}</td>
+                            <td>{{ $ncc->ten }}</td>
                             <td>
-                                <a href="{{ route('admin.mathecao.loaima.edit', $sp->id_mathecao)}}" class="btn btn-dark">Sửa</a>
-                                <!-- <button type="button" class="btn btn-dark">Sửa</button> -->
-                                <form action="{{ route('admin.mathecao.loaima.destroy', $sp->id_mathecao) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');">
+                                <div style="position: relative; width: 200px; height: 100px;" >
+                                    <img  src="{{ asset($ncc->hinhanh) }}" alt="img-the" style="position: absolute; width: 100%; height: 100%;">
+                                </div>
+                            </td>
+
+
+                            <td>{{ $ncc->ngay_tao }}</td>
+                            <td>
+                                <button type="button" class="btn btn-success">{{ $ncc->trang_thai }}</button>
+                            </td>
+
+                            <td>
+                                <a href="{{ route('admin.mathecao.nhacungcap.edit', $ncc->id_nhacungcap) }}" class="btn btn-dark">Sửa</a>
+                                <form action="{{ route('admin.mathecao.nhacungcap.destroy', $ncc->id_nhacungcap) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
-                                <button type="button" class="btn btn-dark">Ẩn</button>
+
+                                <a href="" class="btn btn-dark">Ẩn</a>
                             </td>
                         </tr>
                         @endforeach
+
+
                     </tbody>
                 </table>
-
-
-
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $dsSanPham->appends(request()->query())->links('pagination::bootstrap-5') }}
+                    {{ $dsNhaCungCap->appends(request()->query())->links('pagination::bootstrap-5') }}
                 </div>
                 <div class="d-flex justify-content-center mt-2">
-                    <span>Đang hiển thị {{ $dsSanPham->count() }} Sản phẩm, tổng cộng {{ $dsSanPham->total() }} Sản Phẩm</span>
+                    <span>Đang hiển thị {{ $dsNhaCungCap->count() }} Nhà Cung Cấp, tổng cộng {{ $dsNhaCungCap->total() }} Nhà Cung Cấp</span>
                 </div>
 
             </div>
@@ -127,7 +126,6 @@
 
 
 
-
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
             <!-- <script src="https://cdn.tailwindcss.com"></script> -->
@@ -138,17 +136,17 @@
                 });
             </script>
 
-            <script>
-                // Function to show specific table based on the selected network
-                function showTable(network) {
-                    // Ẩn tất cả các bảng
-                    document.getElementById("Viettel").style.display = "none";
-                    document.getElementById("Mobifone").style.display = "none";
-                    document.getElementById("VinaPhone").style.display = "none";
+            </body>
 
-                    // Hiển thị bảng tương ứng với mạng được chọn
-                    document.getElementById(network).style.display = "table";
-                }
+            </html>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+            <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+            <script>
+                // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
+                document.getElementById('menuToggle').addEventListener('click', function() {
+                    document.getElementById('sidebar').classList.toggle('open');
+                });
             </script>
 
             </body>
