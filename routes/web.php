@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\User\SanPhamController;
 
 
 // Trang chủ
@@ -10,7 +11,7 @@ Route::get('/', fn() => view('index'))->name('index');
 
 // Các trang tĩnh khác
 Route::view('/header', 'header')->name('header');
-Route::view('/card', 'card')->name('card');
+Route::get('/card', [SanPhamController::class, 'index'])->name('card');
 Route::view('/ruttien', 'ruttien')->name('ruttien');
 Route::view('/naptien', 'naptien')->name('naptien');
 Route::view('/lichsu', 'lichsudoithe')->name('lichsudoithe');

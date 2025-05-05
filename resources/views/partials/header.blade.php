@@ -1,13 +1,12 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kho Thẻ King Grab</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
-    <script src="{{ asset('js/bootstrap.bundle.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('font-awesome/font/fontawesome-webfont.eot') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -66,10 +65,40 @@
             padding: 10px 20px;
             border: none;
             cursor: pointer;
-            transition: transform 0.3sease, box-shadow 0.3sease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .balance-btn {
+            background-color: #28a745;
+            /* Màu xanh lá */
+            color: #fff;
+        }
+
+        .account-btn {
+            background-color: #f1f1f1;
+            /* Màu trắng xám */
+            color: #333;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            /* Màu đỏ */
+            color: #fff;
+        }
+        .balance-btn:hover {
+            background-color: #218838;
+        }
+
+        .account-btn:hover {
+            background-color: #e2e2e2;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
+
 <header id="header-m1" class="header-m1 header-sort">
     <nav class="container d-flex align-items-center flex-lg-wrap">
         <div class="header-hamburger">
@@ -82,28 +111,25 @@
             <ul class="list-unstyled mb-0">
                 <li class="d-lg-none d-inline-block navigation-logo text-center">
                     <a href="#">
-                        <img src="public/images/logoKinggcrab.jpeg" height="40px" class="img-fluid"
-                            alt="logoKinggcrab">
+                        <img src="public/images/logoKinggcrab.jpeg" height="40px" class="img-fluid" alt="logoKinggcrab">
                     </a>
                 </li>
                 <li class="d-inline-block ">
-                    <a href="{{route('index')}}">
+                    <a href="{{ route('index') }}">
                         Đổi thẻ cào
                     </a>
                 </li>
 
                 <li class="d-inline-block ">
-                    <a href="{{route('card')}}">
-                        Mua thẻ Cào
-                    </a>
+                <a href="{{ route('card') }}">Mua Thẻ Cào </a>
                 </li>
                 <li class="d-inline-block ">
-                    <a href="{{route('ruttien')}}">
+                    <a href="{{ route('ruttien') }}">
                         RÚT TIỀN
                     </a>
                 </li>
                 <li class="d-inline-block ">
-                    <a href="{{route('naptien')}}">
+                    <a href="{{ route('naptien') }}">
                         NẠP TIỀN
                     </a>
                 </li>
@@ -129,13 +155,13 @@
                     </a>
                     <ul class="list-unstyled mb-0">
                         <li class="d-block">
-                            <a href="{{route('lichsudoithe')}}">LỊCH SỬ ĐỔI THẺ</a>
+                            <a href="{{ route('lichsudoithe') }}">LỊCH SỬ ĐỔI THẺ</a>
                         </li>
                         <li class="d-block">
-                            <a href="{{route('lichsumuathe')}}">LỊCH SỬ MUA THẺ</a>
+                            <a href="{{ route('lichsumuathe') }}">LỊCH SỬ MUA THẺ</a>
                         </li>
                         <li class="d-block">
-                            <a href="{{route('lichsusodu')}}">LỊCH SỬ SỐ DƯ</a>
+                            <a href="{{ route('lichsusodu') }}">LỊCH SỬ SỐ DƯ</a>
                         </li>
                     </ul>
                     <span class="sub-icon">+</span>
@@ -144,17 +170,20 @@
         </div>
         <div class="header-user">
             @if(Auth::guard('thanhvien')->check())
-            {{-- Nếu đã đăng nhập --}}
+            {{-- Nếu người dùng đã đăng nhập --}}
             <div class="header-loggedin">
-                <a href="#" class="btn btn-small btn-account">
-                    <i class="fas fa-user"></i> Tài khoản
+                <a href="#" class="btn btn-small btn-account balance-btn">
+                    <i class="fas fa-wallet"></i> Số dư: {{ Auth::guard('thanhvien')->user()->so_du }} VND
                 </a>
-                <a href="{{ route('logout') }}" class="btn btn-small btn-logout" style="margin-left: 10px;">
+                <a href="#" class="btn btn-small btn-account account-btn" style="margin-left: 10px;">
+                    <i class="fas fa-user"></i> {{ Auth::guard('thanhvien')->user()->tai_khoan }}
+                </a>
+                <a href="{{ route('logout') }}" class="btn btn-small btn-logout logout-btn" style="margin-left: 10px;">
                     <i class="fa fa-sign-out-alt"></i> Đăng xuất
                 </a>
             </div>
             @else
-            {{-- Nếu chưa đăng nhập --}}
+            {{-- Nếu người dùng chưa đăng nhập --}}
             <div class="header-nologin">
                 <a href="{{ route('register') }}" class="btn btn-small btn-register">
                     <i class="fas fa-user"></i> Đăng ký
@@ -168,9 +197,9 @@
 
         <div class="header-usermb">
             @if(Auth::guard('thanhvien')->check())
-            {{-- Mobile khi đã đăng nhập --}}
+            {{-- Mobile khi người dùng đã đăng nhập --}}
             <button type="button" class="btn" id="call-userMB">
-                <i class="fas fa-user">Tài khoản</i> 
+                <i class="fas fa-user">Tài khoản</i>
             </button>
             <div class="header-usermb_list">
                 <ul class="list-unstyled mb-0">
@@ -187,7 +216,7 @@
                 </ul>
             </div>
             @else
-            {{-- Mobile khi chưa đăng nhập --}}
+            {{-- Mobile khi người dùng chưa đăng nhập --}}
             <button type="button" class="btn" id="call-userMB">
                 <i class="fas fa-user"></i> Tài khoản
             </button>
@@ -212,6 +241,7 @@
             </div>
             @endif
         </div>
-
     </nav>
 </header>
+
+</html>

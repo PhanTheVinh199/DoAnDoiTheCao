@@ -62,12 +62,12 @@
                                         style="padding: 0px; margin: 0px; outline: 0px; border: 0px; font-size: 14px;"><span
                                             style="padding: 0px; margin: 0px; outline: 0px; font-weight: bolder; border: 0px;">nhận
                                             tiền ngay trong 5 giây</span></span></span></p>
-                            <p style="font-size: 14px; line-height: 21px; font-family: "open="" sans";"=""><img alt=""
+                            <p style="font-size: 14px; line-height: 21px;"open="" sans";"=""><img alt=""
                                     src="public/images/new.gif"
                                     style="color: rgb(35, 35, 35); font-family: Roboto, Arial, Helvetica, sans-serif; height: 13px; width: 26px;"><span
                                     style="line-height: 21px; font-weight: bolder; color: rgb(35, 35, 35); font-family: Roboto, Arial, Helvetica, sans-serif;">&nbsp;Tự
                                     động 100%, Tốc độ xử lý cực nhanh, Rút tiền tự động,&nbsp;Hỗ trợ 24/7</span></p>
-                            <p style="font-size: 14px; line-height: 21px; font-family: " open="" sans";"=""><span
+                            <p style="font-size: 14px; line-height: 21px;"  open="" sans";"=""><span
                                     style="line-height: 21px; color: rgb(35, 35, 35); font-family: Roboto, Arial, Helvetica, sans-serif;">&nbsp;</span><img
                                     alt="" src="public/images/new.gif"
                                     style="color: rgb(35, 35, 35); font-family: Roboto, Arial, Helvetica, sans-serif; height: 13px; width: 26px;"><span
