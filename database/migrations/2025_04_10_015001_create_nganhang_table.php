@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('nganhang', function (Blueprint $table) {
             $table->id('id_danhsach');
-            $table->foreignId('thanhvien_id')->constrained('thanhvien', 'id_thanhvien');
+            $table->unsignedBigInteger('thanhvien_id');
+            $table->foreign('thanhvien_id')->references('id_thanhvien')->on('thanhvien')->onDelete('cascade');
             $table->string('ten_ngan_hang', 100)->nullable();
             $table->string('chu_tai_khoan', 100)->nullable();
             $table->string('so_tai_khoan', 100)->nullable();

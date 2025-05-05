@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\NapTienController;
 
 // Trang chủ
 Route::get('/', fn() => view('index'))->name('index');
@@ -12,11 +12,10 @@ Route::get('/', fn() => view('index'))->name('index');
 Route::view('/header', 'header')->name('header');
 Route::view('/card', 'card')->name('card');
 Route::view('/ruttien', 'ruttien')->name('ruttien');
-Route::view('/naptien', 'naptien')->name('naptien');
 Route::view('/lichsu', 'lichsudoithe')->name('lichsudoithe');
 Route::view('/lichsumuathe', 'lichsumuathe')->name('lichsumuathe');
 Route::view('/lichsusodu', 'lichsusodu')->name('lichsusodu');
-
+Route::view('/naptiendienthoai', 'naptiendienthoai')->name('naptiendienthoai');
 
 // Các trang login_register
 
@@ -34,3 +33,8 @@ Route::get('/logout', function () {
     return redirect()->route('login')->with('message', 'Bạn đã đăng xuất.');
 })->name('logout');
 
+Route::middleware('auth:thanhvien')->group(function () {
+    Route::get('/naptien', [NapTienController::class, 'showForm'])->name('naptien.form'); 
+    Route::post('/naptien', [NapTienController::class, 'store'])->name('naptien.store');
+    Route::get('/lichsunap', [NapTienController::class, 'showHistory'])->name('lichsunap');
+});

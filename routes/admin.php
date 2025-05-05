@@ -8,7 +8,8 @@ use App\Http\Controllers\Admin\MTC_DonHangController;
 use App\Http\Controllers\admin\NganhangController;
 use App\Http\Controllers\admin\DoithecaoNhacungcapController;
 use App\Http\Controllers\admin\DoithecaoDanhsachController;
-use App\Http\Controllers\admin\DoithecaoDonhangController;
+use App\Http\Controllers\admin\DoithecaoDonhangController; 
+use App\Http\Controllers\admin\NapTienAdminController; 
 
 use App\Http\Controllers\admin\ThanhvienController;
 
@@ -132,4 +133,13 @@ Route::prefix('thanhvien')->name('thanhvien.')->group(function () {
     Route::put('/edit/{id}', [ThanhvienController::class, 'update'])->name('update');
     //Xóa thành viên
     Route::delete('/delete/{id}', [ThanhvienController::class, 'destroy'])->name('delete');
+});
+
+// Route cho admin
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    // Hiển thị lịch sử nạp tiền của tất cả người dùng
+    Route::get('/naptien', [NapTienAdminController::class, 'showHistory'])->name('naptien.index');
+
+    // Duyệt giao dịch nạp tiền
+    Route::post('/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('naptien.approve');
 });

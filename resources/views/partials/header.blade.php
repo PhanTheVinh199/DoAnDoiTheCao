@@ -103,12 +103,12 @@
                     </a>
                 </li>
                 <li class="d-inline-block ">
-                    <a href="{{route('naptien')}}">
+                    <a href="{{route('naptien.form')}}">
                         NẠP TIỀN
                     </a>
                 </li>
                 <li class="d-inline-block ">
-                    <a href="naptiendienthoai.html">
+                    <a href="{{route('naptiendienthoai')}}">
                         NẠP ĐIỆN THOẠI
                     </a>
                 </li>

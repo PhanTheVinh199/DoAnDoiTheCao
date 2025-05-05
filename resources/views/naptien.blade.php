@@ -1,131 +1,170 @@
-@include('partials.header')
-    <div class="section-gap">
-        <div class="row">
+@extends('layouts.app') {{-- Sử dụng layout có sidebar --}}
 
-            <div class="col-md-6">
-                <div class="description mb-3">
-                    <div class="title">
-                        Tạo yêu cầu nạp quỹ
-                    </div>
-                </div>
-                <div class="form-m1">
-                    <form action="#" method="POST">
-                        <input type="hidden" name="_token" value="1wZdxcAkOIkW8OUkQh70hmaS8Qwtr5bcigO5rokS">
-                        <div class="row row10">
-                            <div class="col-12">
-                                <label for="" class="col-form-label">
-                                    Số dư quỹ: <b class="font-weight-bold text-success">0 VND</b>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row row10">
-                            <div class="col-5 col-sm-4">
-                                <label for="" class="col-form-label font-weight-bold">
-                                    Số tiền nạp:
-                                </label>
-                            </div>
-                            <div class="col-7 col-sm-8">
-                                <input name="net_amount" type="text" class="form-control fnum" id="net_amount"
-                                    placeholder="Số tiền nạp" value="">
-                                <input name="wallet" type="hidden" value="0078591869">
-                                <span class="text-danger text-small"> Tối thiểu 1 VND , Tối đa 1 VND </span>
-                            </div>
-                        </div>
-                        <div class="row row10">
-                            <div class="col-5 col-sm-4">
-                                <label for="" class="col-form-label font-weight-bold">
-                                    Cổng thanh toán:
-                                </label>
-                            </div>
-                            <div class="col-7 col-sm-8">
-                                <select class="form-control" name="paygate_code" required>
-                                    <option value="Localbank_ACB">Ngân hàng ACB</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row row10">
-                            <div class="col-sm-8 offset-sm-4 text-center text-center">
-                                <button type="submit" class="btn btn-primary btn-lg w-100">
-                                    <i class="fas fa-dollar-sign"></i>
-                                    Nạp tiền ngay
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+@section('title', 'Nạp tiền')
 
+@section('content')
+<style>
+    .form-m1 input,
+    .form-m1 select {
+        font-size: 1.15rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .btn-lg {
+        font-size: 1.25rem;
+        padding: 0.8rem;
+    }
+
+    .table-lg td,
+    .table-lg th {
+        padding: 1rem 1.25rem;
+        font-size: 1.05rem;
+    }
+
+    .description .title,
+    .description .small-title,
+    .description .sub-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+    }
+</style>
+
+<div class="section-gap">
+    <div class="row g-4 mb-5">
+        <!-- Tạo yêu cầu nạp quỹ -->
+        <div class="col-lg-7">
+            <div class="description mb-3">
+                <div class="title">Tạo yêu cầu nạp quỹ</div>
             </div>
-
-            <div class="col-md-6 mt-4 mt-lg-0">
-                <div class="description mb-1">
-                    <div class="small-title">
-                        Hạn mức và phí:
+            <div class="form-m1">
+                <form action="{{ route('naptien.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="col-form-label">
+                            Số dư quỹ: <b class="font-weight-bold text-success">{{ number_format(Auth::guard('thanhvien')->user()->so_du) }} VND</b>
+                        </label>
                     </div>
-                </div>
+
+                    <div class="mb-4">
+                        <label class="col-form-label fw-bold">Số tiền nạp:</label>
+                        <input name="net_amount" type="number" class="form-control fnum" placeholder="Số tiền nạp"
+                            value="{{ old('net_amount') }}" required min="{{ $soTienToiThieu }}" max="{{ $soTienToiDa }}">
+                        <small class="text-danger">Tối thiểu {{ number_format($soTienToiThieu) }} VND , Tối đa {{ number_format($soTienToiDa) }} VND</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="col-form-label fw-bold">Cổng thanh toán:</label>
+                        <select class="form-control" name="paygate_code" required>
+                            @forelse($banks as $bank)
+                                <option value="{{ $bank->id_danhsach }}">
+                                    {{ $bank->ten_ngan_hang }} - {{ $bank->so_tai_khoan }} ({{ $bank->chu_tai_khoan }})
+                                </option>
+                            @empty
+                                <option value="">Bạn chưa thêm ngân hàng nào</option>
+                            @endforelse
+                        </select>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-dollar-sign"></i> Nạp tiền ngay
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Hạn mức và phí -->
+        <div class="col-lg-5">
+            <div class="description mb-3">
+                <div class="small-title">Hạn mức và phí:</div>
+            </div>
+            @if(isset($hanMucNgay) && $hanMucNgay > 0)
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-module">
-                        <tr>
-                            <td>Tổng hạn mức ngày</td>
-                            <th>1 VND</th>
-                        </tr>
-                        <tr>
-                            <td>Số tiền tối thiểu</td>
-                            <th>1 VND</th>
-                        </tr>
-                        <tr>
-                            <td>Số tiền tối đa</td>
-                            <th>1 VND</th>
-                        </tr>
+                    <table class="table table-bordered table-striped table-module table-lg">
+                        <tr><td>Tổng hạn mức ngày</td><th>{{ number_format($hanMucNgay) }} VND</th></tr>
+                        <tr><td>Số tiền tối thiểu</td><th>{{ number_format($soTienToiThieu) }} VND</th></tr>
+                        <tr><td>Số tiền tối đa</td><th>{{ number_format($soTienToiDa) }} VND</th></tr>
                     </table>
                 </div>
-                <div class="mt-4">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-module">
-                            <tr>
-                                <th>Cổng thanh toán</th>
-                                <th class="text-center">Phí cố định</th>
-                                <th class="text-center">Phí %</th>
-                            </tr>
-                            <tr>
-                                <td>Ngân hàng ACB</td>
-                                <td class="text-center">0</td>
-                                <td class="text-center">0%</td>
-                            </tr>
-                            <tr>
-                                <td>Ngân Hàng ACB NN</td>
-                                <td class="text-center">0</td>
-                                <td class="text-center">0.1%</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mt-4">
-        <div class="description mb-3">
-            <div class="sub-title">
-                Lịch sử nạp tiền
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-module">
-                <thead>
-                    <tr>
-                        <th>Mã đơn</th>
-                        <th class="text-center">Nạp vào quỹ</th>
-                        <th class="text-center">Số tiền</th>
-                        <th>Cổng thanh toán</th>
-                        <th>Ngày tạo</th>
-                        <th class="text-center">Trạng thái</th>
-                        <th class="text-center">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
+            @endif
 
-</html>
+            <div class="mt-4">
+                <table class="table table-bordered table-striped table-module table-lg">
+                    <thead>
+                        <tr>
+                            <th>Cổng thanh toán</th>
+                            <th class="text-center">Phí cố định</th>
+                            <th class="text-center">Phí %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($banks as $bank)
+                            <tr>
+                                <td>{{ $bank->ten_ngan_hang }}</td>
+                                <td class="text-center">0</td> <!-- Giả sử phí cố định là 0 -->
+                                <td class="text-center">{{ $bank->phi }}%</td> <!-- Đổi 'phí %' thành 'phi' -->
+                            </tr>
+                        @endforeach
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lịch sử nạp tiền -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="description mb-3">
+                <div class="sub-title"><i class="fas fa-history"></i> Lịch sử nạp tiền</div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-module table-lg">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-file-invoice"></i> Mã đơn</th>
+                            <th class="text-center"><i class="fas fa-piggy-bank"></i> Nạp vào quỹ</th>
+                            <th class="text-center"><i class="fas fa-money-bill-wave"></i> Số tiền</th>
+                            <th><i class="fas fa-university"></i> Cổng thanh toán</th>
+                            <th><i class="fas fa-calendar-alt"></i> Ngày tạo</th>
+                            <th class="text-center"><i class="fas fa-info-circle"></i> Trạng thái</th>
+                            <th class="text-center"><i class="fas fa-cogs"></i> Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($transactions as $transaction)
+                            <tr>
+                                <td>{{ $transaction->ma_don ?? 'N/A' }}</td>
+                                <td class="text-center">{{ number_format($transaction->so_tien_nap, 2) }} VND</td>
+                                <td class="text-center">{{ number_format($transaction->so_tien_nap) }}</td>
+                                <td>{{ $transaction->noi_dung }}</td>
+                                <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
+                                <td class="text-center">{{ $transaction->trang_thai }}</td>
+                                <td class="text-center">
+                                    @if(Auth::user()->quyen === 'admin' && $transaction->trang_thai === 'cho_duyet')
+                                        <form action="{{ route('admin.naptien.approve', $transaction->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
+                                        </form>
+                                    @else
+                                        —
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">Không có giao dịch nạp tiền nào.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
