@@ -35,3 +35,4 @@ Route::get('/logout', function () {
     return redirect()->route('login')->with('message', 'Bạn đã đăng xuất.');
 })->name('logout');
 
+Route::get('/get-product-prices/{id}', [SanPhamController::class, 'getProductPrices']);

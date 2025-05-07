@@ -1,4 +1,6 @@
 @include('partials.header')
+<div class="container">
+
     <div class="section-gap">
         <div class="row">
 
@@ -126,6 +128,7 @@
             </table>
         </div>
     </div>
+</div>
 </body>
 
 </html>

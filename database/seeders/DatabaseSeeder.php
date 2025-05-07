@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
             ThanhVienSeeder::class,
             RutTienSeeder::class,
             NapTienSeeder::class,
-            MaTheCaoSeeder::class,
+            MTC_NhaCungCap::class,
+            MTC_SanPham::class,
+            MTC_DonHang::class
 
         ]);
         

@@ -232,6 +232,12 @@ class MTC_SanPham extends Seeder
             'ngay_tao' => now(),  
             'trang_thai' => 'Hoạt động',  
         ]);
+        DB::table('mathecao_danhsach')->insert([
+            'nhacungcap_id' =>'5',  
+            'menh_gia' => '1000000',  
+            'chiet_khau' => '13.5',  
+            'ngay_tao' => now(),  
+            'trang_thai' => 'Hoạt động',  
+        ]);
     }
-
 }
