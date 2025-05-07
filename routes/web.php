@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\ThanhToanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\SanPhamController;
+
 
 
 // Trang chủ
@@ -36,3 +38,5 @@ Route::get('/logout', function () {
 })->name('logout');
 
 Route::get('/get-product-prices/{id}', [SanPhamController::class, 'getProductPrices']);
+Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('pay');
+Route::post('/xu-ly-thanh-toan', [ThanhToanController::class, 'process'])->name('process.payment');

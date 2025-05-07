@@ -88,7 +88,7 @@
                 <div class="sub-title">Chọn mệnh giá thẻ</div>
             </div>
             <div id="product-prices">
-                <!-- Đoạn HTML hiển thị mệnh giá sẽ được thêm vào đây -->
+                <!-- hiển thị giá -->
             </div>
         </div>
         <div class="col-xl-4 col-lg-5 mt-4 mt-lg-0">
@@ -129,80 +129,96 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  $(document).ready(function() {
-    // Tự động chọn nhà cung cấp có data-id="1" khi trang tải
-    var nhaCungCapId = "1"; // Lấy data-id là 1
+    $(document).ready(function() {
+        // Tự động chọn nhà cung cấp có data-id="1" khi trang tải
+        var nhaCungCapId = "1"; // Lấy data-id là 1
 
-    // Mô phỏng click vào thẻ có data-id="1" và thêm lớp selected
-    $('a[data-id="' + nhaCungCapId + '"]').addClass('selected').trigger('click');
+        // Mô phỏng click vào thẻ có data-id="1" và thêm lớp selected
+        $('a[data-id="' + nhaCungCapId + '"]').addClass('selected').trigger('click');
 
-    // Lắng nghe sự kiện click của các nhà cung cấp
-    $('a[data-id]').on('click', function() {
-        var nhaCungCapId = $(this).data('id');
-        var providerName = $(this).find('.card-text').text(); // Lấy tên nhà cung cấp từ card-text
+        // Lắng nghe sự kiện click của các nhà cung cấp
+        $('a[data-id]').on('click', function() {
+            var nhaCungCapId = $(this).data('id');
+            var providerName = $(this).find('.card-text').text(); // Lấy tên nhà cung cấp từ card-text
 
-        // Gửi yêu cầu AJAX để lấy mệnh giá sản phẩm
-        $.ajax({
-            url: '/get-product-prices/' + nhaCungCapId,
-            method: 'GET',
-            success: function(response) {
-                console.log(response); // Kiểm tra phản hồi từ server
+            // Gửi yêu cầu AJAX để lấy mệnh giá sản phẩm
+            $.ajax({
+                url: '/get-product-prices/' + nhaCungCapId,
+                method: 'GET',
+                success: function(response) {
+                    console.log(response); // Kiểm tra phản hồi từ server
 
-                // Xóa nội dung cũ trước khi hiển thị mệnh giá mới
-                $('#product-prices').html('');
+                    // Xóa nội dung cũ trước khi hiển thị mệnh giá mới
+                    $('#product-prices').html('');
 
-                // Hiển thị mệnh giá sản phẩm vào phần #product-prices
-                $('#product-prices').html(response.html);
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error); // Kiểm tra lỗi trong console
-                alert('Có lỗi xảy ra!');
-            }
+                    // Hiển thị mệnh giá sản phẩm vào phần #product-prices
+                    $('#product-prices').html(response.html);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error); // Kiểm tra lỗi trong console
+                    alert('Có lỗi xảy ra!');
+                }
+            });
+
+            // Xóa lớp selected khỏi tất cả các thẻ
+            $('a[data-id]').removeClass('selected');
+
+            // Thêm lớp selected cho thẻ được click
+            $(this).addClass('selected');
         });
 
-        // Xóa lớp selected khỏi tất cả các thẻ
-        $('a[data-id]').removeClass('selected');
+        // Lắng nghe sự kiện click của mệnh giá
+        $(document).on('click', '.price-item', function() {
+            // Xóa lớp selected khỏi tất cả các mệnh giá
+            $('.price-item').removeClass('selected');
 
-        // Thêm lớp selected cho thẻ được click
-        $(this).addClass('selected');
+            // Thêm lớp selected cho mệnh giá được click
+            $(this).addClass('selected');
+
+            // Lấy thông tin mệnh giá và nhà cung cấp
+            var providerName = $('a.selected').find('.card-text').text(); // Lấy tên nhà cung cấp từ thẻ được chọn
+            var price = parseFloat($(this).data('price')); // Lấy giá mệnh giá từ data-price
+            var discount = parseFloat($(this).data('discount')); // Lấy chiết khấu từ data-discount
+
+            // Tính giá sau chiết khấu
+            var priceAfterDiscount = price - (price * discount / 100); // Áp dụng chiết khấu
+
+            // Cập nhật giỏ hàng
+            $('#cart-empty-message').hide();
+            $('#cart-details').show();
+            $('#cart-provider-name').text(providerName);
+            $('#cart-price').text(price.toFixed(0)); // Hiển thị mệnh giá
+            $('#cart-price-after-discount').text(priceAfterDiscount.toFixed(0)); // Hiển thị giá sau chiết khấu
+            $('#cart-discount').text(discount); // Hiển thị chiết khấu
+            $('#cart-total').text(priceAfterDiscount.toFixed(0)); // Hiển thị tổng cộng
+
+            // Cập nhật số lượng
+            $('#quantity').on('input', function() {
+                var quantity = $(this).val();
+                var total = priceAfterDiscount * quantity;
+                $('#cart-total').text(total.toFixed(0)); // Cập nhật tổng cộng
+            });
+
+            $('#checkout-button').on('click', function() {
+                // Lấy thông tin cần thiết
+                var providerName = $('a.selected').find('.card-text').text(); // Tên nhà cung cấp
+                var price = parseFloat($('.price-item.selected').data('price')); // Mệnh giá
+                var discount = parseFloat($('.price-item.selected').data('discount')); // Chiết khấu
+                var quantity = $('#quantity').val(); // Số lượng
+
+                // Tính giá sau chiết khấu
+                var priceAfterDiscount = price - (price * discount / 100);
+
+                // Tạo URL với các tham số cần thiết
+                var url = "{{ route('pay') }}?provider=" + encodeURIComponent(providerName) +
+                    "&price=" + price +
+                    "&discount=" + discount +
+                    "&quantity=" + quantity +
+                    "&priceAfterDiscount=" + priceAfterDiscount;
+
+                // Điều hướng đến trang thanh toán với các tham số
+                window.location.href = url;
+            });
+        });
     });
-
-    // Lắng nghe sự kiện click của mệnh giá
-    $(document).on('click', '.price-item', function() {
-        // Xóa lớp selected khỏi tất cả các mệnh giá
-        $('.price-item').removeClass('selected');
-
-        // Thêm lớp selected cho mệnh giá được click
-        $(this).addClass('selected');
-
-        // Lấy thông tin mệnh giá và nhà cung cấp
-        var providerName = $('a.selected').find('.card-text').text(); // Lấy tên nhà cung cấp từ thẻ được chọn
-        var price = parseFloat($(this).data('price')); // Lấy giá mệnh giá từ data-price
-        var discount = parseFloat($(this).data('discount')); // Lấy chiết khấu từ data-discount
-
-        // Tính giá sau chiết khấu
-        var priceAfterDiscount = price - (price * discount / 100); // Áp dụng chiết khấu
-
-        // Cập nhật giỏ hàng
-        $('#cart-empty-message').hide();
-        $('#cart-details').show();
-        $('#cart-provider-name').text(providerName);
-        $('#cart-price').text(price.toFixed(0)); // Hiển thị mệnh giá
-        $('#cart-price-after-discount').text(priceAfterDiscount.toFixed(0)); // Hiển thị giá sau chiết khấu
-        $('#cart-discount').text(discount); // Hiển thị chiết khấu
-        $('#cart-total').text(priceAfterDiscount.toFixed(0)); // Hiển thị tổng cộng
-
-        // Cập nhật số lượng
-        $('#quantity').on('input', function() {
-            var quantity = $(this).val();
-            var total = priceAfterDiscount * quantity;
-            $('#cart-total').text(total.toFixed(0)); // Cập nhật tổng cộng
-        });
-
-        // Thanh toán
-        $('#checkout-button').on('click', function() {
-            alert('Thanh toán thành công!');
-        });
-    });
-});
 </script>
