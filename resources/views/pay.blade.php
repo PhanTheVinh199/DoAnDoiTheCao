@@ -28,8 +28,8 @@
                             <th>Số dư sau giao dịch</th>
                             <td>
                                 @php
-                                    $totalAmount = request('priceAfterDiscount') * request('quantity');
-                                    $remainingBalance = Auth::guard('thanhvien')->user()->so_du - $totalAmount;
+                                $totalAmount = request('priceAfterDiscount') * request('quantity');
+                                $remainingBalance = Auth::guard('thanhvien')->user()->so_du - $totalAmount;
                                 @endphp
                                 {{ number_format($remainingBalance) }} VNĐ
                             </td>
@@ -43,41 +43,42 @@
                     <p><strong>Số lượng:</strong> {{ request('quantity') }}</p>
                     <p><strong>Giá sau chiết khấu:</strong> {{ number_format(request('priceAfterDiscount')) }} VNĐ</p>
                     <p><strong>Tổng cộng:</strong> {{ number_format(request('priceAfterDiscount') * request('quantity')) }} VNĐ</p>
-
+                    <!-- Thêm ID Nhà Cung Cấp -->
+                    <p><strong>ID Nhà Cung Cấp:</strong> {{ request('nhaCungCapId') }}</p>
                     <hr>
 
                     <!-- Kiểm tra số dư sau giao dịch và hiển thị thông báo nếu số dư không đủ -->
                     @if($remainingBalance < 0)
                         <div class="alert alert-danger mb-4">
-                            <strong>Lỗi:</strong> Số dư không đủ để thực hiện giao dịch. Vui lòng nạp thêm tiền vào tài khoản của bạn.
-                        </div>
-                        <button class="btn btn-success mt-3" disabled>Xác nhận thanh toán</button>
-                        <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
-                    @else
-                        <form action="{{ route('process.payment') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="email">Email nhận mã thẻ:</label>
-                                <input type="email" name="email" class="form-control" value="{{ Auth::guard('thanhvien')->user()->email }}" required placeholder="example@gmail.com">
-                            </div>
-
-                            {{-- Ẩn các dữ liệu cần thiết để gửi sang server --}}
-                            <input type="hidden" name="provider" value="{{ request('provider') }}">
-                            <input type="hidden" name="price" value="{{ request('price') }}">
-                            <input type="hidden" name="discount" value="{{ request('discount') }}">
-                            <input type="hidden" name="quantity" value="{{ request('quantity') }}">
-                            <input type="hidden" name="priceAfterDiscount" value="{{ request('priceAfterDiscount') }}">
-                            <input type="hidden" name="mathecao_id" value="{{ request('mathecao_id') }}"> {{-- nếu cần --}}
-
-                            <button type="submit" class="btn btn-success mt-3">Xác nhận thanh toán</button>
-                            <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
-                        </form>
-                    @endif
-
+                        <strong>Lỗi:</strong> Số dư không đủ để thực hiện giao dịch. Vui lòng nạp thêm tiền vào tài khoản của bạn.
                 </div>
+                <button class="btn btn-success mt-3" disabled>Xác nhận thanh toán</button>
+                <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
+                @else
+                <form action="{{ route('process.payment') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="email">Email nhận mã thẻ:</label>
+                        <input type="email" name="email" class="form-control" value="{{ Auth::guard('thanhvien')->user()->email }}" required placeholder="example@gmail.com">
+                    </div>
+
+                    {{-- Ẩn các dữ liệu cần thiết để gửi sang server --}}
+                    <input type="hidden" name="id_nhacungcap" value="{{ request('nhaCungCapId') }}">
+                    <input type="hidden" name="price" value="{{ request('price') }}">
+                    <input type="hidden" name="discount" value="{{ request('discount') }}">
+                    <input type="hidden" name="quantity" value="{{ request('quantity') }}">
+                    <input type="hidden" name="priceAfterDiscount" value="{{ request('priceAfterDiscount') }}">
+                    <input type="hidden" name="mathecao_id" value="{{ request('idMatheCao') }}"> {{-- nếu cần --}}
+
+                    <button type="submit" class="btn btn-success mt-3">Xác nhận thanh toán</button>
+                    <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
+                </form>
+                @endif
+
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- SweetAlert2 -->
@@ -85,16 +86,16 @@
 
 <!-- Thông báo thành công -->
 @if(session('payment_success'))
-    <script>
-        Swal.fire({
-            title: 'Thanh toán thành công!',
-            text: 'Cảm ơn bạn đã giao dịch. Hệ thống sẽ chuyển bạn về trang chính.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/card';
-            }
-        });
-    </script>
+<script>
+    Swal.fire({
+        title: 'Thanh toán thành công!',
+        text: 'Cảm ơn bạn đã giao dịch. Hệ thống sẽ chuyển bạn về trang chính.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/card';
+        }
+    });
+</script>
 @endif

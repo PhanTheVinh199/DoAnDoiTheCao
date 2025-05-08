@@ -17,26 +17,23 @@ class SanPhamController extends Controller
     }
 
     public function getProductPrices($id)
-    {
-        // Lấy danh sách mệnh giá sản phẩm theo nhà cung cấp
-        $products = MaThe_SanPham::where('nhacungcap_id', $id)->get();
+{
+    // Lấy danh sách mệnh giá sản phẩm theo nhà cung cấp
+    $products = MaThe_SanPham::where('nhacungcap_id', $id)->get();
     
-        // Nếu không có sản phẩm, trả về thông báo
-        if ($products->isEmpty()) {
-            return response()->json(['html' => '<div class="price-item">Không có sản phẩm</div>']);
-        }
-    
-        // Trả về dữ liệu mệnh giá dưới dạng HTML để hiển thị trên frontend
-        $html = '';
-        foreach ($products as $product) {
-            $html .= '<div class="price-item" data-price="' . $product->menh_gia . '" data-discount="' . $product->chiet_khau . '">';
-            $html .= number_format($product->menh_gia, 0, ',', '.') . ' VND</div>';
-        }
-    
-        return response()->json(['html' => $html]);
+    // Nếu không có sản phẩm, trả về thông báo
+    if ($products->isEmpty()) {
+        return response()->json(['html' => '<div class="price-item">Không có sản phẩm</div>']);
     }
+    
+    // Trả về dữ liệu mệnh giá dưới dạng HTML để hiển thị trên frontend
+    $html = '';
+    foreach ($products as $product) {
+        $html .= '<div class="price-item" data-id-mathecao="' . $product->id_mathecao . '" data-price="' . $product->menh_gia . '" data-discount="' . $product->chiet_khau . '">';
+        $html .= number_format($product->menh_gia, 0, ',', '.') . ' VND</div>';
+    }
+
+    return response()->json(['html' => $html]);
 }
-
-
-
+}
 

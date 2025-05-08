@@ -56,6 +56,7 @@
         background-color: #218838;
     }
 </style>
+
 <div class="container tabs-m1 mt-5">
     <ul class="nav nav-tabs justify-content-start mb-4">
         <li class="nav-item">
@@ -179,6 +180,7 @@
             var providerName = $('a.selected').find('.card-text').text(); // Lấy tên nhà cung cấp từ thẻ được chọn
             var price = parseFloat($(this).data('price')); // Lấy giá mệnh giá từ data-price
             var discount = parseFloat($(this).data('discount')); // Lấy chiết khấu từ data-discount
+            var idMatheCao = $(this).data('id-mathecao'); // Lấy id_mathecao từ data-id-mathecao
 
             // Tính giá sau chiết khấu
             var priceAfterDiscount = price - (price * discount / 100); // Áp dụng chiết khấu
@@ -205,16 +207,19 @@
                 var price = parseFloat($('.price-item.selected').data('price')); // Mệnh giá
                 var discount = parseFloat($('.price-item.selected').data('discount')); // Chiết khấu
                 var quantity = $('#quantity').val(); // Số lượng
+                var nhaCungCapId = $('a.selected').data('id'); // Lấy id nhà cung cấp từ thẻ đã chọn
 
                 // Tính giá sau chiết khấu
                 var priceAfterDiscount = price - (price * discount / 100);
 
-                // Tạo URL với các tham số cần thiết
+                // Tạo URL với các tham số cần thiết, bao gồm id_mathecao
                 var url = "{{ route('pay') }}?provider=" + encodeURIComponent(providerName) +
                     "&price=" + price +
                     "&discount=" + discount +
                     "&quantity=" + quantity +
-                    "&priceAfterDiscount=" + priceAfterDiscount;
+                    "&priceAfterDiscount=" + priceAfterDiscount +
+                    "&nhaCungCapId=" + nhaCungCapId +
+                    "&idMatheCao=" + idMatheCao; // Thêm id_mathecao vào URL
 
                 // Điều hướng đến trang thanh toán với các tham số
                 window.location.href = url;
