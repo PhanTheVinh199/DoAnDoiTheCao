@@ -39,4 +39,4 @@ Route::get('/logout', function () {
 
 Route::get('/get-product-prices/{id}', [SanPhamController::class, 'getProductPrices']);
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('pay');
-Route::post('/xu-ly-thanh-toan', [ThanhToanController::class, 'process'])->name('process.payment');
+Route::post('/process-payment', [ThanhToanController::class, 'process'])->name('process.payment');

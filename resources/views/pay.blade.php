@@ -18,18 +18,18 @@
                     <table class="table table-bordered mb-4">
                         <tr>
                             <th>Tên tài khoản</th>
-                            <td>{{ Auth::user()->tai_khoan }}</td>
+                            <td>{{ Auth::guard('thanhvien')->user()->tai_khoan }}</td>
                         </tr>
                         <tr>
                             <th>Số dư hiện tại</th>
-                            <td>{{ number_format(Auth::user()->so_du) }} VNĐ</td>
+                            <td>{{ number_format(Auth::guard('thanhvien')->user()->so_du) }} VNĐ</td>
                         </tr>
                         <tr>
                             <th>Số dư sau giao dịch</th>
                             <td>
                                 @php
                                     $totalAmount = request('priceAfterDiscount') * request('quantity');
-                                    $remainingBalance = Auth::user()->so_du - $totalAmount;
+                                    $remainingBalance = Auth::guard('thanhvien')->user()->so_du - $totalAmount;
                                 @endphp
                                 {{ number_format($remainingBalance) }} VNĐ
                             </td>
@@ -51,7 +51,6 @@
                         <div class="alert alert-danger mb-4">
                             <strong>Lỗi:</strong> Số dư không đủ để thực hiện giao dịch. Vui lòng nạp thêm tiền vào tài khoản của bạn.
                         </div>
-                        <!-- Khóa nút thanh toán -->
                         <button class="btn btn-success mt-3" disabled>Xác nhận thanh toán</button>
                         <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
                     @else
@@ -59,7 +58,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="email">Email nhận mã thẻ:</label>
-                                <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" required placeholder="example@gmail.com">
+                                <input type="email" name="email" class="form-control" value="{{ Auth::guard('thanhvien')->user()->email }}" required placeholder="example@gmail.com">
                             </div>
 
                             {{-- Ẩn các dữ liệu cần thiết để gửi sang server --}}
@@ -68,21 +67,34 @@
                             <input type="hidden" name="discount" value="{{ request('discount') }}">
                             <input type="hidden" name="quantity" value="{{ request('quantity') }}">
                             <input type="hidden" name="priceAfterDiscount" value="{{ request('priceAfterDiscount') }}">
+                            <input type="hidden" name="mathecao_id" value="{{ request('mathecao_id') }}"> {{-- nếu cần --}}
 
                             <button type="submit" class="btn btn-success mt-3">Xác nhận thanh toán</button>
                             <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
                         </form>
                     @endif
 
-                    <!-- Dòng thông báo sau khi thanh toán -->
-                    @if(session('payment_success'))
-                        <div class="alert alert-success mt-4">
-                            <strong>Thành công!</strong> Thanh toán của bạn đã được xác nhận. Số dư còn lại: 
-                            {{ number_format(Auth::user()->so_du - (request('priceAfterDiscount') * request('quantity'))) }} VNĐ.
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Thông báo thành công -->
+@if(session('payment_success'))
+    <script>
+        Swal.fire({
+            title: 'Thanh toán thành công!',
+            text: 'Cảm ơn bạn đã giao dịch. Hệ thống sẽ chuyển bạn về trang chính.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/card';
+            }
+        });
+    </script>
+@endif

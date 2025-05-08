@@ -22,15 +22,11 @@ class MTC_DonHangController extends Controller
             $query->where('ma_don', 'like', '%' . $request->ma_don . '%');
         }
     
-        // if ($request->filled('ten_nha_cung_cap')) {
-        //     $query->whereHas('sanpham.nhacungcap', function ($q) use ($request) {
-        //         $q->where('ten', 'like', '%' . $request->ten_nha_cung_cap . '%');
-        //     });
-        // }
         $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(10);
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();
+        
 
         return view('admin.mathecao.donhang.mathecao_donhang', compact('dsDonHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap'));
     }
@@ -53,7 +49,7 @@ class MTC_DonHangController extends Controller
             'mathecao_id' => 'required|exists:mathecao_danhsach,id_mathecao',
             'so_luong' => 'required|numeric|min:1',
             'thanhvien_id' => 'required|exists:thanhvien,id_thanhvien',
-            'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
+            'trang_thai' => 'required|in:Hoạt động,Đã huỷ,Chờ xử lý',
         ]);
 
         // Lấy mệnh giá của sản phẩm
