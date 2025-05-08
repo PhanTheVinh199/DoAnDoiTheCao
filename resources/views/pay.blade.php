@@ -43,8 +43,6 @@
                     <p><strong>Số lượng:</strong> {{ request('quantity') }}</p>
                     <p><strong>Giá sau chiết khấu:</strong> {{ number_format(request('priceAfterDiscount')) }} VNĐ</p>
                     <p><strong>Tổng cộng:</strong> {{ number_format(request('priceAfterDiscount') * request('quantity')) }} VNĐ</p>
-                    <!-- Thêm ID Nhà Cung Cấp -->
-                    <p><strong>ID Nhà Cung Cấp:</strong> {{ request('nhaCungCapId') }}</p>
                     <hr>
 
                     <!-- Kiểm tra số dư sau giao dịch và hiển thị thông báo nếu số dư không đủ -->
