@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\ThanhToanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\SanPhamController;
+use App\Http\Controllers\User\RutTienController;
 
 
 
@@ -40,3 +41,19 @@ Route::get('/logout', function () {
 Route::get('/get-product-prices/{id}', [SanPhamController::class, 'getProductPrices']);
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('pay');
 Route::post('/process-payment', [ThanhToanController::class, 'process'])->name('process.payment');
+
+
+// Ngan hang User
+// Route::get('/user/them-ngan-hang', [UserController::class, 'addBank'])->name('add_nganhang_user');
+
+
+
+// Hiển thị form thêm ngân hàng
+Route::get('/user/add_nganhang_user', [RutTienController::class, 'showAddBankForm'])->name('add_nganhang_user');
+//Xử lý thêm ngân hàng
+Route::post('/user/add_nganhang_user', [RutTienController::class, 'addBank'])->name('add_nganhang_user_store');
+//Rút tiền
+Route::post('/user/rut-tien', [RutTienController::class, 'processRutTien'])->name('rut-tien');
+
+
+
