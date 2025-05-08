@@ -26,7 +26,7 @@
             <input type="checkbox" name="remember" id="remember">
             <label for="remember">Lưu mật khẩu</label>
             <a class="quenmk" href="#">Quên mật khẩu ?</a><br>
-            <input class="submit" type="submit" value="Đăng Nhập"><br>
+            <input class="submit" type="submit" value="Đăng Nhập" style="cursor: pointer;"><br>
             <a href="{{route('register')}}">Bạn chưa có tài khoản?<span class="dk">Đăng ký</span></a>
         </div>
     </form>
