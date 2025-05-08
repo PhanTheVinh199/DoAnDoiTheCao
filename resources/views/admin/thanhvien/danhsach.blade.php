@@ -33,40 +33,36 @@
                     </thead>
                     <tbody>
                         @foreach ($dsThanhVien as $item)
-                            <tr>
-                                <td>{{ $item->id_thanhvien }}</td>
-                                <td>{{ $item->ho_ten }}</td>
-                                <td>{{ $item->tai_khoan }}</td>
-                                <td>{{ $item->email }}</td>
-                                <td>{{ $item->phone }}</td>
-                                <td>{{ $item->so_du }}</td>
-                                <td style="color: red;">{{ $item->quyen }}</td>
-                                <td>
+                        <tr>
+                            <td>{{ $item->id_thanhvien }}</td>
+                            <td>{{ $item->ho_ten }}</td>
+                            <td>{{ $item->tai_khoan }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td>{{ $item->phone }}</td>
+                            <td>{{ $item->so_du }}</td>
+                            <td style="color: red;">{{ $item->quyen }}</td>
+                            <td>
 
-                                    <button type="button" class="btn btn-success">Hoạt Động</button>
+                                <button type="button" class="btn btn-success">Hoạt Động</button>
 
-                                </td>
+                            </td>
 
-                                <td>
-                                    <a href="{{ route('admin.thanhvien.edit', $item->id_thanhvien) }}"
-                                        class="btn btn-dark d-inline-block mr-2">Sửa</a>
+                            <td>
+                                <a href="{{ route('admin.thanhvien.edit', $item->id_thanhvien) }}"
+                                    class="btn btn-dark d-inline-block mr-2">Sửa</a>
 
-                                    <form action="{{ route('admin.thanhvien.delete', $item->id_thanhvien) }}"
-                                        method="POST" class="d-inline-block"
-                                        onsubmit="return confirm('Bạn có chắc muốn xóa?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-dark">Xóa</button>
-                                    </form>
-                                    {{-- <a href="{{ route('admin.thanhvien.naptien', $item->id_thanhvien) }}"
-                                        class="btn btn-dark d-inline-block mr-2">Nạp Tiền</a> --}}
+                                <form action="{{ route('admin.thanhvien.delete', $item->id_thanhvien) }}"
+                                    method="POST" class="d-inline-block"
+                                    onsubmit="return confirm('Bạn có chắc muốn xóa?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-dark">Xóa</button>
+                                </form>
+                                <a href="{{ route('admin.thanhvien.naptien', $item->id_thanhvien) }}"
+                                class="btn btn-dark d-inline-block mr-2">Nạp Tiền</a>
+                            </td>
 
-
-
-
-                                </td>
-
-                            </tr>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

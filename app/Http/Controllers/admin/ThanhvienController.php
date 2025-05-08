@@ -91,111 +91,74 @@ public function destroy($id)
 
 
 
+public function naptienForm($id)
+{
+    $thanhvien = ThanhVien::findOrFail($id);
+    return view('admin.thanhvien.thanhvien_naptien', compact('thanhvien'));
+}
+public function naptien(Request $request, $id)
+{
+    // Tìm thành viên theo id
+    $thanhvien = ThanhVien::findOrFail($id);
 
-// public function naptien(Request $request, $id)
-// {
-//     // Tìm thành viên theo id
-//     $thanhvien = ThanhVien::findOrFail($id);
+    // Kiểm tra loại giao dịch và thực hiện hành động tương ứng (nạp tiền hoặc rút tiền)
+    if ($request->has('transaction_type')) {
+        // Kiểm tra loại giao dịch (nạp tiền hay rút tiền)
+        if ($request->transaction_type == 'naptien') {
+            $thanhvien->so_du += $request->so_tien; // Cộng tiền vào tài khoản
+        } elseif ($request->transaction_type == 'rutien') {
+            if ($thanhvien->so_du >= $request->so_tien) {
+                $thanhvien->so_du -= $request->so_tien; // Trừ tiền từ tài khoản
+            } else {
+                return redirect()->back()->with('error', 'Số dư không đủ để rút');
+            }
+        }
+    }
 
-//     // Kiểm tra loại giao dịch và thực hiện hành động tương ứng (nạp tiền hoặc rút tiền)
-//     if ($request->has('transaction_type')) {
-//         // Kiểm tra loại giao dịch (nạp tiền hay rút tiền)
-//         if ($request->transaction_type == 'naptien') {
-//             $thanhvien->so_du += $request->so_tien; // Cộng tiền vào tài khoản
-//         } elseif ($request->transaction_type == 'rutien') {
-//             if ($thanhvien->so_du >= $request->so_tien) {
-//                 $thanhvien->so_du -= $request->so_tien; // Trừ tiền từ tài khoản
-//             } else {
-//                 return redirect()->back()->with('error', 'Số dư không đủ để rút');
-//             }
-//         }
-//     }
+    $thanhvien->save(); // Lưu thông tin cập nhật
 
-//     $thanhvien->save(); // Lưu thông tin cập nhật
-
-//     return redirect()->route('admin.thanhvien.danhsach')->with('success', 'Cập nhật thành công');
-// }
-
-
-
-
-
-
+    return redirect()->route('admin.thanhvien.danhsach')->with('success', 'Cập nhật thành công');
+}
 
 
 
+//Trừ tiền thành viên
+public function rutienForm($id)
+{
+    $thanhvien = ThanhVien::findOrFail($id);
+    return view('admin.thanhvien.rutien', compact('thanhvien'));
+}
 
-// //Cộng tiền thành viên
-// public function naptienForm($id)
-// {
-//     $thanhvien = ThanhVien::findOrFail($id);
-//     return view('admin.thanhvien.naptien', compact('thanhvien'));
-// }
+public function rutien(Request $request, $id)
+{
+    // Validate số tiền rút
+    $request->validate([
+        'so_tien_rut' => 'required|numeric|min:0',
+    ]);
 
-// public function naptien(Request $request, $id)
-// {
-//     // Validate số tiền nạp
-//     $request->validate([
-//         'so_tien_nap' => 'required|numeric|min:0',
-//     ]);
+    $thanhvien = ThanhVien::findOrFail($id);
 
-//     $thanhvien = ThanhVien::findOrFail($id);
+    // Kiểm tra xem số dư có đủ để rút hay không
+    if ($thanhvien->so_du < $request->so_tien_rut) {
+        return redirect()->back()->with('error', 'Số dư không đủ để rút!');
+    }
 
-//     // Cộng tiền vào tài khoản của thành viên
-//     $thanhvien->so_du += $request->so_tien_nap; // Cộng số tiền nạp vào số dư
+    // Trừ tiền khỏi tài khoản của thành viên
+    $thanhvien->so_du -= $request->so_tien_rut; // Trừ số tiền rút khỏi số dư
 
-//     // Lưu lại thông tin thành viên
-//     $thanhvien->save();
+    // Lưu lại thông tin thành viên
+    $thanhvien->save();
 
-//     // Thêm lịch sử nạp tiền (tùy vào yêu cầu của bạn)
-//     // Lịch sử nạp tiền có thể lưu trong một bảng lịch sử
-//     LichSuNap::create([
-//         'thanhvien_id' => $thanhvien->id_thanhvien,
-//         'so_tien_nap' => $request->so_tien_nap,
-//         'trang_thai' => 'da_duyet', // Hoặc trạng thái của bạn
-//     ]);
+    // Thêm lịch sử rút tiền (tùy vào yêu cầu của bạn)
+    // Lịch sử rút tiền có thể lưu trong một bảng lịch sử
+    LichSuRut::create([
+        'thanhvien_id' => $thanhvien->id_thanhvien,
+        'so_tien_rut' => $request->so_tien_rut,
+        'trang_thai' => 'da_duyet', // Hoặc trạng thái của bạn
+    ]);
 
-//     return redirect()->route('thanhvien.danhsach')->with('success', 'Nạp tiền thành công!');
-// }
-
-
-// //Trừ tiền thành viên
-// public function rutienForm($id)
-// {
-//     $thanhvien = ThanhVien::findOrFail($id);
-//     return view('admin.thanhvien.rutien', compact('thanhvien'));
-// }
-
-// public function rutien(Request $request, $id)
-// {
-//     // Validate số tiền rút
-//     $request->validate([
-//         'so_tien_rut' => 'required|numeric|min:0',
-//     ]);
-
-//     $thanhvien = ThanhVien::findOrFail($id);
-
-//     // Kiểm tra xem số dư có đủ để rút hay không
-//     if ($thanhvien->so_du < $request->so_tien_rut) {
-//         return redirect()->back()->with('error', 'Số dư không đủ để rút!');
-//     }
-
-//     // Trừ tiền khỏi tài khoản của thành viên
-//     $thanhvien->so_du -= $request->so_tien_rut; // Trừ số tiền rút khỏi số dư
-
-//     // Lưu lại thông tin thành viên
-//     $thanhvien->save();
-
-//     // Thêm lịch sử rút tiền (tùy vào yêu cầu của bạn)
-//     // Lịch sử rút tiền có thể lưu trong một bảng lịch sử
-//     LichSuRut::create([
-//         'thanhvien_id' => $thanhvien->id_thanhvien,
-//         'so_tien_rut' => $request->so_tien_rut,
-//         'trang_thai' => 'da_duyet', // Hoặc trạng thái của bạn
-//     ]);
-
-//     return redirect()->route('thanhvien.danhsach')->with('success', 'Rút tiền thành công!');
-// }
+    return redirect()->route('thanhvien.danhsach')->with('success', 'Rút tiền thành công!');
+}
 
 
 

@@ -129,10 +129,16 @@ Route::prefix('nganhang')->name('nganhang.')->group(function () {
 Route::prefix('thanhvien')->name('thanhvien.')->group(function () {
     Route::get('/', [ThanhVienController::class, 'index'])->name('danhsach');
 
+    Route::get('/naptien/{id}', [ThanhvienController::class, 'naptien'])->name('naptien');
 
     // Route chỉnh sửa thông tin thành viên
     Route::get('/edit/{id}', [ThanhvienController::class, 'edit'])->name('edit');
     Route::put('/edit/{id}', [ThanhvienController::class, 'update'])->name('update');
     //Xóa thành viên
     Route::delete('/delete/{id}', [ThanhvienController::class, 'destroy'])->name('delete');
+
+    Route::get('/naptien/{id}', [ThanhvienController::class, 'naptienForm'])->name('naptien');
+    
+    // Xử lý nạp tiền (POST)
+    Route::post('/naptien/{id}', [ThanhvienController::class, 'naptien'])->name('naptien.store');
 });

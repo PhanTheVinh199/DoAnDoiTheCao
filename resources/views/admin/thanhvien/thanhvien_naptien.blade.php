@@ -14,9 +14,9 @@
         <h2 class="text-center mb-4">Nạp Tiền Cho Thành Viên</h2>
 
         <!-- Form Nạp Tiền -->
-        <form action="{{ route('thanhvien.naptien', $thanhvien->id_thanhvien) }}" method="POST">
+        <form action="{{ route('admin.thanhvien.naptien', $thanhvien->id_thanhvien) }}" method="POST" id="formNapTien">
             @csrf
-            @method('PUT')
+
         
             <div class="mb-3">
                 <label for="tai_khoan" class="form-label">Tên Đăng Nhập</label>
@@ -37,7 +37,7 @@
             </div>
         
             <div class="d-flex justify-content-end space-x-2 mt-4">
-                <a href="{{ route('thanhvien.danhsach') }}" class="btn btn-secondary me-2">Đóng</a>
+                <a href="{{ route('admin.thanhvien.danhsach') }}" class="btn btn-secondary me-2">Đóng</a>
                 <button type="submit" class="btn btn-primary">Cập Nhật</button>
             </div>
         </form>
