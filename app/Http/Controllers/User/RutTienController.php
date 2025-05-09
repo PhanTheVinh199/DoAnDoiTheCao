@@ -18,13 +18,24 @@ class RutTienController extends Controller
         // Lấy danh sách các ngân hàng của người dùng
         $banks = $user->nganHang;
     
-        // Lấy lịch sử rút tiền của người dùng
-        $transactionHistory = \App\Models\RutTien::where('thanhvien_id', $user->id_thanhvien)
-                                                  ->get();
-    
-        // Trả về view, đồng thời truyền cả danh sách ngân hàng và lịch sử rút tiền
-        return view('user.ruttien', compact('banks', 'transactionHistory'));
+        // Trả về view và truyền danh sách ngân hàng
+        return view('user.add_nganhang_user', compact('banks'));
     }
+
+     // Hiển thị lịch sử rút tiền của người dùng
+     public function showRutTienHistory()
+     {
+         $user = auth()->user(); // Lấy người dùng hiện tại
+         
+         // Lấy lịch sử rút tiền của người dùng từ bảng RutTien
+         $dsRutTien = RutTien::where('thanhvien_id', $user->id_thanhvien)
+                             ->orderBy('created_at', 'desc')
+                             ->paginate(10);  // Phân trang, lấy 10 bản ghi mỗi trang
+ 
+         // Trả về view và truyền dữ liệu vào
+         return view('ruttien', compact('dsRutTien'));
+     }
+ 
     
 
     // Hiển thị form thêm ngân hàng

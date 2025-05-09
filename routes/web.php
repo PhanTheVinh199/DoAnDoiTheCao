@@ -56,4 +56,8 @@ Route::post('/user/add_nganhang_user', [RutTienController::class, 'addBank'])->n
 Route::post('/user/rut-tien', [RutTienController::class, 'processRutTien'])->name('rut-tien');
 
 
+    //Route hiển thị lịch sử rút
+Route::get('ruttien', [RutTienController::class, 'showRutTienHistory'])->name('ruttien');
+
+
 

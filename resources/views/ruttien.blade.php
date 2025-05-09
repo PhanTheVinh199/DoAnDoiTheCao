@@ -155,39 +155,59 @@
                 <thead>
                     <tr>
                         <th>Mã đơn</th>
-                        <th class="text-center">Số tiền</th>
+                        
                         <th>Ngân hàng</th>
-                        <th>Tên tài khoản</th>
                         <th>Số tài khoản</th>
+                        <th>Tên tài khoản</th>
+                        
+                        <th class="text-center">Số tiền</th>
                         <th class="text-center">Trạng thái</th>
                         <th>Ngày tạo</th>
-                        <th class="text-center">Thao tác</th>
+                        {{-- <th class="text-center">Thao tác</th> --}}
                     </tr>
                 </thead>
+
                 <tbody>
-                    {{-- @foreach($transactionHistory as $transaction)
+                    @forelse ($dsRutTien as $item)
                         <tr>
-                            <td>{{ $transaction->ma_don }}</td>
-                            <td class="text-center">{{ number_format($transaction->so_tien_rut) }} VND</td>
-                            <td>{{ $transaction->nganhang->ten_ngan_hang }}</td>
-                            <td>{{ $transaction->nganhang->chu_tai_khoan }}</td>
-                            <td>{{ $transaction->nganhang->so_tai_khoan }}</td>
-                            <td class="text-center">
-                                @if($transaction->trang_thai == 'cho_duyet')
-                                    <span class="badge badge-warning">Chờ duyệt</span>
-                                @elseif($transaction->trang_thai == 'da_duyet')
-                                    <span class="badge badge-success">Đã duyệt</span>
-                                @else
-                                    <span class="badge badge-danger">Đã hủy</span>
+                            {{-- <td>{{ $item->id_lichsurut }}</td> --}}
+                            <td>{{ $item->ma_don }}</td>
+                            {{-- <td>{{ $item->thanhvien->tai_khoan }}</td> --}}
+                            <td>{{ $item->nganhang->ten_ngan_hang }}</td>
+                            <td>{{ $item->nganhang->so_tai_khoan }}</td>
+                            <td>{{ $item->nganhang->chu_tai_khoan }}</td>
+                            <td>{{ number_format($item->so_tien_rut, 0, ',', '.') }} đ</td>
+                            <td>{{ $item->created_at }}</td>
+                            <td>
+                                @if ($item->trang_thai == 'cho_duyet')
+                                    <button type="button" class="btn btn-warning">Chờ Phê Duyệt</button>
+                                @elseif($item->trang_thai == 'da_duyet')
+                                    <button type="button" class="btn btn-success">Hoạt Động</button>
+                                @elseif($item->trang_thai == 'huy')
+                                    <button type="button" class="btn btn-danger">Hủy</button>
                                 @endif
                             </td>
-                            <td>{{ $transaction->created_at->format('d-m-Y H:i:s') }}</td>
-                            <td class="text-center">
-                                <!-- Bạn có thể thêm nút thao tác như chỉnh sửa, xóa ở đây nếu cần -->
-                            </td>
+                            {{-- <td>
+                                <a href="{{ route('admin.nganhang.ruttien.edit', $item->id_lichsurut) }}"
+                                    class="btn btn-dark d-inline-block mr-2">Sửa</a>
+                                <form action="{{ route('admin.nganhang.ruttien.delete', $item->id_lichsurut) }}"
+                                    method="POST" class="d-inline-block"
+                                    onsubmit="return confirm('Bạn có chắc muốn xóa?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-dark">Xóa</button>
+                                </form>
+                            </td> --}}
                         </tr>
-                    @endforeach --}}
+                    @empty
+                        <!-- Nếu không có dữ liệu, hiển thị thông báo -->
+                        <tr>
+                            <td colspan="10" class="text-center">Không có dữ liệu </td>
+                        </tr>
+                    @endforelse
                 </tbody>
+
+
             </table>
         </div>
     </div>
