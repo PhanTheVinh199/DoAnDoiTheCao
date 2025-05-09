@@ -91,34 +91,37 @@ Route::prefix('doithecao/donhang')->name('doithecao.donhang.')->group(function (
 });
 
 Route::prefix('nganhang')->name('nganhang.')->group(function () {
-    // Route hiển thị danh sách ngân hàng
+    // Hiển thị danh sách ngân hàng
     Route::get('/', [NganhangController::class, 'index'])->name('index');
+    
     // Route xóa ngân hàng
     Route::delete('/delete/{id}', [NganhangController::class, 'delete_nganhang'])->name('delete');
-
-
-
-
-    //Route hiển thị lịch sử rút
+    
+    // Hiển thị lịch sử rút tiền
     Route::get('/ruttien', [NganhangController::class, 'ruttien'])->name('ruttien.index');
-    // Route Rút xóa lịch sử rút tiền
+    
+    // Xóa lịch sử rút tiền
     Route::delete('/ruttien/delete/{id}', [NganhangController::class, 'destroyRutTien'])->name('ruttien.delete');
-    //Route chỉnh sửa rút tiền
+    
+    // Chỉnh sửa lịch sử rút tiền
     Route::get('/ruttien/edit/{id}', [NganhangController::class, 'editRutTien'])->name('ruttien.edit');
     Route::put('/ruttien/edit/{id}', [NganhangController::class, 'updateRutTien'])->name('ruttien.update');
-
-
-
-
-    //Route hiển thị lịch sử nạp
+    
+    // Hiển thị lịch sử nạp tiền
     Route::get('/naptien', [NganhangController::class, 'naptien'])->name('naptien.index');
+    
     // Xóa lịch sử nạp tiền
     Route::delete('/naptien/delete/{id}', [NganhangController::class, 'destroyNapTien'])->name('naptien.delete');
-
-    //Route sửa lịch sử nạp 
+    
+    // Sửa lịch sử nạp tiền
     Route::get('/naptien/edit/{id}', [NganhangController::class, 'editNapTien'])->name('naptien.edit');
     Route::put('/naptien/edit/{id}', [NganhangController::class, 'updateNapTien'])->name('naptien.update');
+    
+    // Cài đặt ngân hàng
+    Route::get('/caidat', [NganhangController::class, 'create'])->name('create');
+    Route::post('/caidat', [NganhangController::class, 'store'])->name('store');
 });
+
 
 
 

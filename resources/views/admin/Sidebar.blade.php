@@ -100,7 +100,7 @@
         </a>
         <div id="menu6" class="collapse ps-3">
 
-            <a href="./caidat_nganhang.html">Cổng Thanh Toán </a>
+            <a href="{{ route('admin.nganhang.create') }}">Cổng Thanh Toán </a>
             <!-- <a href="#">Hệ Thống </a> -->
         </div>
 

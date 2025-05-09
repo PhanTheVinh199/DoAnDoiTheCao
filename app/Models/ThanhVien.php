@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 
 class ThanhVien extends  Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
 
     protected $table = 'thanhvien';
     protected $primaryKey = 'id_thanhvien';

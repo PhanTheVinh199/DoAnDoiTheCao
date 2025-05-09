@@ -32,6 +32,10 @@
     .table th {
         background-color: #f8f9fa;
     }
+
+    .alert {
+        margin-top: 20px;
+    }
 </style>
 
 <div class="section-gap">
@@ -67,10 +71,11 @@
                             @empty
                                 <option value="">Bạn chưa thêm ngân hàng nào</option>
                             @endforelse
-                        </select>
+                        </select>                        
                     </div>
 
                     <div class="text-end">
+                    <input type="hidden" name="hanMucNgay" value="{{ $hanMucNgay }}">
                         <button type="submit" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-dollar-sign"></i> Nạp tiền ngay
                         </button>
@@ -123,6 +128,14 @@
             <div class="description mb-3">
                 <div class="sub-title"><i class="fas fa-history"></i> Lịch sử nạp tiền</div>
             </div>
+
+            <!-- Thông báo lỗi hoặc thành công -->
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @elseif(session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-module table-lg">
                     <thead>
