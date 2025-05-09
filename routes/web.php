@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\ThanhToanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\SanPhamController;
+use App\Http\Controllers\User\LichSuMuaTheController;
 
 
 
@@ -19,7 +20,7 @@ Route::get('/card', [SanPhamController::class, 'index'])->name('card');
 Route::view('/ruttien', 'ruttien')->name('ruttien');
 Route::view('/naptien', 'naptien')->name('naptien');
 Route::view('/lichsu', 'lichsudoithe')->name('lichsudoithe');
-Route::view('/lichsumuathe', 'lichsumuathe')->name('lichsumuathe');
+Route::get('/lichsumuathe', [LichSuMuaTheController::class, 'index'])->name('lichsumuathe');
 Route::view('/lichsusodu', 'lichsusodu')->name('lichsusodu');
 
 
