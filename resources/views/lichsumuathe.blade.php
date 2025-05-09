@@ -64,9 +64,7 @@
                                         <span class="fal fa-search me-1"></span>
                                         Lọc
                                     </button>
-                                    <button class="btn h-100 btn-success btn-small text-nowrap m-1 my-md-0" type="submit" name="submit" value="excel">
-                                        <i class="fas fa-file-excel me-0"></i>
-                                    </button>
+        
                                     <a href="{{ route('lichsumuathe') }}" class="btn btn-danger btn-small text-nowrap m-1 my-md-0">
                                         <i class="fa fa-trash-alt me-1"></i>
                                         Bỏ lọc
