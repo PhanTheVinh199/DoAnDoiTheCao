@@ -62,6 +62,9 @@ class AuthController extends Controller
             'mat_khau' => 'required|string|min:6|confirmed',
         ]);
 
+
+        $isFirstUser = ThanhVien::count() === 0;  
+
         $thanhvien = ThanhVien::create([
             'tai_khoan' => $request->tai_khoan,
             'ho_ten'    => $request->ho_ten,
@@ -69,7 +72,7 @@ class AuthController extends Controller
             'phone'     => $request->phone,
             'mat_khau'  => Hash::make($request->mat_khau),
             'so_du'     => 0,
-            'quyen'     => 'user'
+            'quyen'     => $isFirstUser ? 'admin' : 'user'
         ]);
 
 
