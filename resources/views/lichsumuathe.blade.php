@@ -87,7 +87,7 @@
                                     <th>Mệnh giá</th>
                                     <th>Ngày tạo</th>
                                     <th>Trạng thái</th>
-                                    <th class="text-center">Thao tác</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,7 +99,7 @@
                                     <th>{{ $dh->so_luong * $dh->sanpham?->menh_gia ?? 'Chưa có mênhk giá' }}</th>
                                     <th>{{$dh->ngay_tao}}</th>
                                     <th>{{$dh->trang_thai}}</th>
-                                    <th class="text-center">Thao tác</th>
+                                    
                                 </tr>
                                 @endforeach
                             </tbody>
