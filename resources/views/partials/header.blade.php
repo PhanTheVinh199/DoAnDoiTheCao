@@ -132,7 +132,7 @@
                 </a>
                 <div class="dropdown">
                     <a href="#" class="btn btn-small btn-account account-btn" style="margin-left: 10px;">
-                        <i class="fas fa-user"></i> {{ Auth::guard('thanhvien')->user()->tai_khoan }}
+                        <i class="fas fa-user"></i> {{ Auth::guard('thanhvien')->user()->tai_khoan }}<i class="fas fa-caret-down"></i>
                     </a>
 
                     <div class="dropdown-menu">
