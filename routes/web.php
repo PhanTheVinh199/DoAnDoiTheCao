@@ -8,7 +8,9 @@ use App\Http\Controllers\User\SanPhamController;
 
 
 
+
 // Trang chủ
+
 Route::get('/', fn() => view('index'))->name('index');
 
 // Các trang tĩnh khác

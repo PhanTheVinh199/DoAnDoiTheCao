@@ -13,10 +13,12 @@ use App\Http\Controllers\admin\DoithecaoDonhangController;
 use App\Http\Controllers\admin\ThanhvienController;
 
 
-Route::get('/index', function () {
-    return view('admin.index');
-})->name('index');
-Route::get('/', fn() => view('index'))->name('index');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/index', function () {
+        return view('admin.index');
+    })->name('index');
+});
+Route::get('/index', [DashboardController::class, 'index'])->name('index');
 
 
 Route::prefix('mathecao')->name('mathecao.')->group(function () {
