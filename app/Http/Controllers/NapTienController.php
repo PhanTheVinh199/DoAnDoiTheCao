@@ -45,53 +45,54 @@ class NapTienController extends Controller
     public function store(Request $request)
     {
         // Kiểm tra xem người dùng đã đăng nhập chưa
-    if (!Auth::guard('thanhvien')->check()) {
-        return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để nạp tiền!');
-    }
+        if (!Auth::guard('thanhvien')->check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để nạp tiền!');
+        }
 
-    // Lấy thông tin người dùng đã đăng nhập
-    $user = Auth::guard('thanhvien')->user();
+        $user = Auth::guard('thanhvien')->user();
 
-    // Xác thực dữ liệu người dùng nhập vào
-    $request->validate([
-        'net_amount' => 'required|numeric|min:10000|max:10000000', // Tăng giới hạn tối đa
-        'paygate_code' => 'required|string|exists:nganhang,id_danhsach',  // Đảm bảo mã thanh toán hợp lệ
-    ]);
+        // Xác thực dữ liệu người dùng nhập vào
+        $request->validate([
+            'net_amount' => 'required|numeric|min:10000|max:10000000',
+            'paygate_code' => 'required|string|exists:nganhang,id_danhsach',  // Đảm bảo mã thanh toán hợp lệ
+        ]);
 
-    // Kiểm tra hạn mức nạp tiền trong ngày
-    $hanMucNgay = session('hanMucNgay', 100000000);  // Hạn mức nạp tiền tối đa trong ngày
-    $totalToday = NapTien::where('thanhvien_id', $user->id_thanhvien)
-                         ->whereDate('created_at', now()->toDateString())
-                         ->sum('so_tien_nap');
+        // Kiểm tra hạn mức nạp tiền trong ngày
+        $hanMucNgay = session('hanMucNgay', 100000000);
+        $totalToday = NapTien::where('thanhvien_id', $user->id_thanhvien)
+                             ->whereDate('created_at', now()->toDateString())
+                             ->sum('so_tien_nap');
     
-    if ($totalToday + $request->net_amount > $hanMucNgay) {
-        return back()->with('error', 'Bạn đã đạt hạn mức nạp tiền trong ngày.');
-    }
+        if ($totalToday + $request->net_amount > $hanMucNgay) {
+            return back()->with('error', 'Bạn đã đạt hạn mức nạp tiền trong ngày.');
+        }
 
-    // Xử lý thanh toán qua ngân hàng nội bộ
-    $bank = NganHang::where('id_danhsach', $request->paygate_code)
-                    ->where('trang_thai', 'hoat_dong')
-                    ->first();
+        // Xử lý thanh toán qua ngân hàng nội bộ
+        $bank = NganHang::where('id_danhsach', $request->paygate_code)
+                        ->where('trang_thai', 'hoat_dong')
+                        ->first();
 
-    if (!$bank) {
-        return back()->with('error', 'Ngân hàng không hợp lệ hoặc đã bị vô hiệu hóa.');
-    }
+        if (!$bank) {
+            return back()->with('error', 'Ngân hàng không hợp lệ hoặc đã bị vô hiệu hóa.');
+        }
 
-    // Tạo giao dịch nạp tiền và lưu thông tin ngân hàng vào bảng nap_tiens
-    $order = NapTien::create([
-        'thanhvien_id' => $user->id_thanhvien,
-        'so_tien_nap' => $request->net_amount,
-        'noi_dung' => 'Nạp qua ngân hàng ' . $bank->ten_ngan_hang . ' (' . $bank->so_tai_khoan . ')',
-        'trang_thai' => 'cho_duyet',
-        'ma_don' => Str::uuid(),
-        'bank_name' => $bank->ten_ngan_hang, // Lưu tên ngân hàng
-        'bank_account' => $bank->so_tai_khoan, // Lưu số tài khoản ngân hàng
-        'bank_account_name' => $bank->chu_tai_khoan, // Lưu tên chủ tài khoản
-        'transfer_note' => 'NAP' . strtoupper(Str::random(6)), // Nội dung chuyển khoản
-    ]);
+        // Tạo giao dịch nạp tiền và lưu thông tin ngân hàng vào bảng nap_tiens
+        $order = NapTien::create([
+            'thanhvien_id' => $user->id_thanhvien,
+            'so_tien_nap' => $request->net_amount,
+            'noi_dung' => 'Nạp qua ngân hàng ' . $bank->ten_ngan_hang . ' (' . $bank->so_tai_khoan . ')',
+            'trang_thai' => 'cho_duyet',
+            'ma_don' => Str::uuid(),
+            'paygate_code' => $request->paygate_code,  // Lưu mã ngân hàng vào bảng lichsu_nap
+            'bank_name' => $bank->ten_ngan_hang,
+            'bank_account' => $bank->so_tai_khoan,
+            'bank_account_name' => $bank->chu_tai_khoan,
+            'transfer_note' => 'NAP' . strtoupper(Str::random(6)),
+        ]);
 
-    // Redirect đến chi tiết đơn hàng
-    return redirect()->route('order.show', ['id' => $order->id_lichsunap]);
+        // Redirect đến chi tiết đơn hàng
+        return redirect()->route('order.show', ['id' => $order->id_lichsunap]);
+    
     }
 
     // Xử lý thanh toán qua ngân hàng nội bộ

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str; 
 use App\Models\NganHang;
 use App\Models\ThanhVien; 
 use App\Models\RutTien;
@@ -166,7 +167,7 @@ public function updateNapTien(Request $request, $id)
     $napTien = NapTien::findOrFail($id);
 
     // Đảm bảo ma_don không bị bỏ trống, hoặc gán giá trị mặc định nếu cần
-    $ma_don = $request->ma_don ?? 'default_value'; // Gán giá trị mặc định nếu ma_don không được cung cấp
+    $ma_don = $request->ma_don ?? Str::uuid(); // Gán giá trị mặc định nếu ma_don không được cung cấp
 
     // Cập nhật thông tin
     $napTien->update([

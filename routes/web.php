@@ -6,6 +6,7 @@ use App\Http\Controllers\NapTienController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\OrderController;
 
+
 // Trang chủ
 Route::get('/', fn() => view('index'))->name('index');
 
@@ -46,3 +47,7 @@ Route::middleware('auth:thanhvien')->group(function () {
 
 // Route để xem chi tiết đơn hàng
 Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
+
+Route::post('order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
+
+Route::post('admin/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('admin.naptien.approve');
