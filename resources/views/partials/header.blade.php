@@ -139,7 +139,8 @@
                         @if(Auth::guard('thanhvien')->user()->quyen === 'admin')
                         <a href="{{ route('admin.index') }}" class="dropdown-item">Quản Lý admin</a>
                         @endif
-                        <a href="{{ route('logout') }}" class="dropdown-item">Đăng xuất</a>
+                        <a href="{{ route('logout') }}" class="dropdown-item" id="logout-link">Đăng xuất</a>
+
                     </div>
                 </div>
             </div>
@@ -204,7 +205,17 @@
             </div>
         </nav>
     </header>
+    <script>
+        document.getElementById('logout-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định (truyền hướng đến route)
 
+            // Hiển thị hộp thoại xác nhận
+            if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+                // Nếu người dùng chọn "OK", thực hiện đăng xuất
+                window.location.href = `{{ route('logout') }}`;
+            }
+        });
+    </script>
 </body>
 
 </html>
