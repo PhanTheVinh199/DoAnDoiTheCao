@@ -15,6 +15,9 @@
         <div class="title">Đăng Ký</div>
         <input type="text" name="tai_khoan" id="tai_khoan" placeholder="Tên Đăng Nhập" required
             pattern="^[a-zA-Z0-9 ]{6,30}$">
+        @error('tai_khoan')
+        <span style="color: red; font-size: 15px;">{{ $message }}</span>
+        @enderror
         <span id="error_message" style="color: red; font-size: 15px;"></span>
         <span id="correct_message" style="color: green; font-size: 15px;"></span><br>
 
@@ -30,6 +33,9 @@
 
         <input type="email" name="email" id="email" placeholder="email" required
             pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+        @error('email')
+        <span style="color: red; font-size: 15px;">{{ $message }}</span>
+        @enderror
         <span id="error_email" style="color: red; font-size: 15px;"></span>
         <span id="correct_email" style="color: green; font-size: 15px;"></span><br>
 
@@ -38,7 +44,7 @@
         <span id="error_password" style="color: red; font-size: 15px;"></span>
         <span id="correct_password" style="color: green; font-size: 15px;"></span><br>
 
-        <input type="password" name="mat_khau_confirmation" id="RePassword" placeholder="Nhập lại mật khẩu"  autocomplete="off"required>
+        <input type="password" name="mat_khau_confirmation" id="RePassword" placeholder="Nhập lại mật khẩu" autocomplete="off" required>
         <span id="error_repassword" style="color: red; font-size: 15px;"></span><br>
 
         <input class="submit" type="submit" value="Đăng ký">
@@ -54,7 +60,7 @@
 
 
 
-    
+
     <script>
         document.getElementById("tai_khoan").addEventListener("input", function() {
             let regex = /^[a-zA-Z0-9 ]{6,30}$/; // = new RegExp ("^[a-zA-Z ]{6,30}$")
@@ -141,7 +147,7 @@
             let password = document.getElementById("mat_khau").value;
             let rePassword = document.getElementById("RePassword").value;
             let error_message = document.getElementById("error_repassword");
-            
+
             if (rePassword.trim() !== password.trim()) {
                 error_message.textContent = "❌ Mật khẩu nhập lại không trùng khớp!";
                 event.preventDefault(); // Chặn form gửi đi

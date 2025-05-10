@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>Đăng Nhập</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style_Login_register.css') }}">
 
@@ -23,14 +23,14 @@
             <i id="eye-icon" class="fa-solid fa-eye"></i>
         </span><br>
         
-        @error('mat_khau')
-            <div class="error-message" style="color: red; font-size: 14px;">{{ $message }}</div>
-        @enderror
-        <br>
         
-        @error('login_input')
-            <div class="error-message" style="color: red; font-size: 14px;">{{ $message }}</div>
-        @enderror
+
+        <!-- Hiển thị lỗi đăng nhập chung nếu sai tài khoản hoặc mật khẩu -->
+        @if(session('login'))
+            <div class="error-message" style="color: red; font-size: 14px;">
+                {{ session('login') }}
+            </div>
+        @endif
 
         <input type="checkbox" name="remember" id="remember">
         <label for="remember">Lưu mật khẩu</label>
