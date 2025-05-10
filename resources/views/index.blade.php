@@ -895,3 +895,86 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
+@if (session('success'))
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                <p>{{ session('success') }}</p>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-box {
+            background-color: #fff;
+            width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-header {
+            background-color: #4CAF50;
+            padding: 16px;
+            color: white;
+            text-align: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal-footer {
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-footer button {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .modal-footer button:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes fadeIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+    </script>
+@endif
