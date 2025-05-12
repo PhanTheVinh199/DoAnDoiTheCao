@@ -4,14 +4,17 @@
     <div class="container">
         <div class="row d-flex">
             <div class="bg-white p-3 rounded shadow">
-                <h1 class="h2 mb-4">Danh Sách Đơn bán thẻ</h1>
+                <h1 class="h2 mb-4">Đơn Hàng</h1>
                 <!-- Phần tìm kiếm -->
-                <div class="d-flex flex-wrap gap-2 mb-4 justify-content-end">
+                <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 900px;">
                     <form action="{{ route('admin.doithecao.donhang.index') }}" method="GET" class="d-flex">
-                        <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto" value="{{ request('ma_don') }}">
+                        <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto"
+                            value="{{ request('ma_don') }}">
                         <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                     </form>
                 </div>
+
+
                 <table class="table table-bordered">
                     <thead class="table-light">
                         <tr>
@@ -20,15 +23,14 @@
                             <th>Sản Phẩm</th>
                             <th>Mã Thẻ</th>
                             <th>Seri</th>
-                            <th>Mệnh Giá</th>
-                            <th>Số Lượng</th>
-                            <th>Chiết Khấu</th>
-                            <th>Thành Tiền</th>
+                            <th>Mệnh giá</th>
+                            <th>Số lượng</th>
+                            <th>Chiết khấu</th>
+                            <th>Thành tiền</th>
                             <th>Khách Hàng</th>
-                            <th>Thành Viên</th>
-                            <th>Ngày Tạo</th>
+                            <th>Ngày tạo</th>
                             <th>Trạng Thái</th>
-                            <th>Hành Động</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,25 +38,48 @@
                             <tr>
                                 <td>{{ $order->id_dondoithe }}</td>
                                 <td>{{ $order->ma_don }}</td>
-                                <td>{{ $order->doithecao->ten ?? 'N/A' }}</td>
+
+                                <!-- Hiển thị tên sản phẩm từ mối quan hệ 'doithecao' -->
+                                <td>{{ $order->doithecao->nhacungcap->ten ?? 'N/A' }}</td>
+
                                 <td>{{ $order->ma_the }}</td>
                                 <td>{{ $order->serial }}</td>
-                                <td>{{ number_format($order->thanh_tien, 0, ',', '.') }}</td>
+
+                                <!-- Hiển thị mệnh giá từ mối quan hệ 'doithecao' -->
+                                <td>{{ number_format($order->doithecao->menh_gia ?? 0, 0, ',', '.') }} VND</td>
+
                                 <td>{{ $order->so_luong }}</td>
-                                <td>{{ number_format($order->chiet_khau ?? 0, 0, ',', '.') }}</td>
-                                <td>{{ number_format($order->thanh_tien, 0, ',', '.') }}</td>
-                                <td>{{ $order->khach_hang ?? 'N/A' }}</td>
-                                <td>{{ $order->thanhvien->ten ?? 'N/A' }}</td>
+
+                                <!-- Hiển thị chiết khấu từ mối quan hệ 'doithecao' -->
+                                <td>{{ $order->doithecao->chiet_khau ?? 'N/A' }}%</td>
+
+                                <!-- Thành tiền -->
+                                <td>{{ number_format($order->thanh_tien, 0, ',', '.') }} VND</td>
+
+                                <!-- Hiển thị tên khách hàng từ mối quan hệ 'thanhvien' -->
+                                <td>{{ $order->thanhvien->tai_khoan ?? 'N/A' }}</td>
+
                                 <td>{{ $order->ngay_tao }}</td>
+
                                 <td>
-                                    <button type="button" class="btn btn-success">{{ $order->trang_thai }}</button>
+                                    @if ($order->trang_thai == 'cho_xu_ly')
+                                        <button type="button" class="btn btn-warning">Chờ phê duyệt</button>
+                                    @elseif($order->trang_thai == 'da_huy')
+                                        <button type="button" class="btn btn-danger">Lỗi</button>
+                                    @elseif($order->trang_thai == 'hoat_dong')
+                                        <button type="button" class="btn btn-success">Thành Công</button>
+                                    @endif
                                 </td>
+
                                 <td>
-                                    <a href="{{ route('admin.doithecao.donhang.edit', $order->id_dondoithe) }}" class="btn btn-dark">Sửa</a>
-                                    <form action="{{ route('admin.doithecao.donhang.destroy', $order->id_dondoithe) }}" method="POST" style="display:inline;">
+                                    <a href="{{ route('admin.doithecao.donhang.edit', $order->id_dondoithe) }}"
+                                        class="btn btn-dark">Sửa</a>
+                                    <form action="{{ route('admin.doithecao.donhang.destroy', $order->id_dondoithe) }}"
+                                        method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">Xóa</button>
+                                        <button type="submit" class="btn btn-dark"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">Xóa</button>
                                     </form>
                                 </td>
                             </tr>
@@ -63,9 +88,14 @@
                 </table>
 
                 <!-- Phân trang -->
-                <div class="d-flex justify-content-center">
-                    {{ $donhang->links() }}
+                <div class="d-flex justify-content-end pt-5">
+                    {{ $donhang->links('pagination::bootstrap-4') }}
                 </div>
+
+
+
+
+
             </div>
         </div>
     </div>
@@ -74,9 +104,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
-    document.getElementById('menuToggle').addEventListener('click', function () {
+    document.getElementById('menuToggle').addEventListener('click', function() {
         document.getElementById('sidebar').classList.toggle('open');
     });
 </script>
 </body>
+
 </html>
