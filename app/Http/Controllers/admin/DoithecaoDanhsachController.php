@@ -9,12 +9,28 @@ use App\Models\DoithecaoNhacungcap;
 
 class DoithecaoDanhsachController extends Controller
 {
-    public function index()
-    {
-        $nhacungcaps = DoithecaoNhacungcap::where('trang_thai', 'hoat_dong')->get();
-        $danhsach = DoithecaoDanhsach::with('nhacungcap')->paginate(10);
-        return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach', 'nhacungcaps'));
-    }
+    // public function index()
+    // {
+        
+    //     $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
+    //     return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach'));
+    // }
+
+public function index()
+{
+    // Lấy danh sách sản phẩm kèm nhà cung cấp
+    $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
+
+    // Lấy danh sách nhà cung cấp
+    $nhacungcap = DoithecaoNhacungcap::all();
+
+     // Lấy nhà cung cấp mới nhất (theo ngày tạo)
+    $newestSupplier = DoithecaoNhacungcap::orderBy('ngay_tao', 'desc')->first();
+
+    return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach', 'nhacungcap', 'newestSupplier'));
+}
+
+
 
     // Hiển thị form thêm mới
     public function create()
@@ -102,5 +118,5 @@ class DoithecaoDanhsachController extends Controller
         return redirect()->back()->with('success', 'Đã xóa sản phẩm!');
     }
 
-
+    
 }

@@ -20,13 +20,17 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call([
-            NganHangSeeder::class,
             ThanhVienSeeder::class,
+            NganHangSeeder::class,
+            
             RutTienSeeder::class,
             NapTienSeeder::class,
             MTC_NhaCungCap::class,
             MTC_SanPham::class,
-            MTC_DonHang::class
+            MTC_DonHang::class,
+            DoithecaoNhacungcapSeeder::class,
+            DoithecaoDanhsachSeeder::class,
+            DoithecaoDonhangSeeder::class
 
         ]);
         

@@ -84,10 +84,10 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/', [DoithecaoDonhangController::class, 'index'])->name('index');
         // Xóa route tạo mới đơn hàng (create)
         // Route::get('/create', [DoithecaoDonhangController::class, 'create'])->name('create');
-        Route::post('/them', [DoithecaoDonhangController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [DoithecaoDonhangController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [DoithecaoDonhangController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [DoithecaoDonhangController::class, 'destroy'])->name('destroy');
+         Route::post('/them', [DoithecaoDonhangController::class, 'store'])->name('store');
+    Route::get('/edit/{id_dondoithe}', [DoithecaoDonhangController::class, 'edit'])->name('edit');
+    Route::put('/update/{id_dondoithe}', [DoithecaoDonhangController::class, 'update'])->name('update');
+    Route::delete('/delete/{id_dondoithe}', [DoithecaoDonhangController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('nganhang')->name('nganhang.')->group(function () {

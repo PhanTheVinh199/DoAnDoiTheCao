@@ -31,4 +31,10 @@ class DoithecaoNhacungcap extends Model
         'ngay_tao',
         'trang_thai'
     ];
+
+     // Quan hệ với bảng DoithecaoDanhsach
+    public function danhsach()
+    {
+        return $this->hasMany(DoithecaoDanhsach::class, 'nhacungcap_id', 'id_nhacungcap');
+    }
 }

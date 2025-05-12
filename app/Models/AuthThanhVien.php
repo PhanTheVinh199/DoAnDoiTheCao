@@ -21,6 +21,7 @@ class ThanhVien extends Authenticatable
         'mat_khau',
         'so_du',
         'quyen'
+        
     ];
 
     protected $hidden = [

@@ -9,17 +9,19 @@ use App\Http\Controllers\User\LichSuMuaTheController;
 use App\Http\Controllers\NapTienController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\NapTienAdminController;
+use App\Http\Controllers\User\RutTienController;
+use App\Http\Controllers\User\DoiTheCaoController;
 
 
 
 // Trang chủ
-
 Route::get('/', fn() => view('index'))->name('index');
 
 // Các trang tĩnh khác
 Route::view('/header', 'header')->name('header');
 Route::get('/card', [SanPhamController::class, 'index'])->name('card');
 Route::view('/ruttien', 'ruttien')->name('ruttien');
+Route::view('/naptien', 'naptien')->name('naptien');
 Route::view('/lichsu', 'lichsudoithe')->name('lichsudoithe');
 Route::get('/lichsumuathe', [LichSuMuaTheController::class, 'index'])->name('lichsumuathe');
 Route::view('/lichsusodu', 'lichsusodu')->name('lichsusodu');
@@ -51,6 +53,24 @@ Route::middleware('auth:thanhvien')->group(function () {
     Route::post('/naptien', [NapTienController::class, 'store'])->name('naptien.store');
     Route::get('/lichsunap', [NapTienController::class, 'showHistory'])->name('lichsunap');
 });
+
+Route::get('/user/add_nganhang_user', [RutTienController::class, 'showAddBankForm'])->name('add_nganhang_user');
+//Xử lý thêm ngân hàng
+Route::post('/user/add_nganhang_user', [RutTienController::class, 'addBank'])->name('add_nganhang_user_store');
+//Rút tiền
+Route::post('/user/rut-tien', [RutTienController::class, 'processRutTien'])->name('rut-tien');
+
+
+    //Route hiển thị lịch sử rút
+Route::get('ruttien', [RutTienController::class, 'showRutTienHistory'])->name('ruttien');
+
+
+//Đổi Thẻ Cào
+Route::get('/', [DoiTheCaoController::class, 'index'])->name('index');
+
+// Route xử lý việc đổi thẻ cào khi người dùng submit form
+Route::post('/', [DoithecaoController::class, 'exchange'])->name('doithecao.exchange');
+
 
 
 
