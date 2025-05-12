@@ -79,7 +79,7 @@
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ Tên hợp lệ!";
+                correct_message.textContent = "✅ Tên đăng nhập hợp lệ!";
             }
         })
 
@@ -94,7 +94,7 @@
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ Tên hợp lệ!";
+                correct_message.textContent = "✅ Họ tên hợp lệ!";
             }
         })
 
@@ -105,11 +105,11 @@
             let correct_message = document.getElementById("correct_phoneNumber");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌ Không hợp lệ.";
+                error_message.textContent = " ❌Số điện thoại không hợp lệ.";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ hợp lệ!";
+                correct_message.textContent = "✅ Số điện thoại hợp lệ!";
             }
         })
 
@@ -120,11 +120,11 @@
             let correct_message = document.getElementById("correct_email");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌ email phải như axyz@axy.com";
+                error_message.textContent = " ❌ Email không đúng định dạng!";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ hợp lệ!";
+                correct_message.textContent = "✅Email hợp lệ!";
             }
         })
 
