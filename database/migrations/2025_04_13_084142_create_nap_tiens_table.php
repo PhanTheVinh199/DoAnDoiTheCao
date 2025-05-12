@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('nap_tiens', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('thanhvien_id')->constrained('thanhviens')->onDelete('cascade'); // Liên kết với bảng thanhviens
+            $table->decimal('so_tien_nap', 10, 2); // Số tiền nạp
+            $table->string('noi_dung'); // Nội dung giao dịch
+            $table->enum('trang_thai', ['cho_duyet', 'da_duyet', 'huy'])->default('cho_duyet'); // Trạng thái giao dịch
             $table->timestamps();
         });
     }

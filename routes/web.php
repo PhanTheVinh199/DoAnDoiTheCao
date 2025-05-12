@@ -6,7 +6,9 @@ use App\Http\Controllers\User\ThanhToanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\SanPhamController;
 use App\Http\Controllers\User\LichSuMuaTheController;
-
+use App\Http\Controllers\NapTienController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\OrderController;
 
 
 
@@ -18,20 +20,20 @@ Route::get('/', fn() => view('index'))->name('index');
 Route::view('/header', 'header')->name('header');
 Route::get('/card', [SanPhamController::class, 'index'])->name('card');
 Route::view('/ruttien', 'ruttien')->name('ruttien');
-Route::view('/naptien', 'naptien')->name('naptien');
 Route::view('/lichsu', 'lichsudoithe')->name('lichsudoithe');
 Route::get('/lichsumuathe', [LichSuMuaTheController::class, 'index'])->name('lichsumuathe');
 Route::view('/lichsusodu', 'lichsusodu')->name('lichsusodu');
+Route::view('/naptiendienthoai', 'naptiendienthoai')->name('naptiendienthoai');
 
+// Các trang login_register chỉ dành cho khách
+Route::middleware('guest:thanhvien')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+});
 
-// Các trang login_register
-
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
-
+// Đăng xuất
 Route::get('/logout', function () {
     Auth::guard('thanhvien')->logout(); // Đăng xuất guard "thanhvien"
     request()->session()->invalidate(); // Hủy session
@@ -43,3 +45,18 @@ Route::get('/logout', function () {
 Route::get('/get-product-prices/{id}', [SanPhamController::class, 'getProductPrices']);
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('pay');
 Route::post('/process-payment', [ThanhToanController::class, 'process'])->name('process.payment');
+
+Route::middleware('auth:thanhvien')->group(function () {
+    Route::get('/naptien', [NapTienController::class, 'showForm'])->name('naptien.form'); 
+    Route::post('/naptien', [NapTienController::class, 'store'])->name('naptien.store');
+    Route::get('/lichsunap', [NapTienController::class, 'showHistory'])->name('lichsunap');
+});
+
+
+
+// Route để xem chi tiết đơn hàng
+Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
+
+Route::post('order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
+
+Route::post('admin/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('admin.naptien.approve');

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str; 
 use App\Models\NganHang;
+use App\Models\ThanhVien; 
 use App\Models\RutTien;
 use App\Models\NapTien;
 
@@ -164,7 +167,7 @@ public function updateNapTien(Request $request, $id)
     $napTien = NapTien::findOrFail($id);
 
     // Đảm bảo ma_don không bị bỏ trống, hoặc gán giá trị mặc định nếu cần
-    $ma_don = $request->ma_don ?? 'default_value'; // Gán giá trị mặc định nếu ma_don không được cung cấp
+    $ma_don = $request->ma_don ?? Str::uuid(); // Gán giá trị mặc định nếu ma_don không được cung cấp
 
     // Cập nhật thông tin
     $napTien->update([
@@ -178,34 +181,48 @@ public function updateNapTien(Request $request, $id)
 }
 
 
+// Hiển thị form thêm ngân hàng
+public function create()
+{
+    $banks = NganHang::all(); // Lấy danh sách ngân hàng để hiển thị nếu cần
+    return view('admin.nganhang.caidat_nganhang.caidat_nganhang', compact('banks'));
+}
 
+// Xử lý lưu ngân hàng mới
+public function store(Request $request)
+{
+    // Validate dữ liệu đầu vào
+    $validated = $request->validate([
+        'ten_thanhvien' => 'required|string',
+        'ten_ngan_hang' => 'required|string|max:255',
+        'so_tai_khoan' => 'required|string|max:100',
+        'chu_tai_khoan' => 'required|string|max:100',
+        'trang_thai' => 'nullable|boolean', // Đảm bảo trang_thai là kiểu boolean
+    ]);
 
+    // Tìm kiếm thành viên bằng tài khoản
+    $thanhvien = ThanhVien::where('tai_khoan', $validated['ten_thanhvien'])->first();
 
+    // Kiểm tra nếu không tìm thấy thành viên
+    if (!$thanhvien) {
+        return back()->with('error', 'Không tìm thấy thành viên: ' . $validated['ten_thanhvien'])
+                     ->withInput();  // Giữ lại dữ liệu đã nhập
+    }
 
+    // Xử lý giá trị trang_thai, nếu không có thì mặc định là true
+    $trang_thai = $request->has('trang_thai') ? $request->trang_thai : true;
 
+    // Tạo mới ngân hàng
+    NganHang::create([
+        'thanhvien_id' => $thanhvien->id_thanhvien,  // Sử dụng ID thành viên hợp lệ
+        'ten_ngan_hang' => $validated['ten_ngan_hang'],
+        'so_tai_khoan' => $validated['so_tai_khoan'],
+        'chu_tai_khoan' => $validated['chu_tai_khoan'],
+        'trang_thai' => $trang_thai,  // Sử dụng giá trị trang_thai đã kiểm tra
+    ]);
 
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-   
-
-     
-
-
-
-
-
+    // Trả về trang trước với thông báo thành công
+    return redirect()->route('admin.nganhang.index')->with('success', 'Thêm ngân hàng thành công!');
+}
 
 }

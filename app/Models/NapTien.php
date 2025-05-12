@@ -21,11 +21,17 @@ class NapTien extends Model
         'noi_dung',
         'ngay_tao',
         'trang_thai',
+        'paygate_code',
+        'transfer_note', 
     ];
 
     // Định nghĩa quan hệ (nếu có)
     public function thanhvien()
     {
         return $this->belongsTo(ThanhVien::class, 'thanhvien_id', 'id_thanhvien');
+    }
+    public function nganhang()
+    {
+        return $this->belongsTo(NganHang::class, 'paygate_code', 'id_danhsach');
     }
 }

@@ -8,7 +8,8 @@ use App\Http\Controllers\Admin\MTC_DonHangController;
 use App\Http\Controllers\admin\NganhangController;
 use App\Http\Controllers\admin\DoithecaoNhacungcapController;
 use App\Http\Controllers\admin\DoithecaoDanhsachController;
-use App\Http\Controllers\admin\DoithecaoDonhangController;
+use App\Http\Controllers\admin\DoithecaoDonhangController; 
+use App\Http\Controllers\admin\NapTienAdminController; 
 
 use App\Http\Controllers\admin\ThanhvienController;
 use App\Http\Middleware\AdminMiddleware;
@@ -139,4 +140,8 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         // Xử lý nạp tiền (POST)
         Route::post('/naptien/{id}', [ThanhvienController::class, 'naptien'])->name('naptien.store');
     });
+    Route::get('/naptien', [NapTienAdminController::class, 'showHistory'])->name('naptien.index');
+
+    // Duyệt giao dịch nạp tiền
+    Route::post('/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('naptien.approve');
 });

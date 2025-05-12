@@ -11,9 +11,9 @@ class DoithecaoDanhsachController extends Controller
 {
     public function index()
     {
-        
-        $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
-        return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach'));
+        $nhacungcaps = DoithecaoNhacungcap::where('trang_thai', 'hoat_dong')->get();
+        $danhsach = DoithecaoDanhsach::with('nhacungcap')->paginate(10);
+        return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach', 'nhacungcaps'));
     }
 
     // Hiển thị form thêm mới
@@ -102,5 +102,5 @@ class DoithecaoDanhsachController extends Controller
         return redirect()->back()->with('success', 'Đã xóa sản phẩm!');
     }
 
-    
+
 }

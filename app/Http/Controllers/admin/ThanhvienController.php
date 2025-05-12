@@ -50,7 +50,7 @@ public function update(Request $request, $id)
     $request->validate([
         'ho_ten' => 'required|string|max:100',
         'tai_khoan' => 'required|string|max:50',
-        'mat_khau' => 'nullable|string|min:6', // mật khẩu có thể bỏ qua
+        'mat_khau' => 'nullable|string|min:6', 
         'email' => 'nullable|email|max:150',
         'phone' => 'nullable|string|max:20',
         'quyen' => 'nullable|in:admin,user',
@@ -66,7 +66,7 @@ public function update(Request $request, $id)
     $thanhvien->phone = $request->phone;
     $thanhvien->quyen = $request->quyen;
 
-    // Nếu có mật khẩu mới thì cập nhật mật khẩu
+
     if ($request->filled('mat_khau')) {
         $thanhvien->mat_khau = bcrypt($request->mat_khau); // Mã hóa mật khẩu
     }

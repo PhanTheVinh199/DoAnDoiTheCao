@@ -13,7 +13,6 @@
         body {
             background-color: rgb(107, 114, 128);
         }
-        
     </style>
 </head>
 
@@ -21,11 +20,11 @@
 
     <!-- Modal -->
     <div class="modal fade show" id="napTienModal" tabindex="-1" aria-labelledby="napTienModalLabel" aria-hidden="true" style="display: block;">
-        <div class="modal-dialog ">
+        <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Modal Header -->
-                <div class="modal-header ">
+                <div class="modal-header">
                     <h5 class="modal-title" id="napTienModalLabel">Cập nhật Nạp Tiền</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -57,7 +56,7 @@
                         <!-- Nội Dung -->
                         <div class="mb-3">
                             <label class="form-label">Nội Dung</label>
-                            <textarea name="noi_dung" class="form-control">{{ $napTien->noi_dung }}</textarea>
+                            <textarea name="noi_dung" class="form-control">{{ $napTien->transfer_note }}</textarea>
                         </div>
 
                         <!-- Trạng Thái -->
