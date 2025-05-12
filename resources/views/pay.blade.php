@@ -99,7 +99,9 @@
         title: 'Thanh toán thành công!',
         text: 'Cảm ơn bạn đã giao dịch. Hệ thống sẽ chuyển bạn về trang chính.',
         icon: 'success',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
+        allowOutsideClick: false,  
+        allowEscapeKey: false      
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = '/card';
@@ -107,3 +109,4 @@
     });
 </script>
 @endif
+
