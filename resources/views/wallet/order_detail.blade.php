@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Chi tiết đơn hàng')
-
-@section('content')
+@include('partials.header')
 <div class="container text-white">
     <div class="card bg-dark p-4">
         <h3 class="text-danger border-bottom pb-2">ĐƠN HÀNG #{{ $order->ma_don }}</h3>
@@ -58,4 +54,4 @@
         </div>
     </div>
 </div>
-@endsection
+

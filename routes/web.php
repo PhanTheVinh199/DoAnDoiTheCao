@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\SanPhamController;
 use App\Http\Controllers\User\LichSuMuaTheController;
 use App\Http\Controllers\NapTienController;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\NapTienAdminController;
 
 
 
