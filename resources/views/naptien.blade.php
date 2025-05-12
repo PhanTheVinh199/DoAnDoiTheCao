@@ -153,7 +153,6 @@
                                 <th><i class="fas fa-university"></i> Cổng thanh toán</th>
                                 <th><i class="fas fa-calendar-alt"></i> Ngày tạo</th>
                                 <th class="text-center"><i class="fas fa-info-circle"></i> Trạng thái</th>
-                                <th class="text-center"><i class="fas fa-cogs"></i> Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,16 +164,6 @@
                                 <td>{{ $transaction->noi_dung }}</td>
                                 <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
                                 <td class="text-center">{{ $transaction->trang_thai }}</td>
-                                <td class="text-center">
-                                    @if(Auth::user()->quyen === 'admin' && $transaction->trang_thai === 'cho_duyet')
-                                    <form action="{{ route('admin.naptien.approve', $transaction->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
-                                    </form>
-                                    @else
-                                    —
-                                    @endif
-                                </td>
                             </tr>
                             @empty
                             <tr>

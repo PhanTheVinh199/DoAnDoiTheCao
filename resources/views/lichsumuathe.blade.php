@@ -1,4 +1,5 @@
 @include('partials.header')
+@auth('thanhvien')
 <div class="section-gap">
     <div class="container">
         <div class="description mb-3">
@@ -116,6 +117,14 @@
         </div>
     </div>
 </div>
+@else
+    <div class="container mt-5 mb-5">
+        <div class="alert alert-warning text-center">
+            <strong>Vui lòng đăng nhập để tiếp tục dịch vụ.</strong><br>
+            <a href="{{ route('login') }}" class="btn btn-primary mt-3">Đăng nhập</a>
+        </div>
+    </div>
+@endauth
 </body>
 
 </html>
