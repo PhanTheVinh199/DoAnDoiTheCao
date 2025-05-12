@@ -32,7 +32,7 @@
                 <p><strong>Số tài khoản:</strong> {{ $order->nganhang->so_tai_khoan ?? 'Chưa có thông tin' }}</p>
                 <p><strong>Tên tài khoản:</strong> {{ $order->nganhang->chu_tai_khoan ?? 'Chưa có thông tin' }}</p>
                 <p><strong>Số tiền:</strong> {{ number_format($order->so_tien_nap, 2) }} VND</p>
-                <p><strong>Nội dung thanh toán:</strong> {{ $order->transfer_note ?? 'Chưa có thông tin' }}</p>
+                <p><strong>Nội dung thanh toán:</strong> {{ $order->noi_dung ?? 'Chưa có thông tin' }}</p>
             </div>
             <div class="col-md-6 text-center">
                 @if($order->qr_code_filename)
@@ -45,12 +45,15 @@
 
         <div class="mt-4">
             @if($order->trang_thai == 'cho_duyet')
-                <form action="{{ route('order.confirm', ['id' => $order->id_lichsunap]) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-success">Xác nhận nạp tiền</button>
-                </form>
+                <p class="badge bg-warning">Chờ duyệt</p>
+            @elseif($order->trang_thai == 'da_duyet')
+                <p class="badge bg-success">Đã duyệt</p>
+            @elseif($order->trang_thai == 'huy')
+                <p class="badge bg-danger">Đã hủy</p>
             @endif
         </div>
+        
+
 
         <!-- Nút Trở lại -->
         <div class="mt-3">

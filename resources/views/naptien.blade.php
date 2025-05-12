@@ -146,7 +146,7 @@
                             <th><i class="fas fa-university"></i> Cổng thanh toán</th>
                             <th><i class="fas fa-calendar-alt"></i> Ngày tạo</th>
                             <th class="text-center"><i class="fas fa-info-circle"></i> Trạng thái</th>
-                            <th class="text-center"><i class="fas fa-cogs"></i> Thao tác</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -164,8 +164,6 @@
                                             @csrf
                                             <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
                                         </form>
-                                    @else
-                                        —
                                     @endif
                                 </td>
                             </tr>

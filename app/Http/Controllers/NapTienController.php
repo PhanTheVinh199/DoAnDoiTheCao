@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\NapTien;
 use App\Models\ThanhVien;
 use App\Models\NganHang;
+use Illuminate\Support\Facades\Log;
 
 class NapTienController extends Controller
 {
@@ -62,12 +63,12 @@ class NapTienController extends Controller
         $totalToday = NapTien::where('thanhvien_id', $user->id_thanhvien)
                              ->whereDate('created_at', now()->toDateString())
                              ->sum('so_tien_nap');
-    
+        
         if ($totalToday + $request->net_amount > $hanMucNgay) {
             return back()->with('error', 'Bạn đã đạt hạn mức nạp tiền trong ngày.');
         }
 
-        // Xử lý thanh toán qua ngân hàng nội bộ
+        // Lấy thông tin ngân hàng
         $bank = NganHang::where('id_danhsach', $request->paygate_code)
                         ->where('trang_thai', 'hoat_dong')
                         ->first();
@@ -76,23 +77,28 @@ class NapTienController extends Controller
             return back()->with('error', 'Ngân hàng không hợp lệ hoặc đã bị vô hiệu hóa.');
         }
 
-        // Tạo giao dịch nạp tiền và lưu thông tin ngân hàng vào bảng nap_tiens
+        // Tạo nội dung chuyển khoản ngẫu nhiên
+        $transferNote = 'NAP' . strtoupper(Str::random(6));
+
+        // Lưu giao dịch vào cơ sở dữ liệu
         $order = NapTien::create([
             'thanhvien_id' => $user->id_thanhvien,
             'so_tien_nap' => $request->net_amount,
             'noi_dung' => 'Nạp qua ngân hàng ' . $bank->ten_ngan_hang . ' (' . $bank->so_tai_khoan . ')',
-            'trang_thai' => 'cho_duyet',
+            'trang_thai' => 'cho_duyet', // Trạng thái là "chờ duyệt"
             'ma_don' => Str::uuid(),
-            'paygate_code' => $request->paygate_code,  // Lưu mã ngân hàng vào bảng lichsu_nap
-            'bank_name' => $bank->ten_ngan_hang,
-            'bank_account' => $bank->so_tai_khoan,
-            'bank_account_name' => $bank->chu_tai_khoan,
-            'transfer_note' => 'NAP' . strtoupper(Str::random(6)),
+            'paygate_code' => $request->paygate_code,
+            'transfer_note' => $transferNote, // Lưu nội dung chuyển khoản
         ]);
 
-        // Redirect đến chi tiết đơn hàng
+        // Cập nhật số dư cho người dùng
+        Log::info('Số dư trước khi cập nhật: ' . $user->so_du);
+        $user->so_du += $order->so_tien_nap;
+        $user->save();
+        Log::info('Số dư sau khi cập nhật: ' . $user->so_du);
+
+        // Redirect về chi tiết đơn hàng
         return redirect()->route('order.show', ['id' => $order->id_lichsunap]);
-    
     }
 
     // Xử lý thanh toán qua ngân hàng nội bộ

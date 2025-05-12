@@ -164,20 +164,24 @@ public function editNapTien($id)
 
 public function updateNapTien(Request $request, $id)
 {
+    // Lấy giao dịch nạp tiền
     $napTien = NapTien::findOrFail($id);
 
-    // Đảm bảo ma_don không bị bỏ trống, hoặc gán giá trị mặc định nếu cần
-    $ma_don = $request->ma_don ?? Str::uuid(); // Gán giá trị mặc định nếu ma_don không được cung cấp
-
-    // Cập nhật thông tin
-    $napTien->update([
-        'ma_don' => $ma_don,
-        'so_tien_nap' => $request->so_tien_nap,
-        'noi_dung' => $request->noi_dung,
-        'trang_thai' => $request->trang_thai
+    // Xác thực dữ liệu
+    $request->validate([
+        'so_tien_nap' => 'required|numeric|min:10000', // Đảm bảo số tiền nạp không null và hợp lệ
+        'noi_dung' => 'nullable|string',
+        'trang_thai' => 'required|in:cho_duyet,da_duyet,huy',
     ]);
 
-    return redirect()->route('admin.nganhang.naptien.index')->with('success', 'Cập nhật thành công');
+    // Cập nhật dữ liệu
+    $napTien->update([
+        'so_tien_nap' => $request->input('so_tien_nap'),
+        'noi_dung' => $request->input('noi_dung'),
+        'trang_thai' => $request->input('trang_thai'),
+    ]);
+
+    return redirect()->route('admin.nganhang.naptien.index')->with('success', 'Cập nhật thành công.');
 }
 
 

@@ -71,11 +71,4 @@
                 <div class="d-flex justify-content-end pt-5">
                     {{ $dsNganHang->links('pagination::bootstrap-4') }}
                 </div>
-
-
-
-
-
-
-
             </div>

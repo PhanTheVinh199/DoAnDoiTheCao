@@ -1,3 +1,4 @@
+
 @include('admin.sidebar')
 
 <div class="main" style="margin-top: 10px; padding: 50px">
@@ -68,7 +69,6 @@
                         @endforelse
                     </tbody>
                 </table>
-
 
                 <!-- Phân trang -->
                 <div class="d-flex justify-content-end pt-5">
