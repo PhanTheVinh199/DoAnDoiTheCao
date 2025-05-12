@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('thanh_tien');
             $table->foreignId('thanhvien_id')->constrained('thanhvien', 'id_thanhvien');
             $table->timestamp('ngay_tao')->useCurrent();
-            $table->enum('trang_thai', ['Hoạt động', 'Đã huỷ', 'Chờ xử lý'])->default('Chờ xử lý');
+            $table->enum('trang_thai', ['Hoạt động', 'Đã hủy', 'Chờ xử lý'])->default('Chờ xử lý');
         });
     }
 

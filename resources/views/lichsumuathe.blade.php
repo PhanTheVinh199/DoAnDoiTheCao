@@ -29,7 +29,7 @@
                                             <select name="status" class="form-control">
                                                 <option value="" selected="selected">Trạng thái</option>
                                                 <option value="Hoạt động" {{ request('status') == 'Hoạt động' ? 'selected' : '' }}>Hoạt động</option>
-                                                <option value="Đã huỷ" {{ request('status') == 'Đã huỷ' ? 'selected' : '' }}>Đã huỷ</option>
+                                                <option value="Đã huỷ" {{ request('status') == 'Đã hủy' ? 'selected' : '' }}>Đã hủy</option>
                                                 <option value="Chờ xử lý" {{ request('status') == 'Chờ xử lý' ? 'selected' : '' }}>Chờ xử lý</option>
                                             </select>
                                         </div>
@@ -64,7 +64,7 @@
                                         <span class="fal fa-search me-1"></span>
                                         Lọc
                                     </button>
-        
+
                                     <a href="{{ route('lichsumuathe') }}" class="btn btn-danger btn-small text-nowrap m-1 my-md-0">
                                         <i class="fa fa-trash-alt me-1"></i>
                                         Bỏ lọc
@@ -85,7 +85,7 @@
                                     <th>Mệnh giá</th>
                                     <th>Ngày tạo</th>
                                     <th>Trạng thái</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,8 +96,16 @@
                                     <th>{{ $dh->so_luong}}</th>
                                     <th>{{ $dh->so_luong * $dh->sanpham?->menh_gia ?? 'Chưa có mênhk giá' }}</th>
                                     <th>{{$dh->ngay_tao}}</th>
-                                    <th>{{$dh->trang_thai}}</th>
-                                    
+                                    <th>
+                                        @if($dh->trang_thai == 'Chờ xử lý')
+                                        <button type="button" class="btn btn-warning">Chờ xử lý</button>
+                                        @elseif($dh->trang_thai == 'Hoạt động')
+                                        <button type="button" class="btn btn-success">Hoạt động</button>
+                                        @elseif($dh->trang_thai == 'Đã hủy')
+                                        <button type="button" class="btn btn-danger">Đã hủy</button>
+                                        @endif
+                                    </th>
+
                                 </tr>
                                 @endforeach
                             </tbody>

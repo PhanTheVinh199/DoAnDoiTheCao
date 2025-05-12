@@ -52,7 +52,7 @@
                     <select name="trang_thai" class="w-full border rounded px-3 py-2">
                         <option value="Hoạt động" {{ $donHang->trang_thai == 'Hoạt động' ? 'selected' : '' }}>Hoạt Động</option>
                         <option value="Chờ xử lý" {{ $donHang->trang_thai == 'Chờ xử lý' ? 'selected' : '' }}>Đang Xử Lý</option>
-                        <option value="Đã huỷ" {{ $donHang->trang_thai == 'Đã huỷ' ? 'selected' : '' }}>Đã huỷ</option>
+                        <option value="Đã huỷ" {{ $donHang->trang_thai == 'Đã hủy' ? 'selected' : '' }}>Đã hủy</option>
                     </select>
                 </div>
 
