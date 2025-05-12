@@ -7,22 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class DoithecaoDanhsach extends Model
 {
-    // Tên bảng nếu khác với chuẩn Laravel
+    use HasFactory;
+
     protected $table = 'doithecao_danhsach';
-
-    // Khóa chính
     protected $primaryKey = 'id_doithecao';
-
-    // Nếu không dùng auto-increment
-    public $incrementing = true;
-
-    // Kiểu của khóa chính
-    protected $keyType = 'int';
-
-    // Cho phép tự động timestamps
     public $timestamps = false;
 
-    // Danh sách fillable để sử dụng mass assignment
     protected $fillable = [
         'nhacungcap_id',
         'menh_gia',
@@ -31,13 +21,18 @@ class DoithecaoDanhsach extends Model
         'hinh_anh'
     ];
 
-    // Quan hệ: Mỗi thẻ thuộc về một nhà cung cấp
+    /**
+     * Quan hệ với bảng DoithecaoNhacungcap.
+     * Mỗi sản phẩm sẽ liên kết với 1 nhà cung cấp.
+     */
     public function nhacungcap()
     {
         return $this->belongsTo(DoithecaoNhacungcap::class, 'nhacungcap_id', 'id_nhacungcap');
     }
 
-    // ✅ Getter: Trả về chuỗi hiển thị của trạng thái
+    /**
+     * Getter: Trả về trạng thái dưới dạng chuỗi
+     */
     public function getTrangThaiTextAttribute()
     {
         return match ($this->trang_thai) {
@@ -48,7 +43,9 @@ class DoithecaoDanhsach extends Model
         };
     }
 
-    // ✅ Getter: Trả về class Bootstrap tương ứng
+    /**
+     * Getter: Trả về class Bootstrap tương ứng với trạng thái
+     */
     public function getTrangThaiClassAttribute()
     {
         return match ($this->trang_thai) {
@@ -57,5 +54,15 @@ class DoithecaoDanhsach extends Model
             'cho_xu_ly' => 'warning',
             default => 'secondary'
         };
+    }
+
+    /**
+     * Tính thành tiền sau chiết khấu
+     */
+    public function getThanhTienSauChietKhauAttribute()
+    {
+        $thanhTien = $this->menh_gia * $this->so_luong;
+        $chietKhau = $thanhTien * ($this->chiet_khau / 100);
+        return $thanhTien - $chietKhau;
     }
 }

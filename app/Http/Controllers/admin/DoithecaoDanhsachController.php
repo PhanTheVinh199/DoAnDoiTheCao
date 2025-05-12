@@ -9,12 +9,28 @@ use App\Models\DoithecaoNhacungcap;
 
 class DoithecaoDanhsachController extends Controller
 {
-    public function index()
-    {
+    // public function index()
+    // {
         
-        $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
-        return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach'));
-    }
+    //     $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
+    //     return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach'));
+    // }
+
+public function index()
+{
+    // Lấy danh sách sản phẩm kèm nhà cung cấp
+    $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
+
+    // Lấy danh sách nhà cung cấp
+    $nhacungcap = DoithecaoNhacungcap::all();
+
+     // Lấy nhà cung cấp mới nhất (theo ngày tạo)
+    $newestSupplier = DoithecaoNhacungcap::orderBy('ngay_tao', 'desc')->first();
+
+    return view('admin.doithecao.danhsach.doithecao_danhsach', compact('danhsach', 'nhacungcap', 'newestSupplier'));
+}
+
+
 
     // Hiển thị form thêm mới
     public function create()

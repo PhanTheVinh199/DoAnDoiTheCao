@@ -6,6 +6,7 @@ use App\Http\Controllers\User\ThanhToanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\SanPhamController;
 use App\Http\Controllers\User\RutTienController;
+use App\Http\Controllers\User\DoiTheCaoController;
 
 
 
@@ -58,6 +59,16 @@ Route::post('/user/rut-tien', [RutTienController::class, 'processRutTien'])->nam
 
     //Route hiển thị lịch sử rút
 Route::get('ruttien', [RutTienController::class, 'showRutTienHistory'])->name('ruttien');
+
+
+//Đổi Thẻ Cào
+Route::get('/', [DoiTheCaoController::class, 'index'])->name('index');
+
+// Route xử lý việc đổi thẻ cào khi người dùng submit form
+Route::post('/', [DoithecaoController::class, 'exchange'])->name('doithecao.exchange');
+
+
+
 
 
 

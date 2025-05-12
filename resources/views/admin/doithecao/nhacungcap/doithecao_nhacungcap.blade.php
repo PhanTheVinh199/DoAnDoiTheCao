@@ -7,7 +7,7 @@
                 <div class="bg-white p-3 rounded shadow">
                     <h1 class="h2 mb-4">Nhà Cung Cấp</h1>
     
-                    <div class="d-flex flex-wrap gap-2 mb-4 justify-content-end">
+                    <div class="d-flex flex-wrap gap-2 mb-4 justify-content-end" style="width: 1100px">
                         <a href="{{ route('admin.doithecao.nhacungcap.add') }}" class="btn btn-primary">Thêm Nhà Cung Cấp</a>
                     </div>
     
@@ -16,7 +16,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Sản Phẩm</th>
-                                <th>Hình Ảnh</th>
+                                {{-- <th>Hình Ảnh</th> --}}
                                 <th>Ngày Tạo</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành động</th>
@@ -26,15 +26,16 @@
                             @foreach ($nhacungcaps as $nhacungcap)
                                 <tr>
                                     <td>{{ $nhacungcap->id_nhacungcap }}</td>
+                                    
                                     <td>{{ $nhacungcap->ten }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @if ($nhacungcap->hinh_anh)
-                                            <img src="{{ asset('storage/' . $nhacungcap->hinh_anh) }}" alt="img-the" width="60">
+                                            <img src="{{ asset('.uploads/' . $nhacungcap->hinh_anh) }}" alt="img-the" width="60">
                                         @else
                                             <span class="text-muted">Không có ảnh</span>
                                         @endif
-                                    </td>
-                                    <td>{{ $nhacungcap->created_at }}</td>
+                                    </td> --}}
+                                    <td>{{ $nhacungcap->ngay_tao}}</td>
                                     <td>
                                         @if ($nhacungcap->trang_thai == 'hoat_dong')
                                             <button type="button" class="btn btn-success">Hoạt Động</button>
@@ -52,7 +53,7 @@
                                             </button>
                                         </form>
                         
-                                        @if ($nhacungcap->trang_thai == 'hoat_dong')
+                                        {{-- @if ($nhacungcap->trang_thai == 'hoat_dong')
                                             <form action="{{ route('admin.doithecao.nhacungcap.hide', $nhacungcap->id_nhacungcap) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-warning">Ẩn</button>
@@ -62,7 +63,7 @@
                                                 @csrf
                                                 <button type="submit" class="btn btn-success">Hiện</button>
                                             </form>
-                                        @endif
+                                        @endif --}}
                                     </td>
                                 </tr>
                             @endforeach
