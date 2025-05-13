@@ -19,6 +19,7 @@ Route::get('/', fn() => view('index'))->name('index');
 
 // Các trang tĩnh khác
 Route::view('/header', 'header')->name('header');
+Route::view('/footer', 'footer')->name('footer');
 Route::get('/card', [SanPhamController::class, 'index'])->name('card');
 Route::view('/ruttien', 'ruttien')->name('ruttien');
 Route::view('/naptien', 'naptien')->name('naptien');

@@ -515,15 +515,5 @@
         }
     });
 </script>
-
-
-
-
-
-
-
-
-
-
-
 </html>
+@include('partials.footer')

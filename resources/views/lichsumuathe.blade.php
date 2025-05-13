@@ -128,3 +128,4 @@
 </body>
 
 </html>
+@include('partials.footer')

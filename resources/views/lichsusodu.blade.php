@@ -118,3 +118,4 @@
 
 
 </html>
+@include('partials.footer')

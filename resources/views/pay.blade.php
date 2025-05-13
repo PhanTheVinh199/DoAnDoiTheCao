@@ -109,4 +109,5 @@
     });
 </script>
 @endif
+@include('partials.footer')
 

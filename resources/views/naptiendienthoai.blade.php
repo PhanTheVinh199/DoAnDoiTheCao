@@ -226,3 +226,4 @@
         <div class="mt-2">
         </div>
     </div>
+    @include('partials.footer')

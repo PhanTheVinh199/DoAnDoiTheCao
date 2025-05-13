@@ -354,3 +354,4 @@
         });
     });
 </script>
+@include('partials.footer')
