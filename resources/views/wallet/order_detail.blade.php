@@ -6,13 +6,13 @@
             <div class="col-md-6">
                 <p><strong>Mã đơn #:</strong> {{ $order->ma_don }}</p>
                 <p><strong>Số tiền:</strong> {{ number_format($order->so_tien_nap, 2) }} VND</p>
-                <p><strong>Trạng thái:</strong> 
+                <p><strong>Trạng thái:</strong>
                     @if($order->trang_thai == 'cho_duyet')
-                        <span class="badge bg-warning text-dark">Chưa duyệt</span>
+                    <span class="badge bg-warning text-dark">Chưa duyệt</span>
                     @elseif($order->trang_thai == 'da_duyet')
-                        <span class="badge bg-success">Hoàn thành</span>
+                    <span class="badge bg-success">Hoàn thành</span>
                     @else
-                        <span class="badge bg-danger">Đã hủy</span>
+                    <span class="badge bg-danger">Đã hủy</span>
                     @endif
                 </p>
             </div>
@@ -32,19 +32,20 @@
             </div>
             <div class="col-md-6 text-center">
                 @if($order->qr_code_filename)
-                    <img src="{{ asset('storage/qrcodes/' . $order->qr_code_filename) }}" alt="QR Code" class="img-fluid" style="max-width: 250px;">
+                <img src="{{ asset('storage/qrcodes/' . $order->qr_code_filename) }}" alt="QR Code" class="img-fluid" style="max-width: 250px;">
                 @else
-                    <p>Không có mã QR.</p>
+                <p>Không có mã QR.</p>
                 @endif
             </div>
         </div>
 
         <div class="mt-4">
             @if($order->trang_thai == 'cho_duyet')
-                <form action="{{ route('order.confirm', ['id' => $order->id_lichsunap]) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-success">Xác nhận nạp tiền</button>
-                </form>
+            <span class="badge bg-warning text-dark">Chưa duyệt</span>
+            @elseif($order->trang_thai == 'da_duyet')
+            <span class="badge bg-success">Hoàn thành</span>
+            @else
+            <span class="badge bg-danger">Đã hủy</span>
             @endif
         </div>
 
@@ -54,4 +55,3 @@
         </div>
     </div>
 </div>
-
