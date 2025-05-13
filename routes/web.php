@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\NapTienAdminController;
 use App\Http\Controllers\User\RutTienController;
 use App\Http\Controllers\User\DoiTheCaoController;
 
+use App\Http\Controllers\Controller; // Import Controller đúng
+
+
 
 
 // Trang chủ
@@ -59,18 +62,20 @@ Route::get('/user/add_nganhang_user', [RutTienController::class, 'showAddBankFor
 //Xử lý thêm ngân hàng
 Route::post('/user/add_nganhang_user', [RutTienController::class, 'addBank'])->name('add_nganhang_user_store');
 //Rút tiền
-Route::post('/user/rut-tien', [RutTienController::class, 'processRutTien'])->name('rut-tien');
+Route::post('/user/rut-tien', [RutTienController::class, 'processRutTien'])->name('rut-tien')->middleware('auth');
 
 
     //Route hiển thị lịch sử rút
-Route::get('ruttien', [RutTienController::class, 'showRutTienHistory'])->name('ruttien');
+Route::get('ruttien', [RutTienController::class, 'showRutTienHistory'])->name('ruttien')->middleware('auth')->middleware('auth');
 
 
 //Đổi Thẻ Cào
 Route::get('/', [DoiTheCaoController::class, 'index'])->name('index');
 
 // Route xử lý việc đổi thẻ cào khi người dùng submit form
-Route::post('/', [DoithecaoController::class, 'exchange'])->name('doithecao.exchange');
+Route::post('/', [DoithecaoController::class, 'exchange'])->name('doithecao.exchange')->middleware('auth');
+//Lich su doi the
+Route::get('/lichsudoithe', [DoiTheCaoController::class, 'lichsudoithe'])->name('lichsudoithe')->middleware('auth');
 
 
 

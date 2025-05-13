@@ -16,7 +16,7 @@ class DoithecaoDonhangSeeder extends Seeder
         $doithecao_ids = [1, 2, 3, 4, 5]; // Ví dụ về các sản phẩm
         $thanhvien_ids = [1, 2, 3, 4, 5]; // Ví dụ về các thành viên
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             // Lấy một sản phẩm và một thành viên ngẫu nhiên
             $doithecao_id = $doithecao_ids[array_rand($doithecao_ids)];
             $thanhvien_id = $thanhvien_ids[array_rand($thanhvien_ids)];

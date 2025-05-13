@@ -12,10 +12,18 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;  // Correct namespace for Auth
 
 
+
+
+
 class DoiTheCaoController extends Controller
 {
+
+
+
 public function index(Request $request)
 {
+
+    
     // Lấy giá trị tìm kiếm từ form (nếu có)
     $searchTerm = $request->input('search', ''); // Mặc định là không có tìm kiếm
 
@@ -26,19 +34,42 @@ public function index(Request $request)
     $menhgia = DoithecaoDanhsach::all();
 
     // Lấy danh sách đơn hàng của người dùng hiện tại với tìm kiếm và phân trang
-    $donhangs = DoithecaoDonhang::with('doithecao', 'doithecao.nhacungcap')
+    $donhangs = DoithecaoDonhang::with('doithecao', 'doithecao.nhacungcap')->get();
         
-        ->when($searchTerm, function ($query, $searchTerm) {
-            // Nếu có tìm kiếm theo mã đơn hoặc mã thẻ thì áp dụng điều kiện where
-            return $query->where('ma_don', 'like', '%' . $searchTerm . '%')
-                         ->orWhere('ma_the', 'like', '%' . $searchTerm . '%');
-        })
-        ->orderBy('ngay_tao', 'desc')  // Sắp xếp theo ngày tạo, từ mới nhất
-        ->paginate(10);  // Phân trang, lấy 10 đơn hàng mỗi trang
-
-    // Trả về view và truyền dữ liệu cho view
     return view('index', compact('nhacungcap', 'menhgia', 'donhangs', 'searchTerm'));
 }
+
+
+
+
+
+
+
+
+
+
+public function lichsudoithe(Request $request)
+{
+    // Lấy giá trị tìm kiếm từ query string (nếu có)
+    $search = $request->input('search');
+
+    // Lấy danh sách đơn hàng của người dùng, áp dụng tìm kiếm và phân trang
+    $lichsu = DoithecaoDonhang::with('doithecao', 'doithecao.nhacungcap')  // Lấy thông tin mối quan hệ
+        ->where('thanhvien_id', Auth::user()->id_thanhvien)  // Lọc theo người dùng
+        ->when($search, function ($query, $search) {  // Nếu có tìm kiếm
+            return $query->where('ma_don', 'like', '%' . $search . '%');  // Tìm kiếm mã đơn
+        })
+        ->orderBy('ngay_tao', 'desc')  // Sắp xếp theo ngày tạo, từ mới nhất
+        ->paginate(10); // Sử dụng paginate để phân trang (10 bản ghi mỗi trang)
+
+    // Trả về view và truyền dữ liệu cho view
+    return view('lichsudoithe', compact('lichsu'));
+}
+
+
+
+
+
 
 
     // Xử lý form đổi thẻ cào
