@@ -27,7 +27,6 @@
                             <th>Ngân Hàng</th>
                             <th>Số Tài Khoản</th>
                             <th>Chủ TK</th>
-                            <th>Trạng Thái</th>
                             <th>Hành Động</th>
                         </tr>
                     </thead>
@@ -39,14 +38,6 @@
         <td>{{ $item->ten_ngan_hang }}</td>
         <td>{{ $item->so_tai_khoan }}</td>
         <td>{{ $item->chu_tai_khoan }}</td>
-        <td>
-    <form action="{{ route('admin.nganhang.toggleStatus', $item->id_danhsach) }}" method="POST">
-        @csrf
-        <button type="submit" class="btn {{ $item->trang_thai == 1 ? 'btn-success' : 'btn-danger' }}">
-            {{ $item->trang_thai == 1 ? 'Hoạt Động' : 'Không Hoạt Động' }}
-        </button>
-    </form>
-</td>
         <td>
             <form action="{{ route('admin.nganhang.delete', $item->id_danhsach) }}" method="POST"
                 onsubmit="return confirm('Bạn có chắc muốn xóa?')">

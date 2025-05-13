@@ -41,18 +41,6 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-
-        <label for="trang_thai">Trạng thái:</label>
-        <label for="trang_thai">Trạng thái:</label>
-        <select name="trang_thai" id="trang_thai" class="form-control">
-            <option value="1" {{ old('trang_thai') == 1 ? 'selected' : '' }}>Hoạt động</option>
-            <option value="0" {{ old('trang_thai') == 0 ? 'selected' : '' }}>Không hoạt động</option>
-        </select>
-
-        @error('trang_thai')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-
         <button type="submit" class="btn btn-primary mt-3">Thêm ngân hàng</button>
     </form>
 

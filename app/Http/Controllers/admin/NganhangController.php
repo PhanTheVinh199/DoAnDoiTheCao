@@ -20,22 +20,30 @@ public function index(Request $request)
     // Tạo query để lấy tất cả dữ liệu ngân hàng
     $query = NganHang::query();
 
-    // Kiểm tra xem có tìm kiếm theo từ khóa không
-    if ($request->has('search') && $request->search != '') {
-        // Lấy từ khóa tìm kiếm
+    // Kiểm tra xem có từ khóa tìm kiếm không
+    if ($request->has('search') && !empty($request->search)) {
         $searchTerm = $request->search;
-
-        // Lọc theo tài khoản hoặc số tài khoản có chứa từ khóa
-        $query->whereHas('thanhvien', function ($q) use ($searchTerm) {
-            $q->where('tai_khoan', 'like', '%' . $searchTerm . '%')
-              ->orWhere('so_tai_khoan', 'like', '%' . $searchTerm . '%');
+        
+        $query->where(function($q) use ($searchTerm) {
+            // Tìm theo số tài khoản
+            $q->where('so_tai_khoan', 'LIKE', "%{$searchTerm}%")
+              // Tìm theo tên chủ tài khoản
+              ->orWhere('chu_tai_khoan', 'LIKE', "%{$searchTerm}%")
+              // Tìm theo tên ngân hàng
+              ->orWhere('ten_ngan_hang', 'LIKE', "%{$searchTerm}%")
+              // Tìm theo tài khoản thành viên
+              ->orWhereHas('thanhvien', function($query) use ($searchTerm) {
+                  $query->where('tai_khoan', 'LIKE', "%{$searchTerm}%");
+              });
         });
     }
 
-    // Sắp xếp theo thời gian tạo (created_at) theo thứ tự tăng dần
-    $dsNganHang = $query->orderBy('created_at', 'asc')->paginate(5);
+    // Sắp xếp theo thời gian tạo mới nhất và phân trang
+    $dsNganHang = $query->orderBy('created_at', 'desc')->paginate(10);
 
-    // Trả về view và truyền dữ liệu vào
+    // Thêm tham số tìm kiếm vào URL phân trang
+    $dsNganHang->appends(['search' => $request->search]);
+
     return view('admin.nganhang.danhsach.nganhang', compact('dsNganHang'));
 }
 
