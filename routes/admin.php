@@ -126,24 +126,23 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
 
 
 
+    // Gom nhóm route thành viên
     Route::prefix('thanhvien')->name('thanhvien.')->group(function () {
         Route::get('/', [ThanhVienController::class, 'index'])->name('danhsach');
-
-        Route::get('/naptien/{id}', [ThanhvienController::class, 'naptien'])->name('naptien');
-
-        // Route chỉnh sửa thông tin thành viên
         Route::get('/edit/{id}', [ThanhvienController::class, 'edit'])->name('edit');
         Route::put('/edit/{id}', [ThanhvienController::class, 'update'])->name('update');
-        //Xóa thành viên
         Route::delete('/delete/{id}', [ThanhvienController::class, 'destroy'])->name('delete');
-
-        Route::get('/naptien/{id}', [ThanhvienController::class, 'naptienForm'])->name('naptien');
-
-        // Xử lý nạp tiền (POST)
-        Route::post('/naptien/{id}', [ThanhvienController::class, 'naptien'])->name('naptien.store');
+        
+        // Gom nhóm route nạp tiền thành viên
+        Route::prefix('naptien')->name('naptien.')->group(function () {
+            Route::get('/{id}', [ThanhvienController::class, 'naptienForm'])->name('form');
+            Route::post('/{id}', [ThanhvienController::class, 'naptien'])->name('store');
+        });
     });
-    Route::get('/naptien', [NapTienAdminController::class, 'showHistory'])->name('naptien.index');
 
-    // Duyệt giao dịch nạp tiền
-    Route::post('/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('naptien.approve');
+    // Gom nhóm route quản lý nạp tiền
+    Route::prefix('naptien')->name('naptien.')->group(function () {
+        Route::get('/', [NapTienAdminController::class, 'showHistory'])->name('index');
+        Route::post('/approve/{id}', [NapTienAdminController::class, 'approve'])->name('approve');
+    });
 });

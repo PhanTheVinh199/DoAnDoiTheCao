@@ -23,27 +23,22 @@ class OrderController extends Controller
 
     public function confirm($id)
     {
-        // Lấy thông tin đơn hàng
         $order = NapTien::findOrFail($id);
-
-        // Kiểm tra nếu trạng thái hiện tại là "Chờ duyệt"
-        if ($order->trang_thai == 'cho_duyet') {
-            // Cập nhật trạng thái đơn hàng thành "Đã duyệt"
-            $order->trang_thai = 'da_duyet';
-            $order->save();
-
-            // Cập nhật số dư người dùng
-            $user = ThanhVien::find($order->thanhvien_id);
-            if ($user) {
-                $user->so_du += $order->so_tien_nap; // Cộng số tiền vào số dư của người dùng
-                $user->save();
-            }
-
-            return redirect()->route('order.show', ['id' => $order->id_lichsunap])
-                             ->with('success', 'Giao dịch nạp tiền đã được duyệt và số dư người dùng đã được cập nhật.');
-        } else {
-            return redirect()->route('order.show', ['id' => $order->id_lichsunap])
-                             ->with('error', 'Giao dịch đã bị duyệt hoặc bị hủy trước đó.');
+        
+        // Kiểm tra xem giao dịch đã được admin duyệt chưa
+        if ($order->trang_thai !== 'da_duyet') {
+            return redirect()->back()->with('error', 'Giao dịch chưa được admin duyệt!');
         }
+        
+        // Kiểm tra xem người dùng có phải chủ giao dịch không
+        if ($order->thanhvien_id !== Auth::guard('thanhvien')->id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền xác nhận giao dịch này!');
+        }
+
+        // Cập nhật trạng thái đã xác nhận từ user
+        $order->da_xac_nhan = true;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Xác nhận giao dịch thành công!');
     }
 }

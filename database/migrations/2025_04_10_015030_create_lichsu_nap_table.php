@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('bank_name')->nullable();  // Tên ngân hàng
             $table->string('bank_account')->nullable();  // Số tài khoản ngân hàng
             $table->string('bank_account_name')->nullable();  // Tên chủ tài khoản ngân hàng
+            $table->string('transfer_note')->nullable();  // Nội dung chuyển khoản
         });
     }
 
@@ -32,6 +33,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lichsu_nap');
+        Schema::table('lichsu_nap', function (Blueprint $table) {
+            $table->dropColumn(['bank_name', 'bank_account', 'bank_account_name', 'transfer_note']);
+        });
     }
 };

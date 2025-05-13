@@ -25,9 +25,12 @@ public function index(Request $request)
     // Lấy danh sách mệnh giá thẻ cào
     $menhgia = DoithecaoDanhsach::all();
 
+
+
+
     // Lấy danh sách đơn hàng của người dùng hiện tại với tìm kiếm và phân trang
     $donhangs = DoithecaoDonhang::with('doithecao', 'doithecao.nhacungcap')
-        ->where('thanhvien_id', Auth::user()->id_thanhvien)  // Lọc theo người dùng
+        
         ->when($searchTerm, function ($query, $searchTerm) {
             // Nếu có tìm kiếm theo mã đơn hoặc mã thẻ thì áp dụng điều kiện where
             return $query->where('ma_don', 'like', '%' . $searchTerm . '%')

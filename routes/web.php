@@ -77,6 +77,8 @@ Route::post('/', [DoithecaoController::class, 'exchange'])->name('doithecao.exch
 // Route để xem chi tiết đơn hàng
 Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
 
-Route::post('order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
+Route::post('order/confirm/{id}', [OrderController::class, 'confirm'])
+    ->name('order.confirm')
+    ->middleware('auth:thanhvien');
 
 Route::post('admin/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('admin.naptien.approve');
