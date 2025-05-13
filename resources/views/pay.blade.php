@@ -49,7 +49,7 @@
                     <!-- Kiểm tra số dư sau giao dịch -->
                     @if($remainingBalance < 0)
                         <div class="alert alert-danger mb-4">
-                            <strong>Lỗi:</strong> Số dư không đủ để thực hiện giao dịch. Vui lòng nạp thêm tiền vào tài khoản của bạn.
+                            <strong>Lỗi:</strong> Số dư không đủ để thực hiện giao dịch. Vui lòng nạp thêm tiền vào tài khoản của bạn. <span><a href="{{ route('naptien.form') }}">Nạp Tiền Ngay !!</a></span>
                         </div>
                         <button class="btn btn-success mt-3" disabled>Xác nhận thanh toán</button>
                         <a href="/card" class="btn btn-secondary mt-3">Quay lại</a>
