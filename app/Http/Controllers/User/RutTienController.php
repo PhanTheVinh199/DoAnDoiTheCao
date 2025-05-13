@@ -30,7 +30,12 @@ class RutTienController extends Controller
          // Lấy lịch sử rút tiền của người dùng từ bảng RutTien
          $dsRutTien = RutTien::where('thanhvien_id', $user->id_thanhvien)
                              ->orderBy('created_at', 'desc')
-                             ->paginate(10);  // Phân trang, lấy 10 bản ghi mỗi trang
+                             ->paginate(1);  // Phân trang, lấy 10 bản ghi mỗi trang
+
+                             
+
+       
+    
  
          // Trả về view và truyền dữ liệu vào
          return view('ruttien', compact('dsRutTien'));
@@ -51,11 +56,12 @@ class RutTienController extends Controller
         $user = auth()->user();
     
         // Kiểm tra dữ liệu từ form
-        $request->validate([
-            'ten_ngan_hang' => 'required|string|max:255',
-            'so_tai_khoan' => 'required|string|max:50',
-            'chu_tai_khoan' => 'required|string|max:100',
-        ]);
+       $request->validate([
+    'ten_ngan_hang' => 'required|string|regex:/^[a-zA-Z\s]+$/|max:125', // Chỉ cho phép chữ và khoảng trắng
+    'so_tai_khoan' => 'required|numeric', // Phải là số
+    'chu_tai_khoan' => 'required|string|regex:/^[a-zA-Z\s]+$/|max:100', // Chỉ cho phép chữ và khoảng trắng
+]);
+
     
         // Thêm dữ liệu vào bảng nganhang
         NganHang::create([

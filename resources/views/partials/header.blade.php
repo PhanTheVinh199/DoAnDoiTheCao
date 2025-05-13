@@ -7,11 +7,12 @@
     <link rel="icon" href="{{ asset('images/favicon_32x32.png') }}" type="image/png">
     <title>Kho Thẻ King Grab</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
     <link rel="stylesheet" href="{{ asset('font-awesome/font/fontawesome-webfont.eot') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
     <style>
         :root {
             --primary-color: #28a745;
@@ -89,7 +90,7 @@
                             NẠP TIỀN
                         </a>
                     </li>
-                    <li class="d-inline-block">
+                    {{-- <li class="d-inline-block">
                         <a href="naptiendienthoai.html">
                             NẠP ĐIỆN THOẠI
                         </a>
@@ -98,7 +99,7 @@
                         <a href="#">
                             bảo mật
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="d-inline-block">
                         <a href="#">
                             KẾT NỐI API
@@ -165,11 +166,11 @@
                 </button>
                 <div class="header-usermb_list">
                     <ul class="list-unstyled mb-0">
-                        <li class="d-inline-block text-center header-usermb_list__logo">
+                        {{-- <li class="d-inline-block text-center header-usermb_list__logo">
                             <a href="">
                                 <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo">
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="d-inline-block">
                             <a href="{{ route('logout') }}">
                                 <i class="fa fa-sign-out-alt"></i> <strong>Đăng xuất</strong>
@@ -186,7 +187,7 @@
                     <ul class="list-unstyled mb-0">
                         <li class="d-inline-block text-center header-usermb_list__logo">
                             <a href="">
-                                <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo">
+                                {{-- <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo"> --}}
                             </a>
                         </li>
                         <li class="d-inline-block">
@@ -216,6 +217,8 @@
             }
         });
     </script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> --}}
 </body>
 
 </html>
