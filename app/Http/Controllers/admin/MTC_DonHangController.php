@@ -42,7 +42,7 @@ class MTC_DonHangController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $request->validate([
             'ma_don' => 'required|unique:mathecao_donhang',
@@ -52,9 +52,12 @@ class MTC_DonHangController extends Controller
             'trang_thai' => 'required|in:Hoạt động,Đã huỷ,Chờ xử lý',
         ]);
 
-        // Lấy mệnh giá của sản phẩm
+       
         $sanPham = MaThe_SanPham::findOrFail($request->mathecao_id);
-        $thanhTien = $request->so_luong * $sanPham->menh_gia;
+        $menhGia = $sanPham->menh_gia;
+        $chietKhau = $sanPham->chiet_khau; 
+
+        $thanhTien = $request->so_luong * $menhGia * (1 - $chietKhau / 100);
 
         // Tạo đơn hàng
         MaThe_DonHang::create([

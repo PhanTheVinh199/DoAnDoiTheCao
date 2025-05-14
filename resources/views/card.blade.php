@@ -209,6 +209,7 @@
                                             <th>Sản phẩm</th>
                                             <th>Số lượng</th>
                                             <th>Mệnh giá</th>
+                                            <th>Tổng Tiền</th>
                                             <th>Ngày tạo</th>
                                             <th>Trạng thái</th>
                                         </tr>
@@ -219,7 +220,8 @@
                                             <th>{{$dh->ma_don}}</th>
                                             <th>{{ $dh->sanpham?->nhacungcap?->ten ?? 'Chưa có nhà cung cấp' }}</th>
                                             <th>{{ $dh->so_luong}}</th>
-                                            <th>{{ $dh->so_luong * $dh->sanpham?->menh_gia ?? 'Chưa có mênhk giá' }}</th>
+                                            <th>{{ $dh->sanpham?->menh_gia ?? 'Chưa có mệnh giá' }}</th>
+                                            <th>{{ $dh->thanh_tien}}</th>
                                             <th>{{$dh->ngay_tao}}</th>
                                             <th>
                                                 @if($dh->trang_thai == 'Chờ xử lý')

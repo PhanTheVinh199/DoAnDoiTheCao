@@ -51,7 +51,7 @@
 
                                 <td>{{$dh->so_luong}}</td>
                                 <td>{{$dh->sanpham?->chiet_khau ?? 'Chưa có Chiết Khấu' }}%</td>
-                                <td>{{ $dh->so_luong * $dh->sanpham?->menh_gia ?? 'Chưa có mênhk giá' }}</td>
+                                <td>{{ $dh->thanh_tien}}</td>
 
                                 <td>{{$dh->thanhvien?->tai_khoan ?? 'Chưa có Tài Khoản'}}</td>
                                 <td>{{$dh->thanhvien?->email ?? 'Chưa có email'}}</td>
