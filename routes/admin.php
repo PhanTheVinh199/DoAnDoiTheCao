@@ -95,7 +95,7 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/', [NganhangController::class, 'index'])->name('index');
 
         // Route tạo ngân hàng
-        Route::get('/create', [NganhangController::class, 'create'])->name('create'); // Thêm route này
+        Route::get('/create', [NganhangController::class, 'create'])->name('create');
         Route::post('/store', [NganhangController::class, 'store'])->name('store');
         // Route xóa ngân hàng
         Route::delete('/delete/{id}', [NganhangController::class, 'delete_nganhang'])->name('delete');
