@@ -37,7 +37,11 @@
                                 <td>{{$sp->nhacungcap?->ten ?? 'Chưa có nhà cung cấp'}}</td>
                                 <td>{{$sp->menh_gia}}</td>
                                 <td>{{$sp->chiet_khau}}</td>
-                                <td><button type="button" class="btn btn-success">{{$sp->trang_thai}}</button></td>
+                                <td>@if($sp->trang_thai == 'Ẩn')
+                                <button type="button" class="btn btn-warning">Ẩn</button>
+                                @elseif($sp->trang_thai == 'Hoạt động')
+                                <button type="button" class="btn btn-success">Hoạt động</button>
+                                @endif</td>
                                 <td>
                                     <a href="{{ route('admin.mathecao.loaima.edit', $sp->id_mathecao)}}" class="btn btn-dark">Sửa</a>
                                     <form action="{{ route('admin.mathecao.loaima.destroy', $sp->id_mathecao) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">

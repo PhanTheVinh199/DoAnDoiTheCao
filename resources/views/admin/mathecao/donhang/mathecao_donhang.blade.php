@@ -57,7 +57,14 @@
                                 <td>{{$dh->thanhvien?->email ?? 'Chưa có email'}}</td>
                                 <td>{{$dh->ngay_tao}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success" style="font-size: 13px;">{{$dh->trang_thai}}</button>
+                                    @if($dh->trang_thai == 'Chờ xử lý')
+                                    <button type="button" class="btn btn-warning" style="font-size: 13px;">Chờ xử lý</button>
+                                    @elseif($dh->trang_thai == 'Hoạt động')
+                                    <button type="button" class="btn btn-success" style="font-size: 13px;">Hoạt động</button>
+                                    @elseif($dh->trang_thai == 'Đã hủy')
+                                    <button type="button" class="btn btn-danger" style="font-size: 13px;">Đã hủy</button>
+                                    @endif
+
                                 </td>
 
                                 <td>

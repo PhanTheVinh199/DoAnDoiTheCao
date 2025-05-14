@@ -32,15 +32,19 @@
                             <td>{{ $ncc->id_nhacungcap }}</td>
                             <td>{{ $ncc->ten }}</td>
                             <td>
-                                <div style="position: relative; width: 200px; height: 100px;" >
-                                    <img  src="{{ asset($ncc->hinhanh) }}" alt="img-the" style="position: absolute; width: 100%; height: 100%;">
+                                <div style="position: relative; width: 200px; height: 100px;">
+                                    <img src="{{ asset($ncc->hinhanh) }}" alt="img-the" style="position: absolute; width: 100%; height: 100%;">
                                 </div>
                             </td>
 
 
                             <td>{{ $ncc->ngay_tao }}</td>
                             <td>
-                                <button type="button" class="btn btn-success">{{ $ncc->trang_thai }}</button>
+                                @if($ncc->trang_thai == 'Ẩn')
+                                <button type="button" class="btn btn-warning">Ẩn</button>
+                                @elseif($ncc->trang_thai == 'Hoạt động')
+                                <button type="button" class="btn btn-success">Hoạt động</button>
+                                @endif
                             </td>
 
                             <td>
@@ -51,7 +55,7 @@
                                     <button type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
 
-            
+
                             </td>
                         </tr>
                         @endforeach
