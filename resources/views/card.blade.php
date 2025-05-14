@@ -173,17 +173,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Đến ngày -->
-                                        <div class="col-lg col-md-3 col-6">
-                                            <div class="form-theme_item">
-                                                <div class="position-relative">
-                                                    <input class="form-control" value="{{ request('to_date') }}" name="to_date"
-                                                        type="date">
-                                                    <div class="icon-ios"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                
                                         <!-- Các nút tìm kiếm và lọc -->
                                         <div class="col-12 col-md flex-lg-grow-0 d-flex align-items-center px-0">
                                             <button class="btn btn-primary btn-small text-nowrap m-1 my-md-0" type="submit" name="submit" value="filter">

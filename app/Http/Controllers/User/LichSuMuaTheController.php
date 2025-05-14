@@ -40,10 +40,6 @@ class LichSuMuaTheController extends Controller
             $query->where('ngay_tao', '>=', $request->from_date);
         }
 
-        if ($request->filled('to_date')) {
-            $query->where('ngay_tao', '<=', $request->to_date);
-        }
-
         $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(10);
 
 
