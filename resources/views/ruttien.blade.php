@@ -91,7 +91,7 @@
         <!-- Form tìm kiếm mã đơn -->
         <div class="">
             <form action="{{ route('ruttien') }}" method="GET" class="mb-4">
-                    <div class="input-group"  style="width: 20%" >
+                    <div class="input-group mb-2" style="width: 20%; float: right;">
                         <input type="text" name="order_code" class="form-control" placeholder="Tìm kiếm mã đơn" 
                             value="{{ request()->input('order_code') }}">
                         <button class="btn btn-primary" type="submit">

@@ -24,16 +24,8 @@
             <label class="block text-gray-700 mb-2">Tên Nhà Cung Cấp</label>
             <select name="ten" class="w-full border rounded px-3 py-2" required>
                 <option value="">-- Chọn nhà cung cấp --</option>
-                <option value="VIETTEL" {{ $nhacungcap->ten == 'VIETTEL' ? 'selected' : '' }}>Viettel</option>
-                <option value="VINAPHONE" {{ $nhacungcap->ten == 'VINAPHONE' ? 'selected' : '' }}>Vinaphone</option>
-                <option value="MOBIFONE" {{ $nhacungcap->ten == 'MOBIFONE' ? 'selected' : '' }}>Mobifone</option>
-                <option value="ZING" {{ $nhacungcap->ten == 'ZING' ? 'selected' : '' }}>Zing</option>
-                <option value="VNMOBI" {{ $nhacungcap->ten == 'VNMOBI' ? 'selected' : '' }}>Vietnamobile</option>
-                <option value="GARENA" {{ $nhacungcap->ten == 'GARENA' ? 'selected' : '' }}>Garena (Duyệt nhanh)</option>
-                <option value="GATE" {{ $nhacungcap->ten == 'GATE' ? 'selected' : '' }}>Gate</option>
-                <option value="VCOIN" {{ $nhacungcap->ten == 'VCOIN' ? 'selected' : '' }}>Vcoin</option>
-                <option value="APPOTA" {{ $nhacungcap->ten == 'APPOTA' ? 'selected' : '' }}>Appota</option>
-                <option value="SCOIN" {{ $nhacungcap->ten == 'SCOIN' ? 'selected' : '' }}>Scoin</option>
+                <option value=" {{ $nhacungcap->ten }}"> {{ $nhacungcap->ten }}</option>
+               
             </select>
         </div>
 

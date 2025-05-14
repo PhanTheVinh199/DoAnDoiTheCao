@@ -31,9 +31,9 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form action="{{ route('admin.nganhang.naptien.update', $napTien->id_lichsunap) }}" method="POST">
+                    <form action="{{ route('admin.naptien.approve', $napTien->id_lichsunap) }}" method="POST">
                         @csrf
-                        @method('PUT')
+                        @method('POST')
 
                         <!-- Mã Đơn -->
                         <div class="mb-3">
@@ -85,7 +85,7 @@
     <script>
         document.getElementById('closeModalButton').addEventListener('click', function () {
             // Điều hướng về trang chủ hoặc bất kỳ trang nào bạn muốn
-            window.location.href = "{{ route('admin.nganhang.naptien.index') }}";  // Điều hướng về trang danh sách
+            window.location.href = "{{ route('admin.naptien.index') }}";  // Điều hướng về trang danh sách
         });
     </script>
     
