@@ -136,6 +136,8 @@
                     <div class="sub-title"><i class="fas fa-history"></i> Lịch sử nạp tiền</div>
                 </div>
 
+                        
+
                 <!-- Thông báo lỗi hoặc thành công -->
                 @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
@@ -163,7 +165,20 @@
                                 <td class="text-center">{{ number_format($transaction->so_tien_nap) }}</td>
                                 <td>{{ $transaction->noi_dung }}</td>
                                 <td>{{ $transaction->created_at->format('d/m/Y H:i') }}</td>
-                                <td class="text-center">{{ $transaction->trang_thai }}</td>
+                                {{-- <td class="text-center">{{ $transaction->trang_thai }}</td> --}}
+
+                                <td>
+                                    <!-- Trạng thái -->
+                                    @if ($transaction->trang_thai == 'cho_duyet')
+                                        <button type="button" class="btn btn-warning">Chờ Phê Duyệt</button>
+                                    @elseif($transaction->trang_thai == 'da_duyet')
+                                        <button type="button" class="btn btn-success">Đã Duyệt</button>
+                                    @elseif($transaction->trang_thai == 'huy')
+                                        <button type="button" class="btn btn-danger">Hủy</button>
+                                    @endif
+                                </td>
+
+
                             </tr>
                             @empty
                             <tr>

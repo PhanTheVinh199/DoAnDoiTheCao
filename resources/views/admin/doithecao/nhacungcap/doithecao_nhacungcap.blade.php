@@ -16,7 +16,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Sản Phẩm</th>
-                                {{-- <th>Hình Ảnh</th> --}}
+                                <th>Hình Ảnh</th>
                                 <th>Ngày Tạo</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành động</th>
@@ -28,13 +28,13 @@
                                     <td>{{ $nhacungcap->id_nhacungcap }}</td>
                                     
                                     <td>{{ $nhacungcap->ten }}</td>
-                                    {{-- <td>
+                                    <td>
                                         @if ($nhacungcap->hinh_anh)
-                                            <img src="{{ asset('.uploads/' . $nhacungcap->hinh_anh) }}" alt="img-the" width="60">
+                                            <img src="{{ asset( $nhacungcap->hinh_anh) }}" alt="img-the" width="60">
                                         @else
                                             <span class="text-muted">Không có ảnh</span>
                                         @endif
-                                    </td> --}}
+                                    </td>
                                     <td>{{ $nhacungcap->ngay_tao}}</td>
                                     <td>
                                         @if ($nhacungcap->trang_thai == 'hoat_dong')

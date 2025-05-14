@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Models\NapTien;
@@ -14,43 +13,45 @@ class NapTienAdminController extends Controller
     public function showHistory()
     {
         // Lấy tất cả các giao dịch nạp tiền từ database, sắp xếp theo thời gian tạo mới nhất
-        $transactions = NapTien::latest()->paginate(10); // Sử dụng phân trang để giảm tải
-        return view('admin.naptien', compact('transactions'));
+        $dsNapTien = NapTien::latest()->paginate(10); // Sử dụng phân trang để giảm tải
+        return view('admin.nganhang.naptien.nganhang_naptien', compact('dsNapTien'));
     }
 
     // Duyệt giao dịch nạp tiền
-    public function approve($id)
-    {
-        // Lấy giao dịch nạp tiền theo ID
-        $transaction = NapTien::find($id);
+public function approve(Request $request, $id)
+{
+    // Lấy thông tin giao dịch nạp tiền
+    $dsNapTien = NapTien::find($id);
 
-        // Kiểm tra xem giao dịch có tồn tại hay không
-        if (!$transaction) {
-            return redirect()->route('admin.naptien.index')->with('error', 'Giao dịch không tồn tại.');
-        }
+    // Kiểm tra giao dịch có tồn tại hay không
+    if (!$dsNapTien) {
+        return redirect()->route('admin.naptien.index')->with('error', 'Giao dịch không tồn tại.');
+    }
 
-        // Kiểm tra nếu trạng thái là "đã duyệt" rồi thì không làm gì
-        if ($transaction->trang_thai == 'da_duyet') {
-            return redirect()->route('admin.naptien.index')->with('info', 'Giao dịch đã được duyệt trước đó.');
-        }
+    // Kiểm tra trạng thái giao dịch, không cho phép cập nhật nếu đã hủy
+    if ($dsNapTien->trang_thai == 'huy') {
+        return redirect()->route('admin.naptien.index')->with('info', 'Giao dịch này đã bị hủy và không thể cập nhật.');
+    }
 
-        // Cập nhật trạng thái giao dịch thành "đã duyệt"
-        Log::info("Trạng thái trước khi cập nhật: " . $transaction->trang_thai);
-        $transaction->trang_thai = 'da_duyet';
-        $transaction->save();
-        Log::info("Trạng thái sau khi cập nhật: " . $transaction->trang_thai);
+    // Cập nhật trạng thái giao dịch
+    $dsNapTien->trang_thai = $request->input('trang_thai');
+    $dsNapTien->save();
 
-        // Cập nhật số dư người dùng
-        $user = ThanhVien::find($transaction->thanhvien_id);  // Tìm người dùng liên quan
+    // Nếu trạng thái là "đã duyệt", cộng số tiền vào tài khoản người dùng
+    if ($dsNapTien->trang_thai == 'da_duyet') {
+        $user = ThanhVien::find($dsNapTien->thanhvien_id);
         if ($user) {
-            // Cộng số tiền vào số dư của người dùng
-            $user->so_du += $transaction->so_tien_nap;  
+            $user->so_du += $dsNapTien->so_tien_nap;
             $user->save();
         } else {
             return redirect()->route('admin.naptien.index')->with('error', 'Không tìm thấy người dùng.');
         }
-
-        // Thông báo thành công
-        return redirect()->route('admin.naptien.index')->with('success', 'Giao dịch đã được duyệt và số dư người dùng đã được cập nhật.');
     }
+
+    return redirect()->route('admin.naptien.index')->with('success', 'Trạng thái giao dịch đã được cập nhật.');
+}
+
+
+
+
 }

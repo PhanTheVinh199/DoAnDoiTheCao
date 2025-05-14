@@ -1,4 +1,5 @@
 @include('partials.header')
+
 <div class="container text-white">
     <div class="card bg-dark p-4">
         <h3 class="text-danger border-bottom pb-2">ĐƠN HÀNG #{{ $order->ma_don }}</h3>
@@ -39,14 +40,14 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        {{-- <div class="mt-4">
             @if($order->trang_thai == 'cho_duyet')
                 <form action="{{ route('order.confirm', ['id' => $order->id_lichsunap]) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-success">Xác nhận nạp tiền</button>
                 </form>
             @endif
-        </div>
+        </div> --}}
 
         <!-- Nút Trở lại -->
         <div class="mt-3">
@@ -55,3 +56,45 @@
     </div>
 </div>
 
+<!-- Thêm SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.24/dist/sweetalert2.min.js"></script>
+
+<script>
+    // Hiển thị thông báo nếu có từ session
+    @if (session('success'))
+        Swal.fire({
+            title: 'Thành công!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK',
+            timer: 5000,
+            timerProgressBar: true,
+           
+        });
+    @elseif (session('error'))
+        Swal.fire({
+            title: 'Lỗi!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK',
+            timer: 5000,
+            timerProgressBar: true,
+           
+        });
+    @elseif (session('info'))
+        Swal.fire({
+            title: 'Thông tin!',
+            text: "{{ session('info') }}",
+            icon: 'info',
+            confirmButtonText: 'OK',
+            timer: 5000,
+            timerProgressBar: true
+        });
+    @endif
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</body>
+</html>

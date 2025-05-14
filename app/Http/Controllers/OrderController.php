@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\NapTien;
 use Illuminate\Http\Request;
-use App\Models\Order;
 use App\Models\ThanhVien;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
@@ -16,34 +15,44 @@ class OrderController extends Controller
     {
         // Lấy thông tin đơn hàng, bao gồm thông tin cổng thanh toán
         $order = NapTien::with('nganhang')->findOrFail($id);
-        // dd($order);
-        // Trả về view và truyền dữ liệu vào
         return view('wallet.order_detail', compact('order'));
     }
 
+    // Xác nhận nạp tiền
     public function confirm($id)
     {
         // Lấy thông tin đơn hàng
         $order = NapTien::findOrFail($id);
 
-        // Kiểm tra nếu trạng thái hiện tại là "Chờ duyệt"
+        // Kiểm tra trạng thái giao dịch
         if ($order->trang_thai == 'cho_duyet') {
-            // Cập nhật trạng thái đơn hàng thành "Đã duyệt"
-            $order->trang_thai = 'da_duyet';
-            $order->save();
+            // Nếu giao dịch chưa được duyệt, thông báo lỗi
+            return redirect()->route('order.show', ['id' => $order->id_lichsunap])
+                             ->with('error', 'Giao dịch này vẫn chưa được admin phê duyệt.');
+        }
 
-            // Cập nhật số dư người dùng
+        if ($order->trang_thai == 'da_duyet') {
+            // Nếu giao dịch đã duyệt, cập nhật số dư người dùng
             $user = ThanhVien::find($order->thanhvien_id);
             if ($user) {
-                $user->so_du += $order->so_tien_nap; // Cộng số tiền vào số dư của người dùng
+                // Cộng số tiền vào số dư người dùng
+                $user->so_du += $order->so_tien_nap;
                 $user->save();
+            } else {
+                // Nếu không tìm thấy người dùng, thông báo lỗi
+                return redirect()->route('naptien')
+                                 ->with('error', 'Không tìm thấy người dùng.');
             }
 
-            return redirect()->route('order.show', ['id' => $order->id_lichsunap])
+            // Thông báo thành công và điều hướng về trang nạp tiền
+            return redirect()->route('naptien')
                              ->with('success', 'Giao dịch nạp tiền đã được duyệt và số dư người dùng đã được cập nhật.');
-        } else {
-            return redirect()->route('order.show', ['id' => $order->id_lichsunap])
-                             ->with('error', 'Giao dịch đã bị duyệt hoặc bị hủy trước đó.');
         }
+
+        // Nếu trạng thái không hợp lệ, thông báo lỗi
+        return redirect()->route('naptien')
+                         ->with('error', 'Giao dịch không hợp lệ.');
     }
 }
+
+
