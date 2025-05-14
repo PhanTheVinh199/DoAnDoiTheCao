@@ -86,3 +86,7 @@ Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
 Route::post('order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
 
 Route::post('admin/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('admin.naptien.approve');
+
+Route::fallback(function () {
+    return redirect()->route('index')->with('message', 'Trang bạn tìm kiếm không tồn tại.');
+});
