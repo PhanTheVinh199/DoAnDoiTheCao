@@ -17,7 +17,7 @@ class AdminMiddleware
             return $next($request); // Cho phép tiếp tục nếu là admin
         }
 
-        // Nếu không phải admin, chuyển hướng đến trang login hoặc trang chủ
+        // Nếu không phải admin, chuyển hướng đến trang chủ
         return redirect()->route('index');
     }
 }

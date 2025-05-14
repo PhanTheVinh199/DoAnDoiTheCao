@@ -13,15 +13,14 @@ class SanPhamController extends Controller
 {
     public function index(Request $request)
     {
-        
         $user = Auth::guard('thanhvien')->user();
 
         if (!$user) {
             return view('card')->with('message', 'Vui lòng đăng nhập để tiếp tục thanh toán.');
         }
 
-        // Lấy danh sách nhà cung cấp
-        $dsNhaCungCap = MaThe_NhaCungCap::all();
+        // Lấy danh sách nhà cung cấp có trạng thái 'Hoạt động'
+        $dsNhaCungCap = MaThe_NhaCungCap::where('trang_thai', 'Hoạt động')->get();
 
         $query = MaThe_DonHang::where('thanhvien_id', $user->id_thanhvien)
             ->with('sanpham.nhacungcap');
@@ -49,7 +48,9 @@ class SanPhamController extends Controller
 
     public function getProductPrices($id)
     {
-        $products = MaThe_SanPham::where('nhacungcap_id', $id)->get();
+        $products = MaThe_SanPham::where('nhacungcap_id', $id)
+            ->where('trang_thai', 'Hoạt động')
+            ->get();
 
         if ($products->isEmpty()) {
             return response()->json(['html' => '<div class="price-item">Không có sản phẩm</div>']);
