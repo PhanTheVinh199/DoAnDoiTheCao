@@ -25,6 +25,7 @@ class NganHang extends Model
         'chu_tai_khoan',
         'so_tai_khoan',
         'trang_thai',
+        'loai_ngan_hang'
     ];
 
     // Mối quan hệ với bảng ThanhVien (mỗi ngân hàng có một thành viên)

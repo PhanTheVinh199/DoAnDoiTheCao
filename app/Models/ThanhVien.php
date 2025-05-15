@@ -12,7 +12,7 @@ use App\Models\NganHang;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class ThanhVien extends  Authenticatable
+class ThanhVien extends Authenticatable
 {
     use Notifiable;
 
@@ -27,7 +27,8 @@ class ThanhVien extends  Authenticatable
         'email',
         'mat_khau',
         'so_du',
-        'quyen'
+        'quyen',
+        'role',
     ];
 
     protected $hidden = [
@@ -59,5 +60,62 @@ class ThanhVien extends  Authenticatable
     public function ruttiens()
     {
         return $this->hasMany(RutTien::class, 'thanhvien_id');
+    }
+
+    /**
+     * Define role constants
+     */
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
+     * Get available roles
+     */
+    public static function getAvailableRoles(): array
+    {
+        return [
+            self::ROLE_ADMIN => 'Quản trị viên',
+            self::ROLE_USER => 'Người dùng',
+        ];
+    }
+
+    /**
+     * Set user as admin
+     */
+    public function setAsAdmin(): bool
+    {
+        return $this->update(['role' => self::ROLE_ADMIN]);
+    }
+
+    /**
+     * Set user as regular user
+     */
+    public function setAsUser(): bool
+    {
+        return $this->update(['role' => self::ROLE_USER]);
+    }
+
+    /**
+     * Scope a query to only include admin users
+     */
+    public function scopeAdmin($query)
+    {
+        return $query->where('role', self::ROLE_ADMIN);
+    }
+
+    /**
+     * Scope a query to only include regular users
+     */
+    public function scopeUsers($query)
+    {
+        return $query->where('role', self::ROLE_USER);
     }
 }
