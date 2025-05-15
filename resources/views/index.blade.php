@@ -1,6 +1,6 @@
 @include('partials.header')
 
-<main id="main" class="container-fluid main" >
+<main id="main" class="container-fluid main">
     <div class="section-gap">
         <div class="container">
             <div class="mb-3">
@@ -19,7 +19,6 @@
                             opacity: 0;
                         }
                     }
-                    
                 </style>
                 <p style="text-align: center;"><span style="color:#27ae60;"><cite><em>"Các shop api&nbsp;có sảnlượng
                                 ổn định từ <strong>1.000.000d/ngày</strong> liên hệ để được hỗ trợ giá <strong>Đại
@@ -107,13 +106,14 @@
                                             <div class="col-lg-3 col-sm-12 col-12" id="theCao">
                                                 <!-- Lấy danh sách nhà cung cấp từ controller -->
                                                 <select class="form-control telco" name="telco[]" id="network"
-                                                    data-row="1">
+                                                    data-row="1" required>
                                                     <option value="">--- Chọn Thẻ ---</option>
                                                     @foreach ($nhacungcap as $nc)
                                                         <option value="{{ $nc->id_nhacungcap }}">{{ $nc->ten }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+
                                             </div>
                                             <div class="col-lg-3 col-sm-6 col-12">
                                                 <div class="position-relative form-icon form-icon_right">
@@ -296,7 +296,7 @@
 
 
 
-                                
+
 
                                 <div class="section-gap">
                                     <div class="container">
@@ -473,7 +473,8 @@
         var firstTab = document.querySelector('.nav-tabs .nav-item:first-child .nav-link');
         if (firstTab) {
             firstTab.classList.add('active'); // Đánh dấu tab đầu tiên là active
-            var firstTabContent = document.querySelector(firstTab.getAttribute('href')); // Lấy nội dung của tab đầu tiên
+            var firstTabContent = document.querySelector(firstTab.getAttribute(
+            'href')); // Lấy nội dung của tab đầu tiên
             if (firstTabContent) {
                 firstTabContent.classList.add('active', 'show'); // Hiển thị nội dung tab đầu tiên
             }
@@ -488,4 +489,3 @@
 
 
 </html>
-@include('partials.footer')
