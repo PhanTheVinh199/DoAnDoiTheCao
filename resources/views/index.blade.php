@@ -489,3 +489,4 @@
 
 
 </html>
+@include('partials.footer')
