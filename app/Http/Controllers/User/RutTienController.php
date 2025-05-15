@@ -30,7 +30,7 @@ class RutTienController extends Controller
          // Lấy lịch sử rút tiền của người dùng từ bảng RutTien
          $dsRutTien = RutTien::where('thanhvien_id', $user->id_thanhvien)
                              ->orderBy('created_at', 'desc')
-                             ->paginate(1);  // Phân trang, lấy 10 bản ghi mỗi trang
+                             ->paginate(5);  // Phân trang, lấy 10 bản ghi mỗi trang
 
                              
 
