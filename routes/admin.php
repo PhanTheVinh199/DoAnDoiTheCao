@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\DoithecaoDanhsachController;
 use App\Http\Controllers\admin\DoithecaoDonhangController;
 use App\Http\Controllers\admin\NapTienAdminController;
 
+use App\Http\Controllers\admin\NganhangAdminController;
 use App\Http\Controllers\admin\ThanhvienController;
 use App\Http\Middleware\AdminMiddleware;
 
@@ -93,6 +94,7 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
     Route::prefix('nganhang')->name('nganhang.')->group(function () {
         // Route hiển thị danh sách ngân hàng
         Route::get('/', [NganhangController::class, 'index'])->name('index');
+        
 
         // Route tạo ngân hàng
         Route::get('/create', [NganhangController::class, 'create'])->name('create');
@@ -119,6 +121,12 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         // Route sửa lịch sử nạp 
         Route::get('/naptien/edit/{id}', [NganhangController::class, 'editNapTien'])->name('naptien.edit');
         Route::put('/naptien/edit/{id}', [NganhangController::class, 'updateNapTien'])->name('naptien.update');
+    });
+    Route::prefix('nganhang/admin')->name('nganhang.admin.')->group(function () {
+        Route::get('/', [NganhangAdminController::class, 'index'])->name('index');
+        Route::get('/create', [NganhangAdminController::class, 'create'])->name('create');
+        Route::post('/store', [NganhangAdminController::class, 'store'])->name('store');
+        Route::delete('/delete/{id}', [NganhangAdminController::class, 'destroy'])->name('delete');
     });
 
 

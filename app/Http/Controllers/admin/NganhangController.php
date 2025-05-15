@@ -17,25 +17,22 @@ class NganhangController extends Controller
 //Hiển thị danh sách ngân hàng
 public function index(Request $request)
 {
-    // Tạo query để lấy tất cả dữ liệu ngân hàng
+    $userId = Auth::id();
+    $search = $request->input('search');
+
     $query = NganHang::query();
+        
 
-    // Kiểm tra xem có tìm kiếm theo từ khóa không
-    if ($request->has('search') && $request->search != '') {
-        // Lấy từ khóa tìm kiếm
-        $searchTerm = $request->search;
-
-        // Lọc theo tài khoản hoặc số tài khoản có chứa từ khóa
-        $query->whereHas('thanhvien', function ($q) use ($searchTerm) {
-            $q->where('tai_khoan', 'like', '%' . $searchTerm . '%')
-              ->orWhere('so_tai_khoan', 'like', '%' . $searchTerm . '%');
+    if ($search) {
+        $query->where(function($q) use ($search) {
+            $q->where('ten_ngan_hang', 'like', '%' . $search . '%')
+              ->orWhere('so_tai_khoan', 'like', '%' . $search . '%')
+              ->orWhere('chu_tai_khoan', 'like', '%' . $search . '%');
         });
     }
 
-    // Sắp xếp theo thời gian tạo (created_at) theo thứ tự tăng dần
-    $dsNganHang = $query->orderBy('created_at', 'asc')->paginate(5);
+    $dsNganHang = $query->latest()->paginate(5);
 
-    // Trả về view và truyền dữ liệu vào
     return view('admin.nganhang.danhsach.nganhang', compact('dsNganHang'));
 }
 
@@ -47,7 +44,7 @@ public function delete_nganhang($id)
     $nganhang->delete();
 
     // Chuyển hướng về danh sách ngân hàng và thông báo
-    return redirect()->route('admin.nganhang.index')->with('success', 'Đã xóa ngân hàng thành công.');
+    return redirect()->route('admin.nganhang.danhsach.nganhang')->with('success', 'Đã xóa ngân hàng thành công.');
 }
 
 
@@ -182,47 +179,47 @@ public function updateNapTien(Request $request, $id)
 
 
 // Hiển thị form thêm ngân hàng
-public function create()
-{
-    $banks = NganHang::all(); // Lấy danh sách ngân hàng để hiển thị nếu cần
-    return view('admin.nganhang.caidat_nganhang.caidat_nganhang', compact('banks'));
-}
+// public function create()
+// {
+//     $banks = NganHang::all(); // Lấy danh sách ngân hàng để hiển thị nếu cần
+//     return view('admin.nganhang.caidat_nganhang.caidat_nganhang', compact('banks'));
+// }
 
-// Xử lý lưu ngân hàng mới
-public function store(Request $request)
-{
-    // Validate dữ liệu đầu vào
-    $validated = $request->validate([
-        'ten_thanhvien' => 'required|string',
-        'ten_ngan_hang' => 'required|string|max:255',
-        'so_tai_khoan' => 'required|string|max:100',
-        'chu_tai_khoan' => 'required|string|max:100',
-        'trang_thai' => 'nullable|boolean', // Đảm bảo trang_thai là kiểu boolean
-    ]);
+// // Xử lý lưu ngân hàng mới
+// public function store(Request $request)
+// {
+//     // Validate dữ liệu đầu vào
+//     $validated = $request->validate([
+//         'ten_thanhvien' => 'required|string',
+//         'ten_ngan_hang' => 'required|string|max:255',
+//         'so_tai_khoan' => 'required|string|max:100',
+//         'chu_tai_khoan' => 'required|string|max:100',
+//         'trang_thai' => 'nullable|boolean', // Đảm bảo trang_thai là kiểu boolean
+//     ]);
 
-    // Tìm kiếm thành viên bằng tài khoản
-    $thanhvien = ThanhVien::where('tai_khoan', $validated['ten_thanhvien'])->first();
+//     // Tìm kiếm thành viên bằng tài khoản
+//     $thanhvien = ThanhVien::where('tai_khoan', $validated['ten_thanhvien'])->first();
 
-    // Kiểm tra nếu không tìm thấy thành viên
-    if (!$thanhvien) {
-        return back()->with('error', 'Không tìm thấy thành viên: ' . $validated['ten_thanhvien'])
-                     ->withInput();  // Giữ lại dữ liệu đã nhập
-    }
+//     // Kiểm tra nếu không tìm thấy thành viên
+//     if (!$thanhvien) {
+//         return back()->with('error', 'Không tìm thấy thành viên: ' . $validated['ten_thanhvien'])
+//                      ->withInput();  // Giữ lại dữ liệu đã nhập
+//     }
 
-    // Xử lý giá trị trang_thai, nếu không có thì mặc định là true
-    $trang_thai = $request->has('trang_thai') ? $request->trang_thai : true;
+//     // Xử lý giá trị trang_thai, nếu không có thì mặc định là true
+//     $trang_thai = $request->has('trang_thai') ? $request->trang_thai : true;
 
-    // Tạo mới ngân hàng
-    NganHang::create([
-        'thanhvien_id' => $thanhvien->id_thanhvien,  // Sử dụng ID thành viên hợp lệ
-        'ten_ngan_hang' => $validated['ten_ngan_hang'],
-        'so_tai_khoan' => $validated['so_tai_khoan'],
-        'chu_tai_khoan' => $validated['chu_tai_khoan'],
-        'trang_thai' => $trang_thai,  // Sử dụng giá trị trang_thai đã kiểm tra
-    ]);
+//     // Tạo mới ngân hàng
+//     NganHang::create([
+//         'thanhvien_id' => $thanhvien->id_thanhvien,  // Sử dụng ID thành viên hợp lệ
+//         'ten_ngan_hang' => $validated['ten_ngan_hang'],
+//         'so_tai_khoan' => $validated['so_tai_khoan'],
+//         'chu_tai_khoan' => $validated['chu_tai_khoan'],
+//         'trang_thai' => $trang_thai,  // Sử dụng giá trị trang_thai đã kiểm tra
+//     ]);
 
-    // Trả về trang trước với thông báo thành công
-    return redirect()->route('admin.nganhang.index')->with('success', 'Thêm ngân hàng thành công!');
-}
+//     // Trả về trang trước với thông báo thành công
+//     return redirect()->route('admin.nganhang')->with('success', 'Thêm ngân hàng thành công!');
+// }
 
 }

@@ -7,7 +7,7 @@
     <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('admin.nganhang.store') }}" method="POST">
+    <form action="{{ route('admin.nganhang.admin.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">

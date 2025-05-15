@@ -64,6 +64,7 @@ class RutTienController extends Controller
             'so_tai_khoan' => $request->input('so_tai_khoan'),
             'chu_tai_khoan' => $request->input('chu_tai_khoan'),
             'trang_thai' => 'hoat_dong',
+            'loai_ngan_hang' => 'user',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

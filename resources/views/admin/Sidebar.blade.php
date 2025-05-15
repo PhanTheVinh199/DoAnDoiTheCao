@@ -100,7 +100,7 @@
         </a>
         <div id="menu6" class="collapse ps-3">
 
-            <a href="{{ route('admin.nganhang.index') }}">Cổng Thanh Toán </a>
+            <a href="{{ route('admin.nganhang.admin.index') }}">Cổng Thanh Toán </a>
             <!-- <a href="#">Hệ Thống </a> -->
         </div>
 

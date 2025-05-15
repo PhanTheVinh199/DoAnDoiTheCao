@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,13 +9,23 @@ use Illuminate\Http\Request;
 class NganhangAdminController extends Controller
 {
     // Hiển thị danh sách ngân hàng admin
-    public function index()
+    public function index(Request $request)
     {
-        $banks = NganHang::whereHas('thanhvien', function($q) {
-            $q->where('role', 'admin');
-        })->with('thanhvien')->latest()->paginate(10);  // paginate tốt hơn get()
+       $search = $request->input('search');
 
-        return view('admin.nganhang.NganHangAdmin.nganhangAdmin', compact('banks'));
+    $query = NganHang::where('loai_ngan_hang', 'admin')  // Chỉ lấy ngân hàng admin
+        ->whereHas('thanhvien', function($q) use ($search) {
+            $q->where('role', 'admin');
+            if ($search) {
+                $q->where('tai_khoan', 'like', '%' . $search . '%');
+            }
+        })
+        ->with('thanhvien')
+        ->latest();
+
+    $dsNganHang = $query->paginate(10);
+
+    return view('admin.nganhang.NganHangAdmin.nganhangAdmin', compact('dsNganHang'));
     }
 
     // Hiển thị form tạo mới
@@ -58,4 +67,16 @@ class NganhangAdminController extends Controller
             ->route('admin.nganhang.admin.index')
             ->with('success', 'Thêm ngân hàng admin thành công!');
     }
+    public function destroy($id)
+{
+    $bank = NganHang::findOrFail($id);
+    // Optional: chỉ cho phép xóa nếu liên kết admin
+    if ($bank->thanhvien->role !== 'admin') {
+        return back()->with('error', 'Chỉ được xóa ngân hàng admin.');
+    }
+    $bank->delete();
+
+    return redirect()->route('admin.nganhang.admin.index')->with('success', 'Xóa ngân hàng admin thành công!');
+}
+
 }

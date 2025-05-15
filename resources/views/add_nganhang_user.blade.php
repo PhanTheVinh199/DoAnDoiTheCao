@@ -17,27 +17,34 @@
         </div>
 
         <form action="{{ route('add_nganhang_user_store') }}" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label for="ten_ngan_hang" class="block text-gray-700 font-medium mb-2">Ngân Hàng</label>
-                <input type="text" name="ten_ngan_hang" id="ten_ngan_hang" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-            </div>
+        @csrf
 
-            <div class="mb-4">
-                <label for="so_tai_khoan" class="block text-gray-700 font-medium mb-2">Số Tài Khoản</label>
-                <input type="text" name="so_tai_khoan" id="so_tai_khoan" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-            </div>
+        <div class="mb-3">
+            <label for="ten_ngan_hang" class="form-label">Tên ngân hàng</label>
+            <input type="text" name="ten_ngan_hang" class="form-control" id="ten_ngan_hang" required value="{{ old('ten_ngan_hang') }}">
+            @error('ten_ngan_hang')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="mb-4">
-                <label for="chu_tai_khoan" class="block text-gray-700 font-medium mb-2">Chủ Tài Khoản</label>
-                <input type="text" name="chu_tai_khoan" id="chu_tai_khoan" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-            </div>
+        <div class="mb-3">
+            <label for="so_tai_khoan" class="form-label">Số tài khoản</label>
+            <input type="text" name="so_tai_khoan" class="form-control" id="so_tai_khoan" required value="{{ old('so_tai_khoan') }}">
+            @error('so_tai_khoan')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="flex justify-end space-x-2">
-                <a href="{{ route('ruttien') }}" class="bg-gray-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-gray-600">Đóng</a>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-blue-700">Cập Nhật</button>
-            </div>
-        </form>
+        <div class="mb-3">
+            <label for="chu_tai_khoan" class="form-label">Chủ tài khoản</label>
+            <input type="text" name="chu_tai_khoan" class="form-control" id="chu_tai_khoan" required value="{{ old('chu_tai_khoan') }}">
+            @error('chu_tai_khoan')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-primary">Thêm ngân hàng</button>
+    </form>
     </div>
 
 </body>
