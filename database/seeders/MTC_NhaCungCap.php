@@ -49,5 +49,47 @@ class MTC_NhaCungCap extends Seeder
             'ngay_tao' => now(),
             'trang_thai' => 'Hoạt động',
         ]);
+
+         DB::table('mathecao_nhacungcap')->insert([
+            'ten' => 'Garena',
+            'hinhanh' => 'images/garena.png',
+            'ngay_tao' => now(),
+            'trang_thai' => 'Hoạt động',
+        ]);
+
+        DB::table('mathecao_nhacungcap')->insert([
+            'ten' => 'Appota',
+            'hinhanh' => 'images/APPOTA_CARD.png',
+            'ngay_tao' => now(),
+            'trang_thai' => 'Hoạt động',
+        ]);
+
+        DB::table('mathecao_nhacungcap')->insert([
+            'ten' => 'Carot',
+            'hinhanh' => 'images/the-ca-rot.jpg',
+            'ngay_tao' => now(),
+            'trang_thai' => 'Hoạt động',
+        ]);
+
+        DB::table('mathecao_nhacungcap')->insert([
+            'ten' => 'Funcard',
+            'hinhanh' => 'images/the-funcard.jpg',
+            'ngay_tao' => now(),
+            'trang_thai' => 'Hoạt động',
+        ]);
+
+        DB::table('mathecao_nhacungcap')->insert([
+            'ten' => 'Scoin',
+            'hinhanh' => 'images/the-scoin.jpg',
+            'ngay_tao' => now(),
+            'trang_thai' => 'Hoạt động',
+        ]);
+
+        DB::table('mathecao_nhacungcap')->insert([
+            'ten' => 'Vcoin',
+            'hinhanh' => 'images/the-vcoin.png',
+            'ngay_tao' => now(),
+            'trang_thai' => 'Hoạt động',
+        ]);
     }
 }
