@@ -80,8 +80,7 @@
 
             <a href="{{route('admin.nganhang.index')}}">Danh sách Ngân Hàng</a>
             <a href="{{route('admin.nganhang.ruttien.index')}}">Lịch sử rút</a>
-            <a href="{{ route('admin.nganhang.naptien.index') }}">Lịch sử nạp</a>
-
+            <a href="{{ route('admin.nganhang.naptien.index') }}">Lịch sử nạp</a> <!-- Add this line -->
         </div>
 
         <a href="#menu5" class="d-flex justify-content-between" data-bs-toggle="collapse">
@@ -100,7 +99,7 @@
         </a>
         <div id="menu6" class="collapse ps-3">
 
-            <a href="{{ route('admin.nganhang.create') }}">Cổng Thanh Toán </a>
+            <a href="{{ route('admin.nganhang.admin.index') }}">Cổng Thanh Toán </a>
             <!-- <a href="#">Hệ Thống </a> -->
         </div>
 
