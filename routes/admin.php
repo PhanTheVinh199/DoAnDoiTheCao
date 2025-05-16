@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\DoithecaoNhacungcapController;
 use App\Http\Controllers\admin\DoithecaoDanhsachController;
 use App\Http\Controllers\admin\DoithecaoDonhangController;
 use App\Http\Controllers\admin\NapTienAdminController;
+use App\Http\Controllers\Admin\NganhangAdminController;
 
 use App\Http\Controllers\admin\ThanhvienController;
 use App\Http\Middleware\AdminMiddleware;
@@ -110,13 +111,8 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/ruttien/edit/{id}', [NganhangController::class, 'editRutTien'])->name('ruttien.edit');
         Route::put('/ruttien/edit/{id}', [NganhangController::class, 'updateRutTien'])->name('ruttien.update');
 
-        // Route hiển thị lịch sử nạp
         Route::get('/naptien', [NganhangController::class, 'naptien'])->name('naptien.index');
-
-        // Xóa lịch sử nạp tiền
         Route::delete('/naptien/delete/{id}', [NganhangController::class, 'destroyNapTien'])->name('naptien.delete');
-
-        // Route sửa lịch sử nạp 
         Route::get('/naptien/edit/{id}', [NganhangController::class, 'editNapTien'])->name('naptien.edit');
         Route::put('/naptien/edit/{id}', [NganhangController::class, 'updateNapTien'])->name('naptien.update');
     });
@@ -144,8 +140,12 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
     });
     Route::get('/naptien', [NapTienAdminController::class, 'showHistory'])->name('naptien.index');
 
-    // Duyệt giao dịch nạp tiền
-    Route::post('/naptien/approve/{id}', [NapTienAdminController::class, 'approve'])->name('naptien.approve');
+    Route::prefix('nganhang/admin')->name('nganhang.admin.')->group(function () {
+        Route::get('/', [NganhangAdminController::class, 'index'])->name('index');
+        Route::get('/create', [NganhangAdminController::class, 'create'])->name('create');
+        Route::post('/store', [NganhangAdminController::class, 'store'])->name('store');
+        Route::delete('/delete/{id}', [NganhangAdminController::class, 'destroy'])->name('delete');
+    });
 
     Route::fallback(function () {
         return redirect()->route('index')->with('message', 'Trang bạn tìm kiếm không tồn tại.');
