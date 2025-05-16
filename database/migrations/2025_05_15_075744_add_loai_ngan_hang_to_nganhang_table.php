@@ -15,7 +15,7 @@ return new class extends Migration
             $table->enum('loai_ngan_hang', ['admin', 'user'])->default('user');
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */

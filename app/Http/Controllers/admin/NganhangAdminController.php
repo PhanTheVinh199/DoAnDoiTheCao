@@ -31,8 +31,8 @@ class NganhangAdminController extends Controller
     // Hiển thị form tạo mới
     public function create()
     {
-        $admins = ThanhVien::where('role', 'admin')->get();
-        return view('admin.nganhang.caidat_nganhang.caidat_nganhang', compact('admins'));
+        $banks = NganHang::where('loai_ngan_hang', 'admin')->get();
+        return view('admin.nganhang.caidat_nganhang.caidat_nganhang', compact('banks'));
     }
 
     // Lưu ngân hàng mới

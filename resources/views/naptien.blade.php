@@ -60,17 +60,17 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="col-form-label fw-bold">Cổng thanh toán:</label>
-                            <select class="form-control" name="paygate_code" required>
-                                @forelse($banks as $bank)
-                                <option value="{{ $bank->id_danhsach }}">
-                                    {{ $bank->ten_ngan_hang }} - {{ $bank->so_tai_khoan }} ({{ $bank->chu_tai_khoan }})
-                                </option>
-                                @empty
-                                <option value="">Bạn chưa thêm ngân hàng nào</option>
-                                @endforelse
-                            </select>
-                        </div>
+    <label class="col-form-label fw-bold">Cổng thanh toán:</label>
+    <select class="form-control" name="paygate_code" required>
+        @forelse($banks as $bank)
+            <option value="{{ $bank->id }}">
+                {{ $bank->ten_ngan_hang }} - {{ $bank->so_tai_khoan }} ({{ $bank->chu_tai_khoan }})
+            </option>
+        @empty
+            <option value="">Bạn chưa thêm ngân hàng nào</option>
+        @endforelse
+    </select>
+</div>
 
                         <div class="text-end">
                             <input type="hidden" name="hanMucNgay" value="{{ $hanMucNgay }}">

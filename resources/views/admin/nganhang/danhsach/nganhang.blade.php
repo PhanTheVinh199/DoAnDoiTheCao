@@ -22,6 +22,7 @@
                             <th>Số Tài Khoản</th>
                             <th>Chủ Tài Khoản</th>
                             <th>Trạng Thái</th>
+                            <th>Loại Ngân Hàng</th> <!-- Thêm cột Loại Ngân Hàng -->
                             <th>Hành Động</th>
                         </tr>
                     </thead>
@@ -39,6 +40,7 @@
                                         <button type="button" class="btn btn-danger">Không Hoạt Động</button>
                                     @endif
                                 </td>
+                                <td>{{ $item->loai_ngan_hang }}</td> <!-- Hiển thị loại ngân hàng -->
                                 <td>
                                     <form action="{{ route('admin.nganhang.delete', $item->id_danhsach) }}" 
                                           method="POST" 
@@ -51,7 +53,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">Bạn chưa tạo ngân hàng nào.</td>
+                                <td colspan="7" class="text-center">Bạn chưa tạo ngân hàng nào.</td>
                             </tr>
                         @endforelse
                     </tbody>
