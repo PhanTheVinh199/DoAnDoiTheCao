@@ -111,6 +111,11 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/ruttien/edit/{id}', [NganhangController::class, 'editRutTien'])->name('ruttien.edit');
         Route::put('/ruttien/edit/{id}', [NganhangController::class, 'updateRutTien'])->name('ruttien.update');
 
+        Route::get('/naptien', [NganhangAdminController::class, 'naptien'])->name('naptien.index');
+    Route::delete('/naptien/delete/{id}', [NganhangAdminController::class, 'destroyNapTien'])->name('naptien.delete');
+    Route::get('/naptien/edit/{id}', [NganhangAdminController::class, 'editNapTien'])->name('naptien.edit');
+    Route::put('/naptien/edit/{id}', [NganhangAdminController::class, 'updateNapTien'])->name('naptien.update');
+
        });
 
 
@@ -141,10 +146,6 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/create', [NganhangAdminController::class, 'create'])->name('create');
         Route::post('/store', [NganhangAdminController::class, 'store'])->name('store');
         Route::delete('/delete/{id}', [NganhangAdminController::class, 'destroy'])->name('delete');
-        Route::get('/naptien', [NganhangAdminController::class, 'naptien'])->name('naptien.index');
-    Route::delete('/naptien/delete/{id}', [NganhangAdminController::class, 'destroyNapTien'])->name('naptien.delete');
-    Route::get('/naptien/edit/{id}', [NganhangAdminController::class, 'editNapTien'])->name('naptien.edit');
-    Route::put('/naptien/edit/{id}', [NganhangAdminController::class, 'updateNapTien'])->name('naptien.update');
 
     });
 
