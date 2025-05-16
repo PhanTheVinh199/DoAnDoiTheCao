@@ -15,7 +15,7 @@ class NganhangAdminController extends Controller
 
     $query = NganHang::where('loai_ngan_hang', 'admin')  // Chỉ lấy ngân hàng admin
         ->whereHas('thanhvien', function($q) use ($search) {
-            $q->where('role', 'admin');
+            $q->where('quyen', 'admin');
             if ($search) {
                 $q->where('tai_khoan', 'like', '%' . $search . '%');
             }
@@ -38,6 +38,7 @@ class NganhangAdminController extends Controller
     // Lưu ngân hàng mới
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'ten_thanhvien' => 'required|exists:thanhvien,tai_khoan',
             'ten_ngan_hang' => 'required',
@@ -47,7 +48,7 @@ class NganhangAdminController extends Controller
         ]);
 
         $thanhvien = ThanhVien::where('tai_khoan', $validated['ten_thanhvien'])
-                              ->where('role', 'admin')
+                              ->where('quyen', 'admin')
                               ->first();
 
         if (!$thanhvien) {
@@ -71,7 +72,7 @@ class NganhangAdminController extends Controller
 {
     $bank = NganHang::findOrFail($id);
     // Optional: chỉ cho phép xóa nếu liên kết admin
-    if ($bank->thanhvien->role !== 'admin') {
+    if ($bank->thanhvien->quyen !== 'admin') {
         return back()->with('error', 'Chỉ được xóa ngân hàng admin.');
     }
     $bank->delete();
