@@ -136,7 +136,7 @@
                     <div class="sub-title"><i class="fas fa-history"></i> Lịch sử nạp tiền</div>
                 </div>
 
-                        
+
 
                 <!-- Thông báo lỗi hoặc thành công -->
                 @if(session('success'))
