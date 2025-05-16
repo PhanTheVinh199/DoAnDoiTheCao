@@ -5,9 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 use App\Models\NganHang;
-use App\Models\ThanhVien; 
+use App\Models\ThanhVien;
 use App\Models\RutTien;
 use App\Models\NapTien;
 
@@ -20,8 +20,8 @@ public function index(Request $request)
     $userId = Auth::id();
     $search = $request->input('search');
 
-    $query = NganHang::query();
-        
+    $query = NganHang::where('loai_ngan_hang', 'user');
+
 
     if ($search) {
         $query->where(function($q) use ($search) {
@@ -76,7 +76,7 @@ public function ruttien(Request $request)
 }
 
 
-    
+
 
 
     //Xóa lịch sử rút tiền
@@ -92,7 +92,7 @@ public function ruttien(Request $request)
 
 //Sửa Lịch sử rút tiền
 public function editRutTien($id)
-{  
+{
     $rutTien = RutTien::findOrFail($id);
     return view('admin.nganhang.ruttien.nganhang_ruttien_edit', compact('rutTien'));
 }
@@ -145,7 +145,7 @@ public function destroyNapTien($id)
 {
     // Tìm lịch sử nạp tiền theo ID
     $napTien = NapTien::findOrFail($id);
-    
+
     // Xóa bản ghi
     $napTien->delete();
 

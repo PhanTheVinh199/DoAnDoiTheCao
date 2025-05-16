@@ -27,7 +27,7 @@ class NapTienController extends Controller
                                 ->get();
 
         // Lấy danh sách ngân hàng của admin (admin có id 1)
-        $banks = NganHang::where('id_danhsach', '>=', 1)
+        $banks = NganHang::where('loai_ngan_hang', 'admin')
                         ->where('trang_thai', 'hoat_dong')
                         ->get();
 
@@ -62,7 +62,7 @@ class NapTienController extends Controller
         $totalToday = NapTien::where('thanhvien_id', $user->id_thanhvien)
                              ->whereDate('created_at', now()->toDateString())
                              ->sum('so_tien_nap');
-    
+
         if ($totalToday + $request->net_amount > $hanMucNgay) {
             return back()->with('error', 'Bạn đã đạt hạn mức nạp tiền trong ngày.');
         }
@@ -92,7 +92,7 @@ class NapTienController extends Controller
 
         // Redirect đến chi tiết đơn hàng
         return redirect()->route('order.show', ['id' => $order->id_lichsunap]);
-    
+
     }
 
     // Xử lý thanh toán qua ngân hàng nội bộ
