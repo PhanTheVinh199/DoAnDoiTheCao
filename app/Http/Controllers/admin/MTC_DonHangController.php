@@ -49,7 +49,7 @@ class MTC_DonHangController extends Controller
             'mathecao_id' => 'required|exists:mathecao_danhsach,id_mathecao',
             'so_luong' => 'required|numeric|min:1',
             'thanhvien_id' => 'required|exists:thanhvien,id_thanhvien',
-            'trang_thai' => 'required|in:Hoạt động,Đã huỷ,Chờ xử lý',
+            'trang_thai' => 'required|in:hoat_dong, da_huy, cho_xu_ly',
         ]);
 
        
@@ -102,7 +102,7 @@ class MTC_DonHangController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'trang_thai' => 'required|in:Hoạt động,Chờ xử lý,Đã huỷ', // Chắc chắn rằng 'trang_thai' là một trường hợp hợp lệ
+            'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
         ]);
 
         // Tìm đơn hàng theo ID

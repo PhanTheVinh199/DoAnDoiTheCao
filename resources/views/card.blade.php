@@ -214,11 +214,11 @@
                                             <th>{{ $dh->thanh_tien}}</th>
                                             <th>{{$dh->ngay_tao}}</th>
                                             <th>
-                                                @if($dh->trang_thai == 'Chờ xử lý')
+                                                @if($dh->trang_thai == 'cho_xu_ly')
                                                     <button type="button" class="btn btn-warning">Chờ xử lý</button>
-                                                @elseif($dh->trang_thai == 'Hoạt động')
+                                                @elseif($dh->trang_thai == 'hoat_dong')
                                                     <button type="button" class="btn btn-success">Hoạt động</button>
-                                                @elseif($dh->trang_thai == 'Đã hủy')
+                                                @elseif($dh->trang_thai == 'da_huy')
                                                     <button type="button" class="btn btn-danger">Đã hủy</button>
                                                 @endif
                                             </th>

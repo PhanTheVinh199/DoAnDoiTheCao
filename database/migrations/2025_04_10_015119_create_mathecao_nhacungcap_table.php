@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ten', 100);
             $table->string('hinhanh', 255)->nullable();
             $table->timestamp('ngay_tao')->useCurrent();
-            $table->enum('trang_thai', ['Hoạt động', 'Ẩn'])->default('Hoạt động');
+            $table->enum('trang_thai',  ['hoat_dong', 'an'])->default('hoat_dong');
         });
     }
 

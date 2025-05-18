@@ -20,7 +20,7 @@ class SanPhamController extends Controller
         }
 
         // Lấy danh sách nhà cung cấp có trạng thái 'Hoạt động'
-        $dsNhaCungCap = MaThe_NhaCungCap::where('trang_thai', 'Hoạt động')->get();
+        $dsNhaCungCap = MaThe_NhaCungCap::where('trang_thai', 'hoat_dong')->get();
 
         $query = MaThe_DonHang::where('thanhvien_id', $user->id_thanhvien)
             ->with('sanpham.nhacungcap');
@@ -29,7 +29,7 @@ class SanPhamController extends Controller
             $query->where('ma_don', 'like', '%' . $request->order_code . '%');
         }
 
-        if ($request->filled('status') && in_array($request->status, ['Hoạt động', 'Đã huỷ', 'Chờ xử lý'])) {
+        if ($request->filled('status') && in_array($request->status, ['hoat_dong', 'da_huy', 'cho_xu_ly'])) {
             $query->where('trang_thai', $request->status);
         }
 
@@ -44,7 +44,7 @@ class SanPhamController extends Controller
     public function getProductPrices($id)
     {
         $products = MaThe_SanPham::where('nhacungcap_id', $id)
-            ->where('trang_thai', 'Hoạt động')
+            ->where('trang_thai', 'hoat_dong')
             ->get();
 
         if ($products->isEmpty()) {

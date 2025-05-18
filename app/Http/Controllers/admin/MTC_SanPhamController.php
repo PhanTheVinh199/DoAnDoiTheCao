@@ -82,7 +82,7 @@ class MTC_SanPhamController extends Controller
         $request->validate([
             'menh_gia' => 'required|numeric|min:1000',
             'chiet_khau' => 'required|numeric|min:0|max:100',
-            'trang_thai' => 'required|in:Hoạt động,Ẩn',
+            'trang_thai' => 'required|in:hoat_dong,an',
         ]);
     
         $dsSanPham = MaThe_SanPham::findOrFail($id);

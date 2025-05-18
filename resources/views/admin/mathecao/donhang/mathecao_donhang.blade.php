@@ -57,11 +57,11 @@
                                 <td>{{$dh->thanhvien?->email ?? 'Chưa có email'}}</td>
                                 <td>{{$dh->ngay_tao}}</td>
                                 <td>
-                                    @if($dh->trang_thai == 'Chờ xử lý')
+                                    @if($dh->trang_thai == 'cho_xu_ly')
                                     <button type="button" class="btn btn-warning" style="font-size: 13px;">Chờ xử lý</button>
-                                    @elseif($dh->trang_thai == 'Hoạt động')
+                                    @elseif($dh->trang_thai == 'hoat_dong')
                                     <button type="button" class="btn btn-success" style="font-size: 13px;">Hoạt động</button>
-                                    @elseif($dh->trang_thai == 'Đã hủy')
+                                    @elseif($dh->trang_thai == 'da_huy')
                                     <button type="button" class="btn btn-danger" style="font-size: 13px;">Đã hủy</button>
                                     @endif
 

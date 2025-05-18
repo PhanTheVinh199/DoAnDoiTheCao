@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('menh_gia');
             $table->decimal('chiet_khau', 5, 2)->default(0);
             $table->timestamp('ngay_tao')->useCurrent();
-            $table->enum('trang_thai', ['Hoạt động', 'Ẩn'])->default('Hoạt động');
+            $table->enum('trang_thai',  ['hoat_dong', 'an'])->default('hoat_dong');
         });
     }
 

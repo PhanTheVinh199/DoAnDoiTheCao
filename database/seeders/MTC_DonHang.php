@@ -20,7 +20,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 1, 
             'ngay_tao' => now(),
-            'trang_thai' => 'Chờ xử lý',
+            'trang_thai' => 'cho_xu_ly',
         ]);
 
         DB::table('mathecao_donhang')->insert([
@@ -30,7 +30,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
-            'trang_thai' => 'Chờ xử lý',
+            'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
             'ma_don' => 'MD003',
@@ -39,7 +39,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
-            'trang_thai' => 'Chờ xử lý',
+            'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
             'ma_don' => 'MD004',
@@ -48,7 +48,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
-            'trang_thai' => 'Chờ xử lý',
+            'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
             'ma_don' => 'MD005',
@@ -57,7 +57,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
-            'trang_thai' => 'Chờ xử lý',
+            'trang_thai' => 'cho_xu_ly',
         ]);
     }
 }

@@ -33,8 +33,8 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Trạng thái</label>
                     <select class="w-full border rounded px-3 py-2" name="trang_thai">
-                        <option value="Hoạt động" {{ $ncc->trang_thai === 'Hoạt động' ? 'selected' : '' }}>Hoạt động</option>
-                        <option value="Ẩn" {{ $ncc->trang_thai === 'Ẩn' ? 'selected' : '' }}>Ẩn</option>
+                        <option value="hoat_dong" {{ $ncc->trang_thai === 'hoat_dong' ? 'selected' : '' }}>Hoạt động</option>
+                        <option value="an" {{ $ncc->trang_thai === 'an' ? 'selected' : '' }}>Ẩn</option>
                     </select>
                 </div>
                 <div class="flex justify-end space-x-2">

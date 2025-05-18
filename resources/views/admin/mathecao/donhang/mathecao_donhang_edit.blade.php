@@ -50,9 +50,9 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Trạng Thái</label>
                     <select name="trang_thai" class="w-full border rounded px-3 py-2">
-                        <option value="Hoạt động" {{ $donHang->trang_thai == 'Hoạt động' ? 'selected' : '' }}>Hoạt Động</option>
-                        <option value="Chờ xử lý" {{ $donHang->trang_thai == 'Chờ xử lý' ? 'selected' : '' }}>Đang Xử Lý</option>
-                        <option value="Đã huỷ" {{ $donHang->trang_thai == 'Đã hủy' ? 'selected' : '' }}>Đã hủy</option>
+                        <option value="hoat_dong" {{ $donHang->trang_thai == 'hoat_dong' ? 'selected' : '' }}>Hoạt Động</option>
+                        <option value="cho_xu_ly" {{ $donHang->trang_thai == 'cho_xu_ly' ? 'selected' : '' }}>Chờ Xử Lý</option>
+                        <option value="da_huy" {{ $donHang->trang_thai == 'da_huy' ? 'selected' : '' }}>Đã hủy</option>
                     </select>
                 </div>
 

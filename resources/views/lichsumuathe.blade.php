@@ -88,11 +88,11 @@
                                     <th>{{ $dh->thanh_tien}}</th>
                                     <th>{{$dh->ngay_tao}}</th>
                                     <th>
-                                        @if($dh->trang_thai == 'Chờ xử lý')
+                                        @if($dh->trang_thai == 'cho_xu_ly')
                                         <button type="button" class="btn btn-warning">Chờ xử lý</button>
-                                        @elseif($dh->trang_thai == 'Hoạt động')
+                                        @elseif($dh->trang_thai == 'hoat_dong')
                                         <button type="button" class="btn btn-success">Hoạt động</button>
-                                        @elseif($dh->trang_thai == 'Đã hủy')
+                                        @elseif($dh->trang_thai == 'da_huy')
                                         <button type="button" class="btn btn-danger">Đã hủy</button>
                                         @endif
                                     </th>
@@ -103,11 +103,11 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-4">
-                        {{ $dsDonHang->appends(request()->query())->links('pagination::bootstrap-5') }}
-                    </div>
-                    <div class="d-flex justify-content-center mt-2">
-                        <span>Đang hiển thị {{ $dsDonHang->count() }} đơn hàng, tổng cộng {{ $dsDonHang->total() }} đơn</span>
-                    </div>
+                    {{ $dsDonHang->appends(request()->query())->links('pagination::bootstrap-5') }}
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                    <span>Đang hiển thị {{ $dsDonHang->count() }} đơn hàng, tổng cộng {{ $dsDonHang->total() }} đơn</span>
+                </div>
             </div>
         </div>
     </div>

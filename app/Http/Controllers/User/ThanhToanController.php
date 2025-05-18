@@ -42,7 +42,7 @@ class ThanhToanController extends Controller
                 'so_luong' => $quantity,
                 'thanh_tien' => $totalAmount,
                 'thanhvien_id' => $user->id_thanhvien,
-                'trang_thai' => 'Chờ xử lý',
+                'trang_thai' => 'cho_xu_ly',
                 'ngay_tao' => now()
             ]);
 

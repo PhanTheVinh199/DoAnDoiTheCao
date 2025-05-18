@@ -44,8 +44,8 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Trạng thái</label>
                     <select class="w-full border rounded px-3 py-2" name="trang_thai">
-                        <option value="Hoạt động" {{ $dsSanPham->trang_thai === 'Hoạt động' ? 'selected' : '' }}>Hoạt động</option>
-                        <option value="Ẩn" {{ $dsSanPham->trang_thai === 'Ẩn' ? 'selected' : '' }}>Ẩn</option>
+                        <option value="hoat_dong" {{ $dsSanPham->trang_thai === 'hoat_dong' ? 'selected' : '' }}>Hoạt động</option>
+                        <option value="an" {{ $dsSanPham->trang_thai === 'an' ? 'selected' : '' }}>Ẩn</option>
                     </select>
                 </div>
 

@@ -40,9 +40,9 @@
 
                             <td>{{ $ncc->ngay_tao }}</td>
                             <td>
-                                @if($ncc->trang_thai == 'Ẩn')
+                                @if($ncc->trang_thai == 'an')
                                 <button type="button" class="btn btn-warning">Ẩn</button>
-                                @elseif($ncc->trang_thai == 'Hoạt động')
+                                @elseif($ncc->trang_thai == 'hoat_dong')
                                 <button type="button" class="btn btn-success">Hoạt động</button>
                                 @endif
                             </td>

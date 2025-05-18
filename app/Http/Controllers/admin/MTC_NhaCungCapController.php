@@ -80,7 +80,7 @@ class MTC_NhaCungCapController extends Controller
         $request->validate([
             'ten' => 'required|string|max:255',
             'hinhanh' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'trang_thai' => 'required|in:Hoạt động,Ẩn'
+            'trang_thai' => 'required|in:hoat_dong,an'
         ]);
 
         $ncc = MaThe_NhaCungCap::findOrFail($id);

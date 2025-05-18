@@ -37,9 +37,9 @@
                                 <td>{{$sp->nhacungcap?->ten ?? 'Chưa có nhà cung cấp'}}</td>
                                 <td>{{$sp->menh_gia}}</td>
                                 <td>{{$sp->chiet_khau}}</td>
-                                <td>@if($sp->trang_thai == 'Ẩn')
+                                <td>@if($sp->trang_thai == 'an')
                                 <button type="button" class="btn btn-warning">Ẩn</button>
-                                @elseif($sp->trang_thai == 'Hoạt động')
+                                @elseif($sp->trang_thai == 'hoat_dong')
                                 <button type="button" class="btn btn-success">Hoạt động</button>
                                 @endif</td>
                                 <td>

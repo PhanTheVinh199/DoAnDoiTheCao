@@ -32,7 +32,7 @@ class LichSuMuaTheController extends Controller
             $query->where('ma_don', 'like', '%' . $request->order_code . '%');
         }
 
-        if ($request->filled('status') && in_array($request->status, ['Hoạt động', 'Đã huỷ', 'Chờ xử lý'])) {
+        if ($request->filled('status') && in_array($request->status, ['hoat_dong', 'da_huy', 'cho_xu_ly'])) {
             $query->where('trang_thai', $request->status);
         }
 
