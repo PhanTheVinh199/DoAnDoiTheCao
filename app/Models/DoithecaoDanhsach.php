@@ -21,48 +21,91 @@ class DoithecaoDanhsach extends Model
         'hinh_anh'
     ];
 
-    /**
-     * Quan hệ với bảng DoithecaoNhacungcap.
-     * Mỗi sản phẩm sẽ liên kết với 1 nhà cung cấp.
-     */
     public function nhacungcap()
     {
         return $this->belongsTo(DoithecaoNhacungcap::class, 'nhacungcap_id', 'id_nhacungcap');
     }
 
-    /**
-     * Getter: Trả về trạng thái dưới dạng chuỗi
-     */
     public function getTrangThaiTextAttribute()
     {
         return match ($this->trang_thai) {
-            'hoat_dong' => 'Hoạt Động',
-            'da_huy' => 'Đã Hủy',
-            'cho_xu_ly' => 'Chờ Xử Lý',
+            1 => 'Hoạt Động',
+            0 => 'Đã Hủy',
+            2 => 'Chờ Xử Lý',
             default => 'Không xác định'
         };
     }
 
-    /**
-     * Getter: Trả về class Bootstrap tương ứng với trạng thái
-     */
     public function getTrangThaiClassAttribute()
     {
         return match ($this->trang_thai) {
-            'hoat_dong' => 'success',
-            'da_huy' => 'danger',
-            'cho_xu_ly' => 'warning',
+            1 => 'success',
+            0 => 'danger',
+            2 => 'warning',
             default => 'secondary'
         };
     }
 
-    /**
-     * Tính thành tiền sau chiết khấu
-     */
     public function getThanhTienSauChietKhauAttribute()
     {
         $thanhTien = $this->menh_gia * $this->so_luong;
         $chietKhau = $thanhTien * ($this->chiet_khau / 100);
         return $thanhTien - $chietKhau;
+    }
+
+    // ========== XỬ LÝ LẤY DỮ LIỆU ==========
+
+    public static function getAllWithSupplier()
+    {
+        return self::with('nhacungcap')->get();
+    }
+
+    public static function getNewestSupplier()
+    {
+        return DoithecaoNhacungcap::orderBy('ngay_tao', 'desc')->first();
+    }
+
+    public static function getAllSuppliers()
+    {
+        return DoithecaoNhacungcap::all();
+    }
+
+    // ========== XỬ LÝ THÊM MỚI ==========
+
+    public static function createProduct(array $data)
+    {
+        $statusMap = [
+            'hoat_dong' => 1,
+            'da_huy' => 0,
+            'cho_xu_ly' => 2,
+        ];
+        $data['trang_thai'] = $statusMap[$data['trang_thai']] ?? 0;
+
+        return self::create($data);
+    }
+
+    // ========== XỬ LÝ CẬP NHẬT ==========
+
+    public static function updateProduct($id, array $data)
+    {
+        $statusMap = [
+            'hoat_dong' => 1,
+            'da_huy' => 0,
+            'cho_xu_ly' => 2,
+        ];
+        $data['trang_thai'] = $statusMap[$data['trang_thai']] ?? 0;
+
+        $product = self::findOrFail($id);
+        $product->update($data);
+
+        return $product;
+    }
+
+    // ========== XỬ LÝ XÓA ==========
+
+    public static function deleteProduct($id)
+    {
+        $product = self::findOrFail($id);
+        return $product->delete();
     }
 }

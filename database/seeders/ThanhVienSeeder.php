@@ -8,25 +8,31 @@ use Faker\Factory as Faker;
 
 class ThanhVienSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $faker = Faker::create(); // Sử dụng Faker để tạo dữ liệu giả
+        $faker = Faker::create();
 
-        // Tạo 10 tài khoản demo
-        for ($i = 0; $i < 10; $i++) {
+        // Tạo tài khoản admin mặc định đầu tiên
+        ThanhVien::create([
+            'ho_ten' => 'NGUYEN VAN BAO',
+            'tai_khoan' => 'admin123',
+            'mat_khau' => bcrypt('123456'), // mật khẩu là 123456
+            'email' => 'admin@gmail.com',
+            'phone' => $faker->phoneNumber,
+            'so_du' => 1000000, // số dư cố định hoặc tùy chỉnh
+            'quyen' => 'admin',
+        ]);
+
+        // Tạo 20 tài khoản demo ngẫu nhiên tiếp theo
+        for ($i = 1; $i < 21; $i++) {
             ThanhVien::create([
                 'ho_ten' => $faker->name,
                 'tai_khoan' => 'thanhvien' . ($i + 1),
-                'mat_khau' => bcrypt('password' . ($i + 1)), // Sử dụng bcrypt để mã hóa mật khẩu
+                'mat_khau' => bcrypt('password' . ($i + 1)),
                 'email' => $faker->unique()->safeEmail,
                 'phone' => $faker->phoneNumber,
-                'so_du' => $faker->numberBetween(1000, 10000), // Số dư ngẫu nhiên
-                'quyen' => $faker->randomElement(['admin', 'user']), // Chọn ngẫu nhiên quyền
+                'so_du' => $faker->numberBetween(1000, 10000),
+                'quyen' => $faker->randomElement(['admin', 'user']),
             ]);
         }
     }

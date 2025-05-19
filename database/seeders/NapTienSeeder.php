@@ -10,7 +10,7 @@ class NapTienSeeder extends Seeder
 {
     public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 21; $i++) {
             NapTien::create([
                 'ma_don' => 'naptien_0' . $i,  // Tạo mã đơn nạp tiền
                 'thanhvien_id' => rand(1, 10),  // Giả sử bạn có 10 thành viên

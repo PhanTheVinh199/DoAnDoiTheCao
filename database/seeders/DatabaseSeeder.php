@@ -30,7 +30,9 @@ class DatabaseSeeder extends Seeder
             MTC_DonHang::class,
             DoithecaoNhacungcapSeeder::class,
             DoithecaoDanhsachSeeder::class,
-            DoithecaoDonhangSeeder::class
+            DoithecaoDonhangSeeder::class,
+            NganHangAdminSeeder::class
+            
 
         ]);
         

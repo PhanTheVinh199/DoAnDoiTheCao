@@ -47,6 +47,68 @@ class DoithecaoNhacungcapSeeder extends Seeder
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
+
+            [
+                'ten' => 'Viettel',
+                'hinh_anh' => 'viettel.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Vinaphone',
+                'hinh_anh' => 'vinaphone.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Mobifone',
+                'hinh_anh' => 'mobifone.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Zing',
+                'hinh_anh' => 'zing.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Appota',
+                'hinh_anh' => 'appota.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+
+            [
+                'ten' => 'Viettel',
+                'hinh_anh' => 'viettel.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Vinaphone',
+                'hinh_anh' => 'vinaphone.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Mobifone',
+                'hinh_anh' => 'mobifone.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Zing',
+                'hinh_anh' => 'zing.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Appota',
+                'hinh_anh' => 'appota.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
         ]);
     }
 }

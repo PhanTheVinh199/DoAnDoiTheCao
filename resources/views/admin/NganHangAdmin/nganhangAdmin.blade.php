@@ -63,9 +63,10 @@
                    </tbody>
                </table>
 
-               <div class="d-flex justify-content-center">
-                   {{ $banks->links() }}
-               </div>
+               <div class="d-flex justify-content-end pt-5">
+                    {{ $banks->links('pagination::bootstrap-4') }}
+                </div>
+
            </div>
        </div>
    </div>

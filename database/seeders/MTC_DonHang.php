@@ -59,5 +59,73 @@ class MTC_DonHang extends Seeder
             'ngay_tao' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
+
+
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD006',
+            'mathecao_id' => 1, 
+            'so_luong' => 5,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 1, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD007',
+            'mathecao_id' => 11, 
+            'so_luong' => 4,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD008',
+            'mathecao_id' => 18, 
+            'so_luong' => 5,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD009',
+            'mathecao_id' => 20, 
+            'so_luong' => 10,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD0010',
+            'mathecao_id' => 27, 
+            'so_luong' => 1,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD0011',
+            'mathecao_id' => 27, 
+            'so_luong' => 1,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+        DB::table('mathecao_donhang')->insert([
+            'ma_don' => 'MD0012',
+            'mathecao_id' => 27, 
+            'so_luong' => 1,
+            'thanh_tien' => 0,
+            'thanhvien_id' => 11, 
+            'ngay_tao' => now(),
+            'trang_thai' => 'cho_xu_ly',
+        ]);
+
+        
     }
 }

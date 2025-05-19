@@ -75,6 +75,10 @@
                             @endif
                         </tbody>                        
                     </table>
+                       <!-- Phân Trang -->
+                <div class="d-flex justify-content-end pt-5">
+                    {{ $nhacungcaps->links('pagination::bootstrap-4') }}
+                </div>
                 </div>
             </div>
         </div>

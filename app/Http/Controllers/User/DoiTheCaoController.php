@@ -41,13 +41,6 @@ public function index(Request $request)
 
 
 
-
-
-
-
-
-
-
 public function lichsudoithe(Request $request)
 {
     // Lấy giá trị tìm kiếm từ query string (nếu có)

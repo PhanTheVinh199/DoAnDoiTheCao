@@ -13,7 +13,7 @@ class RutTienSeeder extends Seeder
     public function run()
     {
         // Tạo 10 bản ghi lịch sử rút tiền
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 21; $i++) {
             $thanhvien = ThanhVien::inRandomOrder()->first(); // Lấy ngẫu nhiên thành viên
             $nganhang = NganHang::inRandomOrder()->first(); // Lấy ngẫu nhiên ngân hàng
 

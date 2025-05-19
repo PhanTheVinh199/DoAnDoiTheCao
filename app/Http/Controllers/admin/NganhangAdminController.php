@@ -2,28 +2,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\NganhangAdmin;
 use App\Models\ThanhVien;
-
-use Illuminate\Http\Request;
 
 class NganhangAdminController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-        $query = NganhangAdmin::with('thanhvien');
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('ten_ngan_hang', 'like', "%{$search}%")
-                  ->orWhere('so_tai_khoan', 'like', "%{$search}%")
-                  ->orWhere('chu_tai_khoan', 'like', "%{$search}%");
-            });
-        }
-
-        $banks = $query->latest()->paginate(5);
+        $banks = NganhangAdmin::getBanks($search, 5);
         return view('admin.NganHangAdmin.nganhangAdmin', compact('banks'));
     }
 
@@ -43,17 +31,15 @@ class NganhangAdminController extends Controller
             'trang_thai' => 'required|in:hoat_dong,khong_hoat_dong',
         ]);
 
-        NganhangAdmin::create($validated);
+        NganhangAdmin::createBank($validated);
 
         return redirect()->route('admin.nganhang.admin.index')->with('success', 'Thêm ngân hàng admin thành công');
     }
 
     public function destroy($id)
     {
-        $bank = NganhangAdmin::findOrFail($id);
-        $bank->delete();
+        NganhangAdmin::deleteBank($id);
 
         return redirect()->route('admin.nganhang.admin.index')->with('success', 'Xóa ngân hàng admin thành công');
     }
-
 }
