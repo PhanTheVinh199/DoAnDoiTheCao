@@ -82,4 +82,23 @@ class MaThe_DonHang extends Model
         $donHang = self::findOrFail($id);
         return $donHang->delete();
     }
+    public static function getUserOrders($userId, $filters = [], $perPage = 10)
+    {
+        $query = self::with('sanpham.nhacungcap')
+            ->where('thanhvien_id', $userId);
+
+        if (!empty($filters['order_code'])) {
+            $query->where('ma_don', 'like', '%' . $filters['order_code'] . '%');
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('trang_thai', $filters['status']);
+        }
+
+        if (!empty($filters['from_date'])) {
+            $query->whereDate('ngay_tao', '>=', $filters['from_date']);
+        }
+
+        return $query->orderBy('ngay_tao', 'desc')->paginate($perPage);
+    }
 }
