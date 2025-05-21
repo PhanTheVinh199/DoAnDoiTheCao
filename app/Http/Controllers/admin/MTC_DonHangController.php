@@ -22,7 +22,7 @@ class MTC_DonHangController extends Controller
             $query->where('ma_don', 'like', '%' . $request->ma_don . '%');
         }
     
-        $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(10);
+        $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(5);
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();

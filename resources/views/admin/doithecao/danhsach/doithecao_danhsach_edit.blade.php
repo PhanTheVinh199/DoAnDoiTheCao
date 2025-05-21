@@ -19,15 +19,12 @@
             <!-- Nhà cung cấp -->
             <div>
                 <label class="block text-gray-700 mb-1">Tên Nhà Cung Cấp</label>
-                <select name="nhacungcap_id" class="w-full border rounded px-3 py-2">
-                    <option value="">-- Chọn nhà cung cấp --</option>
-                    @foreach($nhacungcaps as $nhacungcap)
-                        <option value="{{ $nhacungcap->id_nhacungcap }}"
-                            {{ $sanpham->nhacungcap_id == $nhacungcap->id_nhacungcap ? 'selected' : '' }}>
-                            {{ $nhacungcap->ten }}
-                        </option>
-                    @endforeach
+                <select name="nhacungcap_id" disabled class="w-full border rounded px-3 py-2 bg-gray-100 cursor-not-allowed">
+                    <option value="{{ $sanpham->nhacungcap_id }}" selected>
+                        {{ $nhacungcaps->firstWhere('id_nhacungcap', $sanpham->nhacungcap_id)->ten ?? 'Không xác định' }}
+                    </option>
                 </select>
+                <input type="hidden" name="nhacungcap_id" value="{{ $sanpham->nhacungcap_id }}">
             </div>
 
             <!-- Mệnh giá -->
@@ -42,7 +39,7 @@
                 <input type="number" step="0.01" name="chiet_khau" value="{{ $sanpham->chiet_khau }}" class="w-full border rounded px-3 py-2" />
             </div>
 
-            <!-- Trạng thái -->
+            <!-- Trạng thái
             <div>
                 <label class="block text-gray-700 mb-1">Trạng Thái</label>
                 <select name="trang_thai" class="w-full border rounded px-3 py-2">
@@ -50,7 +47,7 @@
                     <option value="da_huy" {{ $sanpham->trang_thai == 0 ? 'selected' : '' }}>Đã hủy</option>
                     <option value="cho_xu_ly" {{ $sanpham->trang_thai == 2 ? 'selected' : '' }}>Chờ xử lý</option>
                 </select>
-            </div>
+            </div> -->
 
             <!-- Button -->
             <div class="flex justify-end gap-2 pt-2">

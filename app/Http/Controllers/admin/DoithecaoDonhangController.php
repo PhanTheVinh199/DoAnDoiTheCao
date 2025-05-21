@@ -12,7 +12,7 @@ class DoithecaoDonhangController extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->input('ma_don', '');
-        $donhang = DoithecaoDonhang::getDonHangWithFilter($searchTerm, 10);
+        $donhang = DoithecaoDonhang::getDonHangWithFilter($searchTerm, 5);
 
         return view('admin.doithecao.donhang.doithecao_donhang', compact('donhang', 'searchTerm'));
     }

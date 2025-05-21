@@ -42,13 +42,11 @@
                                         <td>{{ $product->nhacungcap->ten }}</td>
                                         <td>{{ number_format($product->menh_gia, 0, ',', '.') }} VNĐ</td>
                                         <td>{{ $product->chiet_khau }}%</td>
-                                        <td>
-                                            <select name="trang_thai" class="w-full border rounded px-3 py-2">
-                                                <option value="hoat_dong" {{ $product->trang_thai == 1 ? 'selected' : '' }}>Hoạt động</option>
-                                                <option value="da_huy" {{ $product->trang_thai == 0 ? 'selected' : '' }}>Đã hủy</option>
-                                                <option value="cho_xu_ly" {{ $product->trang_thai == 2 ? 'selected' : '' }}>Chờ xử lý</option>
-                                            </select>
-                                        </td>
+                                        <td>@if($product->trang_thai == '1')
+                                <button type="button" class="btn btn-success">Hoạt động</button>
+                                @elseif($product->trang_thai == '0')
+                                <button type="button" class="btn btn-success">Hoạt động</button>
+                                @endif</td>
                                         <td>
                                             <a href="{{ route('admin.doithecao.danhsach.edit', $product->id_doithecao) }}" class="btn btn-sm btn-primary">Sửa</a>
                                             <form action="{{ route('admin.doithecao.danhsach.destroy', $product->id_doithecao) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">

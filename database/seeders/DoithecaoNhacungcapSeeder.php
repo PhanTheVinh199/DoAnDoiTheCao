@@ -19,31 +19,31 @@ class DoithecaoNhacungcapSeeder extends Seeder
         DB::table('doithecao_nhacungcap')->insert([
             [
                 'ten' => 'Viettel',
-                'hinh_anh' => 'viettel.jpg',
+                'hinh_anh' => 'images/the-viettel.png',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
             [
                 'ten' => 'Vinaphone',
-                'hinh_anh' => 'vinaphone.jpg',
+                'hinh_anh' => 'images/the-vinaphone.jpeg',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
             [
                 'ten' => 'Mobifone',
-                'hinh_anh' => 'mobifone.jpg',
+                'hinh_anh' => 'images/mobifone.png',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
             [
                 'ten' => 'Zing',
-                'hinh_anh' => 'zing.jpg',
+                'hinh_anh' => 'images/the-zing.png',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
             [
                 'ten' => 'Appota',
-                'hinh_anh' => 'appota.jpg',
+                'hinh_anh' => 'images/APPOTA_CARD.png',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
