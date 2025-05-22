@@ -20,6 +20,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 1, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
 
@@ -30,6 +31,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -39,6 +41,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -48,6 +51,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -57,6 +61,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
 
@@ -68,6 +73,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 1, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
 
@@ -78,6 +84,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -87,6 +94,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -96,6 +104,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -105,6 +114,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -114,6 +124,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
         DB::table('mathecao_donhang')->insert([
@@ -123,6 +134,7 @@ class MTC_DonHang extends Seeder
             'thanh_tien' => 0,
             'thanhvien_id' => 11, 
             'ngay_tao' => now(),
+            'ngay_cap_nhat' => now(),
             'trang_thai' => 'cho_xu_ly',
         ]);
 

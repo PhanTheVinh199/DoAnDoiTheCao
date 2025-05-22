@@ -100,22 +100,30 @@ class MTC_DonHangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, $id)
     {
         $request->validate([
             'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
+            'ngay_cap_nhat' => 'required|string',
         ]);
 
-        // Tìm đơn hàng theo ID
         $donHang = MaThe_DonHang::findOrFail($id);
 
-        // Cập nhật đơn hàng
-        $donHang->update([
-            'trang_thai' => $request->trang_thai, // Cập nhật trạng thái
-        ]);
+        // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
+        if ($request->input('ngay_cap_nhat') !== $donHang->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+            return redirect()
+                ->route('admin.mathecao.donhang.edit', $id)
+                ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+        }
 
-        // Quay lại trang danh sách với thông báo thành công
-        return redirect()->route('admin.mathecao.donhang.index')->with('success', 'Cập nhật đơn hàng thành công!');
+        MaThe_DonHang::updateStatus(
+            $id,
+            $request->input('trang_thai')
+        );
+        return redirect()
+            ->route('admin.mathecao.donhang.index')
+            ->with('success', 'Cập nhật thành công!');
     }
 
     /**

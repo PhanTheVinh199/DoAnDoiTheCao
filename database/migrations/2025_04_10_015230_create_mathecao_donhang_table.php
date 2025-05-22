@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('thanh_tien');
             $table->foreignId('thanhvien_id')->constrained('thanhvien', 'id_thanhvien');
             $table->timestamp('ngay_tao')->useCurrent();
+            $table->timestamp('ngay_cap_nhat')->nullable();
             $table->enum('trang_thai', ['hoat_dong', 'da_huy', 'cho_xu_ly'])->default('cho_xu_ly');
         });
     }
