@@ -9,7 +9,7 @@
             title: 'Thành công',
             text: "{{ session('success') }}",
             timer: 2000,
-            showConfirmButton: false
+            confirmButtonText: 'Ok',
         });
     </script>
     @endif
