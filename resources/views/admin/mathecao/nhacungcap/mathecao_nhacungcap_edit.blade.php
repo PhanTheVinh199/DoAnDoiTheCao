@@ -21,7 +21,8 @@
                 <input name="id_nhacungcap" type="hidden" value="{{$ncc->id_nhacungcap}}">
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Tên nhà cung cấp</label>
-                    <input type="text" name="ten" class="w-full border rounded px-3 py-2" value="{{$ncc->ten}}" require />
+                    <input type="text" name="ten" id="ten" class="w-full border rounded px-3 py-2" value="{{$ncc->ten}}" maxlength="50" require />
+                    <small id="ten-count" class="text-sm text-gray-500 mt-1 block">{{ mb_strlen($ncc->ten) }}/50 ký tự</small>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Hình ảnh</label>
@@ -44,6 +45,13 @@
             </div>
         </div>
     </form>
+    <script>
+        const tenInput = document.getElementById('ten');
+        const tenCount = document.getElementById('ten-count');
+        tenInput.addEventListener('input', () => {
+            tenCount.textContent = `${tenInput.value.length}/50 ký tự`;
+        });
+    </script>
 </body>
 
 </html>

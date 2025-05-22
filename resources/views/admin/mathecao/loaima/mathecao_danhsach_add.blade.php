@@ -38,11 +38,17 @@
 
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mệnh Giá </label>
-                    <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" />
+                    <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" min="10000" max="1000000" step="10000" />
+                    <small id="menh_gia-help" class="text-sm text-gray-500 mt-1 block">
+                        Chỉ được nhập từ 10.000 đến 5.000.000 VND
+                    </small>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Chiếc Khấu</label>
-                    <input type="number" name="chiet_khau" class="w-full border rounded px-3 py-2" />
+                    <input type="number" name="chiet_khau" class="w-full border rounded px-3 py-2" min="0" max="100" step="0.1" />
+                    <small id="chiet_khau-help" class="text-sm text-gray-500 mt-1 block">
+                        Nhập giá trị từ 0 đến 100 (%)
+                    </small>
                 </div>
 
                 <div class="flex justify-end space-x-2">
