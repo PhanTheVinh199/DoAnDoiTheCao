@@ -1,6 +1,18 @@
 @include('admin.sidebar')
 
 <div class="main" style="margin-top: 10px; padding: 50px">
+    @if(session('success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: "{{ session('success') }}",
+            timer: 2000,
+            showConfirmButton: false
+        });
+    </script>
+    @endif
     <div class="container">
         <div class="row d-flex">
 
