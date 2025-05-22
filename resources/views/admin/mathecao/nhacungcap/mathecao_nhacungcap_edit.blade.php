@@ -3,7 +3,6 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    </link>
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-gray-500">
@@ -18,16 +17,17 @@
                 </a>
             </div>
             <div class="p-4">
+                <input type="hidden" name="ngay_cap_nhat" value="{{ optional($ncc->ngay_cap_nhat)->format('Y-m-d H:i:s') ?? now()->format('Y-m-d H:i:s') }}">
                 <input name="id_nhacungcap" type="hidden" value="{{$ncc->id_nhacungcap}}">
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Tên nhà cung cấp</label>
-                    <input type="text" name="ten" id="ten" class="w-full border rounded px-3 py-2" value="{{$ncc->ten}}" maxlength="50" require />
+                    <input type="text" name="ten" id="ten" class="w-full border rounded px-3 py-2" value="{{$ncc->ten}}" maxlength="50" required />
                     <small id="ten-count" class="text-sm text-gray-500 mt-1 block">{{ mb_strlen($ncc->ten) }}/50 ký tự</small>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Hình ảnh</label>
                     @if ($ncc->hinhanh)
-                    <img src="{{ asset($ncc->hinhanh) }}" width="100" class="mb-2">
+                        <img src="{{ asset($ncc->hinhanh) }}" width="100" class="mb-2">
                     @endif
                     <input type="file" name="hinhanh" class="w-full border rounded px-3 py-2" />
                 </div>
@@ -45,6 +45,7 @@
             </div>
         </div>
     </form>
+
     <script>
         const tenInput = document.getElementById('ten');
         const tenCount = document.getElementById('ten-count');
@@ -52,6 +53,20 @@
             tenCount.textContent = `${tenInput.value.length}/50 ký tự`;
         });
     </script>
+
+    @if(session('concurrency_error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cảnh báo',
+                text: "{{ session('concurrency_error') }}",
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.reload();
+            });
+        </script>
+    @endif
 </body>
 
 </html>

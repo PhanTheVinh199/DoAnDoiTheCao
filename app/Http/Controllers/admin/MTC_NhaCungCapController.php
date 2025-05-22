@@ -28,7 +28,7 @@ class MTC_NhaCungCapController extends Controller
         ]);
 
         MaThe_NhaCungCap::createSupplier(
-            $request->only('ten',),
+            $request->only('ten'),
             $request->file('hinhanh')
         );
 
@@ -46,10 +46,20 @@ class MTC_NhaCungCapController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'ten'         => 'required|string|max:255',
-            'hinhanh'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'trang_thai'  => 'required|in:hoat_dong,an',
+            'ten'        => 'required|string|max:255',
+            'hinhanh'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'trang_thai' => 'required|in:hoat_dong,an',
+            'ngay_cap_nhat' => 'required|string',
         ]);
+
+        $ncc = MaThe_NhaCungCap::findOrFail($id);
+
+        // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
+        if ($request->input('ngay_cap_nhat') !== $ncc->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+            return redirect()
+                ->route('admin.mathecao.nhacungcap.edit', $id)
+                ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+        }
 
         MaThe_NhaCungCap::updateSupplier(
             $id,
@@ -66,18 +76,19 @@ class MTC_NhaCungCapController extends Controller
     {
         try {
             MaThe_NhaCungCap::deleteSupplier($id);
-            // Nếu là AJAX request, trả về JSON thành công
+
             if ($request->ajax()) {
                 return response()->json(['success' => 'Xóa thành công!'], 200);
             }
+
             return redirect()
                 ->route('admin.mathecao.nhacungcap.index')
                 ->with('success', 'Xóa thành công!');
         } catch (ModelNotFoundException $e) {
-            // Nếu là AJAX request, trả về JSON lỗi 404
             if ($request->ajax()) {
                 return response()->json(['error' => 'Dữ liệu không tồn tại!'], 404);
             }
+
             return redirect()
                 ->route('admin.mathecao.nhacungcap.index')
                 ->with('error', 'Dữ liệu không tồn tại!');
