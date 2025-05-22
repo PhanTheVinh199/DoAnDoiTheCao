@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MaThe_SanPham;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MTC_SanPhamController extends Controller
 {
@@ -60,10 +61,28 @@ class MTC_SanPhamController extends Controller
         return redirect()->route('admin.mathecao.loaima.index')->with('success', 'Cập nhật thành công!');
     }
 
-    public function destroy($id)
-    {
-        MaThe_SanPham::deleteProduct($id);
 
-        return redirect()->route('admin.mathecao.loaima.index')->with('success', 'Xóa thành công!');
+    public function destroy(Request $request, $id)
+    {
+        try {
+            // Gọi đúng hàm deleteProduct trên model MaThe_SanPham
+            MaThe_SanPham::deleteProduct($id);
+
+            if ($request->ajax()) {
+                return response()->json(['success' => 'Xóa thành công!'], 200);
+            }
+
+            return redirect()
+                ->route('admin.mathecao.loaima.index')
+                ->with('success', 'Xóa thành công!');
+        } catch (ModelNotFoundException $e) {
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Dữ liệu không tồn tại!'], 404);
+            }
+
+            return redirect()
+                ->route('admin.mathecao.loaima.index')
+                ->with('error', 'Dữ liệu không tồn tại!');
+        }
     }
 }

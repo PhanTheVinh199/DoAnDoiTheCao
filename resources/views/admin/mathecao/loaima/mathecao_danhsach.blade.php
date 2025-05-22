@@ -123,7 +123,8 @@
     <script>
         jQuery(document).on('submit', '.delete-form', function(e) {
             e.preventDefault();
-            const form = this;
+            const form = $(this);
+
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
                 text: "Hành động này sẽ không thể hoàn tác!",
@@ -134,7 +135,26 @@
                 confirmButtonText: 'Đồng ý',
                 cancelButtonText: 'Hủy'
             }).then((res) => {
-                if (res.isConfirmed) form.submit();
+                if (!res.isConfirmed) return;
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        Swal.fire('Thành công', response.success, 'success')
+                            .then(() => {
+                                form.closest('tr').remove();
+                            });
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 404) {
+                            Swal.fire('Lỗi', 'Dữ liệu không tồn tại! Vui lòng tải lại trang.', 'error');
+                        } else {
+                            Swal.fire('Lỗi', 'Không thể xóa dữ liệu.', 'error');
+                        }
+                    }
+                });
             });
         });
     </script>

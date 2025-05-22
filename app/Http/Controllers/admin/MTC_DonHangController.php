@@ -8,25 +8,26 @@ use App\Models\MaThe_SanPham;
 use App\Models\MaThe_DonHang;
 use App\Models\MaThe_NhaCungCap;
 use App\Models\ThanhVien;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MTC_DonHangController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index( Request $request)
+    public function index(Request $request)
     {
         $query = MaThe_DonHang::with('sanpham.nhacungcap');
 
         if ($request->filled('ma_don')) {
             $query->where('ma_don', 'like', '%' . $request->ma_don . '%');
         }
-    
+
         $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(5);
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();
-        
+
 
         return view('admin.mathecao.donhang.mathecao_donhang', compact('dsDonHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap'));
     }
@@ -42,7 +43,7 @@ class MTC_DonHangController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-     public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'ma_don' => 'required|unique:mathecao_donhang',
@@ -52,10 +53,10 @@ class MTC_DonHangController extends Controller
             'trang_thai' => 'required|in:hoat_dong, da_huy, cho_xu_ly',
         ]);
 
-       
+
         $sanPham = MaThe_SanPham::findOrFail($request->mathecao_id);
         $menhGia = $sanPham->menh_gia;
-        $chietKhau = $sanPham->chiet_khau; 
+        $chietKhau = $sanPham->chiet_khau;
 
         $thanhTien = $request->so_luong * $menhGia * (1 - $chietKhau / 100);
 
@@ -120,11 +121,27 @@ class MTC_DonHangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
-        $donHang = MaThe_DonHang::findOrFail($id);
-        $donHang->delete();
+        try {
+            $donHang = MaThe_DonHang::findOrFail($id);
+            $donHang->delete();
 
-        return redirect()->route('admin.mathecao.donhang.index')->with('success', 'Đơn hàng đã được xóa!');
+            if ($request->ajax()) {
+                return response()->json(['success' => 'Đơn hàng đã được xóa!'], 200);
+            }
+
+            return redirect()
+                ->route('admin.mathecao.donhang.index')
+                ->with('success', 'Đơn hàng đã được xóa!');
+        } catch (ModelNotFoundException $e) {
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Đơn hàng không tồn tại!'], 404);
+            }
+
+            return redirect()
+                ->route('admin.mathecao.donhang.index')
+                ->with('error', 'Đơn hàng không tồn tại!');
+        }
     }
 }

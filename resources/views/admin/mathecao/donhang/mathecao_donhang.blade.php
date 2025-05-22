@@ -141,18 +141,36 @@
                 <script>
                     jQuery(document).on('submit', '.delete-form', function(e) {
                         e.preventDefault();
-                        const form = this;
+                        const form = $(this);
+
                         Swal.fire({
                             title: 'Bạn có chắc chắn muốn xóa đơn hàng này?',
                             text: "Hành động này sẽ không thể hoàn tác!",
                             icon: 'warning',
                             showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
                             confirmButtonText: 'Đồng ý',
                             cancelButtonText: 'Hủy'
-                        }).then((res) => {
-                            if (res.isConfirmed) form.submit();
+                        }).then(res => {
+                            if (!res.isConfirmed) return;
+
+                            $.ajax({
+                                url: form.attr('action'),
+                                method: 'POST',
+                                data: form.serialize(),
+                                success: function(resp) {
+                                    Swal.fire('Thành công', resp.success, 'success')
+                                        .then(() => {
+                                            form.closest('tr').remove();
+                                        });
+                                },
+                                error: function(xhr) {
+                                    if (xhr.status === 404) {
+                                        Swal.fire('Lỗi', 'Đơn hàng không tồn tại! Vui lòng tải lại trang.', 'error');
+                                    } else {
+                                        Swal.fire('Lỗi', 'Xóa không thành công.', 'error');
+                                    }
+                                }
+                            });
                         });
                     });
                 </script>
