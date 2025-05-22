@@ -27,7 +27,11 @@ class MTC_DonHangController extends Controller
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();
-
+        
+        if ($request->filled('ma_don') && $dsDonHang->isEmpty()) {
+            return view('admin.mathecao.donhang.mathecao_donhang', compact('dsDonHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap'))
+                ->with('not_found', 'Không tìm thấy đơn hàng nào phù hợp với từ khóa "' . $request->ma_don . '"');
+        }
 
         return view('admin.mathecao.donhang.mathecao_donhang', compact('dsDonHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap'));
     }

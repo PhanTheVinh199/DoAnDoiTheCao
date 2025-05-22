@@ -13,6 +13,19 @@
             });
         </script>
         @endif
+        @if(request()->filled('ma_don') && $dsDonHang->isEmpty())
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Không tìm thấy',
+                text: "Không tìm thấy đơn hàng nào phù hợp với từ khóa '{{ request('ma_don') }}'",
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = "{{ route('admin.mathecao.donhang.index') }}";
+            });
+        </script>
+        @endif
         <div class="container">
             <div class="row d-flex">
 
@@ -21,7 +34,7 @@
                     <form method="GET" action="{{ route('admin.mathecao.donhang.index') }}">
                         <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 900px;">
 
-                            <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto" value="{{ request('ma_don') }}">
+                            <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto" value="{{ request('ma_don') }}" maxlength="100">
 
                             <button class="btn btn-primary">Tìm kiếm</button>
                             <!-- <button class="btn btn-danger">Bỏ lọc</button> -->
@@ -30,6 +43,7 @@
                     <div class="d-flex gap-4 mb-4" style="margin-left: 500px;">
 
                     </div>
+
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
