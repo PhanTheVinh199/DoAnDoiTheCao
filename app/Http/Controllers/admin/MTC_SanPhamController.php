@@ -54,11 +54,26 @@ class MTC_SanPhamController extends Controller
             'menh_gia' => 'required|numeric|min:1000',
             'chiet_khau' => 'required|numeric|min:0|max:100',
             'trang_thai' => 'required|in:hoat_dong,an',
+            'ngay_cap_nhat' => 'required|string',
         ]);
 
-        MaThe_SanPham::updateProduct($id, $request->all());
+        $dsSanPham = MaThe_SanPham::findOrFail($id);
 
-        return redirect()->route('admin.mathecao.loaima.index')->with('success', 'Cập nhật thành công!');
+        // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
+        if ($request->input('ngay_cap_nhat') !== $dsSanPham->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+            return redirect()
+                ->route('admin.mathecao.loaima.edit', $id)
+                ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+        }
+
+        MaThe_SanPham::updateProduct(
+            $id,
+            $request->only('menh_gia','chiet_khau', 'trang_thai'),
+        );
+
+        return redirect()
+            ->route('admin.mathecao.loaima.index')
+            ->with('success', 'Cập nhật thành công!');
     }
 
 

@@ -108,6 +108,7 @@ class MTC_SanPham extends Seeder
                     'menh_gia' => $menh_gia,
                     'chiet_khau' => $chiet_khau,
                     'ngay_tao' => now(),
+                    'ngay_cap_nhat' => now(),
                     'trang_thai' => 'hoat_dong',
                 ]);
             }

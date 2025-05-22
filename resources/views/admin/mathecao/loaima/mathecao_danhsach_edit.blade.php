@@ -18,6 +18,7 @@
                 </a>
             </div>
             <div class="p-4">
+                <input type="hidden" name="ngay_cap_nhat" value="{{ optional($dsSanPham->ngay_cap_nhat)->format('Y-m-d H:i:s') ?? now()->format('Y-m-d H:i:s') }}">
                 <input name="id_mathecao" type="hidden" value="{{$dsSanPham->id_mathecao}}">
                 <div class="mb-4">
                     <em>
@@ -66,6 +67,19 @@
             </div>
         </div>
 </form>
+@if(session('concurrency_error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Cảnh báo',
+        text: "{{ session('concurrency_error') }}",
+        confirmButtonText: 'OK'
+    }).then(() => {
+        window.location.reload();
+    });
+</script>
+@endif
 </body>
 
 </html>
