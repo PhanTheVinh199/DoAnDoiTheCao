@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Laravel Application (PHP-FPM)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    ports:
+      - "8080:9000"
+    volumes:
+      - E:/DoAnDoiTheCao:/var/www/html
+    networks:
+      - doandoithecao_app-network
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+  # MySQL Database (with empty password allowed)
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Cho phép mật khẩu rỗng
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - doandoithecao_app-network
+    ports:
+      - "3306:3306"
+
+  # Redis service (optional)
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - doandoithecao_app-network
+    ports:
+      - "6379:6379"
+
+  # Mailhog service (optional)
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - doandoithecao_app-network
+
+networks:
+  doandoithecao_app-network:
+    driver: bridge
+
+volumes:
+  db_data:
