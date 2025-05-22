@@ -71,10 +71,10 @@
                                     <a href="{{ route('admin.mathecao.donhang.edit', $dh->id_donbanthe)}}" class="btn btn-dark">Sửa</a>
 
 
-                                    <form action="{{ route('admin.mathecao.donhang.destroy', $dh->id_donbanthe) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa đơn hàng này?')">
+                                    <form action="{{ route('admin.mathecao.donhang.destroy', $dh->id_donbanthe) }}" method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-dark">Xóa</button>
+                                        <button type="submit" class="btn btn-danger">Xóa</button>
                                     </form>
                                 </td>
                             </tr>
@@ -136,11 +136,24 @@
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-                <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script>
-                    // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
-                    document.getElementById('menuToggle').addEventListener('click', function() {
-                        document.getElementById('sidebar').classList.toggle('open');
+                    jQuery(document).on('submit', '.delete-form', function(e) {
+                        e.preventDefault();
+                        const form = this;
+                        Swal.fire({
+                            title: 'Bạn có chắc chắn muốn xóa đơn hàng này?',
+                            text: "Hành động này sẽ không thể hoàn tác!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Đồng ý',
+                            cancelButtonText: 'Hủy'
+                        }).then((res) => {
+                            if (res.isConfirmed) form.submit();
+                        });
                     });
                 </script>
 

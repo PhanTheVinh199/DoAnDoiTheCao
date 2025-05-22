@@ -49,7 +49,10 @@
 
                             <td>
                                 <a href="{{ route('admin.mathecao.nhacungcap.edit', $ncc->id_nhacungcap) }}" class="btn btn-dark">Sửa</a>
-                                <form action="{{ route('admin.mathecao.nhacungcap.destroy', $ncc->id_nhacungcap) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');">
+                                <form action="{{ route('admin.mathecao.nhacungcap.destroy', $ncc->id_nhacungcap) }}"
+                                    method="POST"
+                                    class="delete-form"
+                                    style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Xóa</button>
@@ -108,50 +111,27 @@
                     display: none !important;
                 }
             </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-            <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
-                // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
-                document.getElementById('menuToggle').addEventListener('click', function() {
-                    document.getElementById('sidebar').classList.toggle('open');
+                jQuery(document).on('submit', '.delete-form', function(e) {
+                    e.preventDefault();
+                    const form = this;
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn xóa nhà cung cấp này?',
+                        text: "Hành động này sẽ không thể hoàn tác!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Đồng ý',
+                        cancelButtonText: 'Hủy'
+                    }).then((res) => {
+                        if (res.isConfirmed) form.submit();
+                    });
                 });
             </script>
 
-            </body>
-
-            </html>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-            <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-            <script>
-                // Xử lý sự kiện mở/tắt sidebar khi nhấn vào nút ☰
-                document.getElementById('menuToggle').addEventListener('click', function() {
-                    document.getElementById('sidebar').classList.toggle('open');
-                });
-            </script>
 
             </body>
 
