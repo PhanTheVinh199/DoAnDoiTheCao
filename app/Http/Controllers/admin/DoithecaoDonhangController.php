@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DoithecaoDonhang;
 use App\Models\DoithecaoDanhsach;
+use Illuminate\Support\Facades\DB;
 
 class DoithecaoDonhangController extends Controller
 {
@@ -38,9 +39,32 @@ class DoithecaoDonhangController extends Controller
 
     public function destroy($id)
     {
-        $donhang = DoithecaoDonhang::findOrFail($id);
-        $donhang->delete();
+        DB::beginTransaction();
+        try {
+            $order = DoithecaoDonhang::lockForUpdate()->find($id);
 
-        return redirect()->route('admin.doithecao.donhang.index')->with('success', 'Xóa đơn hàng thành công');
+            if (!$order) {
+                DB::rollBack();
+                return redirect()->back()
+                    ->with('error', 'Đơn hàng này đã bị xóa bởi người dùng khác.');
+            }
+
+            $order->delete();
+            DB::commit();
+
+            return redirect()->back()
+                ->with('success', 'Xóa đơn hàng thành công.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Có lỗi xảy ra khi xóa đơn hàng.');
+        }
+    }
+
+    public function checkExists($id)
+    {
+        $exists = DoithecaoDonhang::where('id_dondoithe', $id)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }

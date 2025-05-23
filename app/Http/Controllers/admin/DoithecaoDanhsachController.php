@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DoithecaoDanhsach;
+use Illuminate\Support\Facades\DB;
 
 class DoithecaoDanhsachController extends Controller
 {
@@ -59,9 +60,34 @@ class DoithecaoDanhsachController extends Controller
         return redirect()->route('admin.doithecao.danhsach.index')->with('success', 'Cập nhật thành công!');
     }
 
+    public function checkExists($id)
+    {
+        $exists = DoithecaoDanhsach::where('id_doithecao', $id)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+
     public function destroy($id)
     {
-        DoithecaoDanhsach::deleteProduct($id);
-        return redirect()->back()->with('success', 'Đã xóa sản phẩm!');
+        DB::beginTransaction();
+        try {
+            $product = DoithecaoDanhsach::lockForUpdate()->find($id);
+
+            if (!$product) {
+                DB::rollBack();
+                return redirect()->back()
+                    ->with('error', 'Sản phẩm này đã bị xóa bởi người dùng khác.');
+            }
+
+            $product->delete();
+            DB::commit();
+
+            return redirect()->back()
+                ->with('success', 'Xóa sản phẩm thành công.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Có lỗi xảy ra khi xóa sản phẩm.');
+        }
     }
 }
