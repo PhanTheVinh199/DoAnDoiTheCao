@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -55,10 +56,23 @@ class ThanhvienController extends Controller
         $amount = $request->so_tien ?? 0;
         $type = $request->transaction_type ?? null;
 
+        $soDuCu = $request->so_du_cu ?? null;
+        $soDuMoi = $thanhvien->so_du;
+
+        // Kiểm tra xung đột số dư
+        if ($soDuCu !== null && $soDuCu != $soDuMoi) {
+            if (!$request->has('force_update') || $request->input('force_update') != '1') {
+                return redirect()->route('admin.thanhvien.danhsach')->with('error', 'Cập nhật không thành công do dữ liệu đã bị thay đổi');
+            }
+        }
+
         try {
             if ($type == 'naptien') {
                 $thanhvien->adjustBalance($amount);
             } elseif ($type == 'rutien') {
+                if ($amount > $soDuMoi) {
+                    return redirect()->back()->with('error', 'Rút tiền không thành công: số dư không đủ');
+                }
                 $thanhvien->adjustBalance(-$amount);
             } else {
                 return redirect()->back()->with('error', 'Loại giao dịch không hợp lệ');
@@ -68,35 +82,5 @@ class ThanhvienController extends Controller
         }
 
         return redirect()->route('admin.thanhvien.danhsach')->with('success', 'Cập nhật thành công');
-    }
-
-    public function rutienForm($id)
-    {
-        $thanhvien = ThanhVien::findOrFail($id);
-        return view('admin.thanhvien.rutien', compact('thanhvien'));
-    }
-
-    public function rutien(Request $request, $id)
-    {
-        $request->validate([
-            'so_tien_rut' => 'required|numeric|min:0',
-        ]);
-
-        $thanhvien = ThanhVien::findOrFail($id);
-
-        try {
-            $thanhvien->adjustBalance(-$request->so_tien_rut);
-
-            // Thêm lịch sử rút tiền
-            \App\Models\LichSuRut::create([
-                'thanhvien_id' => $thanhvien->id_thanhvien,
-                'so_tien_rut' => $request->so_tien_rut,
-                'trang_thai' => 'da_duyet',
-            ]);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-
-        return redirect()->route('admin.thanhvien.danhsach')->with('success', 'Rút tiền thành công!');
     }
 }

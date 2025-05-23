@@ -1,6 +1,29 @@
 @include('admin.sidebar')
 
 <div class="main" style="margin-top: 10px; padding: 30px">
+    @if(session('success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: "{{ session('success') }}",
+            timer: 2000,
+            confirmButtonText: 'Ok',
+        });
+    </script>
+    @endif
+    @if(session('error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: "{{ session('error') }}",
+            confirmButtonText: 'Ok',
+        });
+    </script>
+    @endif
     <div class="container">
         <div class="row d-flex">
 
@@ -59,7 +82,7 @@
                                     <button type="submit" class="btn btn-dark">Xóa</button>
                                 </form>
                                 <a href="{{ route('admin.thanhvien.naptien', $item->id_thanhvien) }}"
-                                class="btn btn-dark d-inline-block mr-2">Nạp Tiền</a>
+                                    class="btn btn-dark d-inline-block mr-2">Nạp Tiền</a>
                             </td>
 
                         </tr>
