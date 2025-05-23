@@ -39,37 +39,44 @@ class MTC_NhaCungCapController extends Controller
 
     public function edit($id)
     {
-        $ncc = MaThe_NhaCungCap::findOrFail($id);
-        return view('admin.mathecao.nhacungcap.mathecao_nhacungcap_edit', compact('ncc'));
+        try {
+            $ncc = MaThe_NhaCungCap::findOrFail($id);
+            return view('admin.mathecao.nhacungcap.mathecao_nhacungcap_edit', compact('ncc'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.mathecao.nhacungcap.index')
+                ->with('error', 'Dữ liệu không tồn tại!.');
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'ten'        => 'required|string|max:255',
-            'hinhanh'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'trang_thai' => 'required|in:hoat_dong,an',
-            'ngay_cap_nhat' => 'required|string',
-        ]);
+        try {
+            $ncc = MaThe_NhaCungCap::findOrFail($id);
 
-        $ncc = MaThe_NhaCungCap::findOrFail($id);
+            $request->validate([
+                'ten'        => 'required|string|max:255',
+                'hinhanh'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'trang_thai' => 'required|in:hoat_dong,an',
+                'ngay_cap_nhat' => 'required|string',
+            ]);
 
-        // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
-        if ($request->input('ngay_cap_nhat') !== $ncc->ngay_cap_nhat->format('Y-m-d H:i:s')) {
-            return redirect()
-                ->route('admin.mathecao.nhacungcap.edit', $id)
-                ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+            if ($request->input('ngay_cap_nhat') !== $ncc->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+                return redirect()->route('admin.mathecao.nhacungcap.index')
+                    ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+            }
+
+            MaThe_NhaCungCap::updateSupplier(
+                $id,
+                $request->only('ten', 'trang_thai'),
+                $request->file('hinhanh')
+            );
+
+            return redirect()->route('admin.mathecao.nhacungcap.index')
+                ->with('success', 'Cập nhật thành công!');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.mathecao.nhacungcap.index')
+                ->with('error', 'Dữ liệu không tồn tại!.');
         }
-
-        MaThe_NhaCungCap::updateSupplier(
-            $id,
-            $request->only('ten', 'trang_thai'),
-            $request->file('hinhanh')
-        );
-
-        return redirect()
-            ->route('admin.mathecao.nhacungcap.index')
-            ->with('success', 'Cập nhật thành công!');
     }
 
     public function destroy(Request $request, $id)

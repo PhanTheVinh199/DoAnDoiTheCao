@@ -27,7 +27,7 @@ class MTC_DonHangController extends Controller
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();
-        
+
         if ($request->filled('ma_don') && $dsDonHang->isEmpty()) {
             return view('admin.mathecao.donhang.mathecao_donhang', compact('dsDonHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap'))
                 ->with('not_found', 'Không tìm thấy đơn hàng nào phù hợp với từ khóa "' . $request->ma_don . '"');
@@ -89,16 +89,21 @@ class MTC_DonHangController extends Controller
      */
     public function edit(string $id)
     {
-        $donHang = MaThe_DonHang::findOrFail($id);
-        $dsSanPham = MaThe_SanPham::all();
-        $dsThanhVien = ThanhVien::all(); // 
-        $dsNhaCungCap = MaThe_NhaCungCap::all();
+        try {
+            $donHang = MaThe_DonHang::findOrFail($id);
+            $dsSanPham = MaThe_SanPham::all();
+            $dsThanhVien = ThanhVien::all(); // 
+            $dsNhaCungCap = MaThe_NhaCungCap::all();
 
 
 
-        // Lấy tên nhà cung cấp từ quan hệ của donHang
-        $nhaCungCap = $donHang->sanpham->nhacungcap->ten ?? '';
-        return view('admin.mathecao.donhang.mathecao_donhang_edit', compact('donHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap', 'nhaCungCap'));
+            // Lấy tên nhà cung cấp từ quan hệ của donHang
+            $nhaCungCap = $donHang->sanpham->nhacungcap->ten ?? '';
+            return view('admin.mathecao.donhang.mathecao_donhang_edit', compact('donHang', 'dsSanPham', 'dsThanhVien', 'dsNhaCungCap', 'nhaCungCap'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.mathecao.donhang.index')
+                ->with('error', 'Dữ liệu không tồn tại!.');
+        }
     }
 
     /**
@@ -107,27 +112,32 @@ class MTC_DonHangController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
-            'ngay_cap_nhat' => 'required|string',
-        ]);
+        try {
+            $request->validate([
+                'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
+                'ngay_cap_nhat' => 'required|string',
+            ]);
 
-        $donHang = MaThe_DonHang::findOrFail($id);
+            $donHang = MaThe_DonHang::findOrFail($id);
 
-        // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
-        if ($request->input('ngay_cap_nhat') !== $donHang->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+            // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
+            if ($request->input('ngay_cap_nhat') !== $donHang->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+                return redirect()
+                    ->route('admin.mathecao.donhang.index')
+                    ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+            }
+
+            MaThe_DonHang::updateStatus(
+                $id,
+                $request->input('trang_thai')
+            );
             return redirect()
-                ->route('admin.mathecao.donhang.edit', $id)
-                ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+                ->route('admin.mathecao.donhang.index')
+                ->with('success', 'Cập nhật thành công!');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.mathecao.donhang.index')
+                ->with('error', 'Dữ liệu không tồn tại!.');
         }
-
-        MaThe_DonHang::updateStatus(
-            $id,
-            $request->input('trang_thai')
-        );
-        return redirect()
-            ->route('admin.mathecao.donhang.index')
-            ->with('success', 'Cập nhật thành công!');
     }
 
     /**

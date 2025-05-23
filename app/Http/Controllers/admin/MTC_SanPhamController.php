@@ -42,38 +42,48 @@ class MTC_SanPhamController extends Controller
 
     public function edit($id)
     {
-        $dsSanPham = MaThe_SanPham::findOrFail($id);
-        $dsNhaCungCap = MaThe_SanPham::getAllSuppliers();
+        try {
+            $dsSanPham = MaThe_SanPham::findOrFail($id);
+            $dsNhaCungCap = MaThe_SanPham::getAllSuppliers();
 
-        return view('admin.mathecao.loaima.mathecao_danhsach_edit', compact('dsSanPham', 'dsNhaCungCap'));
+            return view('admin.mathecao.loaima.mathecao_danhsach_edit', compact('dsSanPham', 'dsNhaCungCap'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.mathecao.loaima.index')
+                ->with('error', 'Dữ liệu không tồn tại!.');
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'menh_gia' => 'required|numeric|min:1000',
-            'chiet_khau' => 'required|numeric|min:0|max:100',
-            'trang_thai' => 'required|in:hoat_dong,an',
-            'ngay_cap_nhat' => 'required|string',
-        ]);
+        try {
+            $request->validate([
+                'menh_gia' => 'required|numeric|min:1000',
+                'chiet_khau' => 'required|numeric|min:0|max:100',
+                'trang_thai' => 'required|in:hoat_dong,an',
+                'ngay_cap_nhat' => 'required|string',
+            ]);
 
-        $dsSanPham = MaThe_SanPham::findOrFail($id);
+            $dsSanPham = MaThe_SanPham::findOrFail($id);
 
-        // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
-        if ($request->input('ngay_cap_nhat') !== $dsSanPham->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+            // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
+            if ($request->input('ngay_cap_nhat') !== $dsSanPham->ngay_cap_nhat->format('Y-m-d H:i:s')) {
+                return redirect()
+                    ->route('admin.mathecao.loaima.index')
+                    ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+            }
+
+            MaThe_SanPham::updateProduct(
+                $id,
+                $request->only('menh_gia', 'chiet_khau', 'trang_thai'),
+            );
+
             return redirect()
-                ->route('admin.mathecao.loaima.edit', $id)
-                ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+                ->route('admin.mathecao.loaima.index')
+                ->with('success', 'Cập nhật thành công!');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.mathecao.loaima.index')
+                ->with('error', 'Dữ liệu không tồn tại!.');
         }
-
-        MaThe_SanPham::updateProduct(
-            $id,
-            $request->only('menh_gia','chiet_khau', 'trang_thai'),
-        );
-
-        return redirect()
-            ->route('admin.mathecao.loaima.index')
-            ->with('success', 'Cập nhật thành công!');
     }
 
 
