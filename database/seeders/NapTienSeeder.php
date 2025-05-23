@@ -17,6 +17,8 @@ class NapTienSeeder extends Seeder
                 'so_tien_nap' => rand(50000, 500000),  // Giả sử số tiền từ 50.000 đến 500.000
                 'noi_dung' => 'Nạp tiền vào tài khoản số ' . rand(100000, 999999),
                 'ngay_tao' => Carbon::now(),
+                'created_at' => now(),
+            'updated_at' => now(),
                 'trang_thai' => ['cho_duyet', 'da_duyet', 'huy'][rand(0, 2)],
             ]);
         }

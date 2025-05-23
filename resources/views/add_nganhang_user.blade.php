@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập Nhật Ngân Hàng</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Cập Nhật Ngân Hàng</title>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
@@ -17,6 +17,17 @@
                 <i class="fas fa-times"></i>
             </a>
         </div>
+
+        {{-- Hiển thị lỗi từ server (nếu có) --}}
+        @if ($errors->any())
+            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <form action="{{ route('add_nganhang_user_store') }}" method="POST" id="bankForm">
             @csrf
@@ -36,42 +47,59 @@
             </div>
 
             <div class="flex justify-end space-x-2">
-                <a href="{{ route('ruttien') }}" class="bg-gray-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-gray-600">Đóng</a>
+                <a href="{{ route('ruttien') }}" class="bg-gray-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-gray-600">
+                    <i class="fas fa-arrow-left mr-1"></i> Đóng
+                </a>
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-blue-700">Cập Nhật</button>
             </div>
         </form>
     </div>
 
+    {{-- Thông báo thành công từ session --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
+    {{-- Xử lý submit bằng JavaScript --}}
     <script type="text/javascript">
         document.getElementById('bankForm').onsubmit = function (e) {
-            e.preventDefault(); // Ngừng gửi form để kiểm tra trước
+            e.preventDefault();
 
-            // Kiểm tra dữ liệu trước khi gửi form
-            let tenNganHang = document.getElementById('ten_ngan_hang').value;
-            let soTaiKhoan = document.getElementById('so_tai_khoan').value;
-            let chuTaiKhoan = document.getElementById('chu_tai_khoan').value;
+            const tenNganHang = document.getElementById('ten_ngan_hang').value.trim();
+            const soTaiKhoan = document.getElementById('so_tai_khoan').value.trim();
+            const chuTaiKhoan = document.getElementById('chu_tai_khoan').value.trim();
 
-            // Kiểm tra nếu dữ liệu không hợp lệ
-            if (!/^[a-zA-Z\s]+$/.test(tenNganHang)) {
+            // Regex hỗ trợ tiếng Việt có dấu
+            const regexChu = /^[\p{L}\s]+$/u;
+            const regexSo = /^\d+$/;
+
+            if (!regexChu.test(tenNganHang)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
-                    text: 'Tên ngân hàng chỉ được chứa chữ và khoảng trắng!',
+                    text: 'Tên ngân hàng chỉ được chứa chữ cái (có dấu) và khoảng trắng!',
                 });
-            } else if (!/^\d+$/.test(soTaiKhoan)) {
+            } else if (!regexSo.test(soTaiKhoan)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
-                    text: 'Số tài khoản phải là số hợp lệ!',
+                    text: 'Số tài khoản phải là số!',
                 });
-            } else if (!/^[a-zA-Z\s]+$/.test(chuTaiKhoan)) {
+            } else if (!regexChu.test(chuTaiKhoan)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi!',
-                    text: 'Chủ tài khoản chỉ được chứa chữ và khoảng trắng!',
+                    text: 'Chủ tài khoản chỉ được chứa chữ cái (có dấu) và khoảng trắng!',
                 });
             } else {
-                // Nếu dữ liệu hợp lệ, yêu cầu xác nhận
                 Swal.fire({
                     title: 'Bạn có chắc chắn muốn thêm ngân hàng này?',
                     icon: 'warning',
@@ -82,7 +110,6 @@
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Gửi form nếu người dùng đồng ý
                         document.getElementById('bankForm').submit();
                     }
                 });

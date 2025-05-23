@@ -53,7 +53,7 @@ Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('pay');
 Route::post('/process-payment', [ThanhToanController::class, 'process'])->name('process.payment');
 
 Route::middleware('auth:thanhvien')->group(function () {
-    Route::get('/naptien', [NapTienController::class, 'showForm'])->name('naptien.form'); 
+    Route::get('/naptien', [NapTienController::class, 'showForm'])->name('naptien.form');
     Route::post('/naptien', [NapTienController::class, 'store'])->name('naptien.store');
     Route::get('/lichsunap', [NapTienController::class, 'showHistory'])->name('lichsunap');
 });

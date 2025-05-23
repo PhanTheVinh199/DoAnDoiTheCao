@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,12 +27,14 @@ class NapTien extends Model
         'bank_account_name',
         'transfer_note',
     ];
-
+    protected $dates = ['updated_at', 'ngay_tao'];
+    // Quan hệ tới bảng thành viên
     public function thanhvien()
     {
         return $this->belongsTo(ThanhVien::class, 'thanhvien_id', 'id_thanhvien');
     }
 
+    // Quan hệ tới bảng ngân hàng
     public function nganhang()
     {
         return $this->belongsTo(NganHang::class, 'paygate_code', 'id_danhsach');
@@ -39,6 +42,9 @@ class NapTien extends Model
 
     /**
      * Lấy lịch sử nạp tiền phân trang, sắp xếp mới nhất
+     * @param int $userId
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public static function getPaginatedHistory($userId, $perPage = 10)
     {
@@ -50,11 +56,12 @@ class NapTien extends Model
     /**
      * Tạo giao dịch nạp tiền mới
      * $data bao gồm: thanhvien_id, so_tien_nap, paygate_code,...
+     * @throws \Exception
      */
     public static function createDeposit(array $data)
     {
-        // Kiểm tra hạn mức nạp trong ngày (giới hạn có thể truyền vào hoặc config)
-        $hanMucNgay = $data['han_muc_ngay'] ?? 100000000; 
+        // Giới hạn nạp trong ngày, mặc định 100 triệu
+        $hanMucNgay = $data['han_muc_ngay'] ?? 100000000;
 
         $totalToday = self::where('thanhvien_id', $data['thanhvien_id'])
             ->whereDate('created_at', now()->toDateString())
@@ -64,7 +71,6 @@ class NapTien extends Model
             throw new \Exception('Bạn đã đạt hạn mức nạp tiền trong ngày.');
         }
 
-        // Lấy thông tin ngân hàng
         $bank = NganHang::where('id_danhsach', $data['paygate_code'])
                         ->where('trang_thai', 'hoat_dong')
                         ->first();
@@ -90,8 +96,22 @@ class NapTien extends Model
     }
 
     /**
+     * Cập nhật đơn nạp tiền theo id với dữ liệu truyền vào
+     * @param int $id
+     * @param array $data
+     * @return NapTien
+     */
+    public static function updateNapTien($id, array $data)
+    {
+        $napTien = self::findOrFail($id);
+        $napTien->update($data);
+        return $napTien;
+    }
+
+    /**
      * Duyệt và cập nhật trạng thái giao dịch (admin dùng)
      * Nếu trạng thái là 'da_duyet', cộng tiền vào tài khoản thành viên
+     * @throws \Exception
      */
     public static function approveTransaction($id, $newStatus)
     {
@@ -118,11 +138,17 @@ class NapTien extends Model
         });
     }
 
-        public static function getOrderDetail($id)
+    /**
+     * Lấy chi tiết đơn nạp kèm thông tin ngân hàng
+     */
+    public static function getOrderDetail($id)
     {
         return self::with('nganhang')->findOrFail($id);
     }
 
+    /**
+     * Xác nhận giao dịch (cập nhật số dư nếu đã duyệt)
+     */
     public static function confirmTransaction($id)
     {
         return DB::transaction(function () use ($id) {

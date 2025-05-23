@@ -6,14 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DoithecaoDonhang;
 use App\Models\DoithecaoDanhsach;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class DoithecaoDonhangController extends Controller
 {
-    /**
-     * Hiển thị danh sách đơn hàng, có hỗ trợ tìm kiếm
-     */
     public function index(Request $request)
     {
         $searchTerm = $request->input('ma_don', '');
@@ -22,9 +18,6 @@ class DoithecaoDonhangController extends Controller
         return view('admin.doithecao.donhang.doithecao_donhang', compact('donhang', 'searchTerm'));
     }
 
-    /**
-     * Hiển thị form sửa đơn hàng
-     */
     public function edit($id_dondoithe)
     {
         $donhang = DoithecaoDonhang::findOrFail($id_dondoithe);
@@ -33,67 +26,45 @@ class DoithecaoDonhangController extends Controller
         return view('admin.doithecao.donhang.doithecao_donhang_edit', compact('donhang', 'sanphams'));
     }
 
-    /**
-     * Cập nhật trạng thái đơn hàng
-     */
-public function update(Request $request, $id_dondoithe)
-{
-    $request->validate([
-        'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
-        'updated_at' => 'required',
-    ]);
+    public function update(Request $request, $id_dondoithe)
+    {
+        $request->validate([
+            'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
+        ]);
 
-    try {
-        $donhang = DoithecaoDonhang::findOrFail($id_dondoithe);
-
-        // So sánh updated_at từ form với DB
-        $formUpdatedAt = \Carbon\Carbon::parse($request->input('updated_at'));
-        $dbUpdatedAt = $donhang->updated_at;
-
-        if (!$dbUpdatedAt->equalTo($formUpdatedAt)) {
-            return redirect()->route('admin.doithecao.donhang.index')
-                ->with('error', 'Đơn hàng đã bị thay đổi bởi người khác. Vui lòng tải lại trang và thử lại.');
-        }
-
-        // Cập nhật trạng thái đơn hàng
-        if ($donhang->trang_thai !== $request->trang_thai) {
-            \DB::transaction(function () use ($donhang, $request) {
-                if ($request->trang_thai === 'hoat_dong' && $donhang->trang_thai !== 'hoat_dong') {
-                    $thanhvien = $donhang->thanhvien;
-                    if ($thanhvien) {
-                        $thanhvien->so_du += $donhang->thanh_tien;
-                        $thanhvien->save();
-                    }
-                }
-                $donhang->trang_thai = $request->trang_thai;
-                $donhang->save();
-            });
-        }
+        DoithecaoDonhang::updateStatus($id_dondoithe, $request->trang_thai);
 
         return redirect()->route('admin.doithecao.donhang.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công');
-    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return redirect()->route('admin.doithecao.donhang.index')->with('error', 'Đơn hàng không tồn tại hoặc đã bị xóa.');
-    } catch (\Exception $e) {
-        return redirect()->route('admin.doithecao.donhang.index')->with('error', 'Lỗi khi cập nhật: ' . $e->getMessage());
     }
-}
 
-
-
-    /**
-     * Xóa đơn hàng
-     */
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
-            $donhang = DoithecaoDonhang::findOrFail($id);
-            $donhang->delete();
+            $order = DoithecaoDonhang::lockForUpdate()->find($id);
 
-            return redirect()->route('admin.doithecao.donhang.index')->with('success', 'Xóa đơn hàng thành công');
-        } catch (ModelNotFoundException $e) {
-            return redirect()->route('admin.doithecao.donhang.index')->with('error', 'Đơn hàng không tồn tại hoặc đã bị xóa.');
+            if (!$order) {
+                DB::rollBack();
+                return redirect()->back()
+                    ->with('error', 'Đơn hàng này đã bị xóa bởi người dùng khác.');
+            }
+
+            $order->delete();
+            DB::commit();
+
+            return redirect()->back()
+                ->with('success', 'Xóa đơn hàng thành công.');
+
         } catch (\Exception $e) {
-            return redirect()->route('admin.doithecao.donhang.index')->with('error', 'Lỗi khi xóa đơn hàng: ' . $e->getMessage());
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Có lỗi xảy ra khi xóa đơn hàng.');
         }
+    }
+
+    public function checkExists($id)
+    {
+        $exists = DoithecaoDonhang::where('id_dondoithe', $id)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }
