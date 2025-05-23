@@ -89,6 +89,7 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/edit/{id_dondoithe}', [DoithecaoDonhangController::class, 'edit'])->name('edit');
         Route::put('/update/{id_dondoithe}', [DoithecaoDonhangController::class, 'update'])->name('update');
         Route::delete('/delete/{id_dondoithe}', [DoithecaoDonhangController::class, 'destroy'])->name('destroy');
+        
     });
 
     Route::prefix('nganhang')->name('nganhang.')->group(function () {

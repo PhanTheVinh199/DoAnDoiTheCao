@@ -13,7 +13,6 @@
                     </form>
                 </div>
 
-
                 <table class="table table-bordered">
                     <thead class="table-light">
                         <tr>
@@ -73,13 +72,11 @@
                                 <td>
                                     <a href="{{ route('admin.doithecao.donhang.edit', $order->id_dondoithe) }}"
                                         class="btn btn-dark">Sửa</a>
-                                    <form action="{{ route('admin.doithecao.donhang.destroy', $order->id_dondoithe) }}"
-                                        method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-dark"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')">Xóa</button>
-                                    </form>
+                                    <form action="{{ route('admin.doithecao.donhang.destroy', $order->id_dondoithe) }}" method="POST" style="display:inline;" class="delete-form">
+    @csrf
+    @method('DELETE')
+    <button type="button" class="btn btn-dark btn-delete">Xóa</button>
+</form>
                                 </td>
                             </tr>
                         @endforeach
@@ -91,10 +88,6 @@
                     {{ $donhang->links('pagination::bootstrap-4') }}
                 </div>
 
-
-
-
-
             </div>
         </div>
     </div>
@@ -102,11 +95,63 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById('menuToggle').addEventListener('click', function() {
         document.getElementById('sidebar').classList.toggle('open');
     });
 </script>
-</body>
 
+{{-- Thêm SweetAlert hiển thị thông báo success hoặc error --}}
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        text: "{{ session('success') }}",
+        
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: "{{ session('error') }}",
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+<script>
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();  // Ngăn submit form ngay
+
+            const form = this.closest('form');
+
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa đơn hàng này?',
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();  // submit form nếu xác nhận
+                }
+            });
+        });
+    });
+</script>
+
+</body>
 </html>
