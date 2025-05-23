@@ -39,6 +39,8 @@ class DoithecaoDonhangSeeder extends Seeder
                 $ma_the = str_pad(rand(0, 999999999999), 12, '0', STR_PAD_LEFT); // Mã thẻ 12 số
                 $serial = str_pad(rand(0, 999999999999), 12, '0', STR_PAD_LEFT); // Serial 12 số
 
+                $now = Carbon::now();
+
                 // Tạo dữ liệu đơn hàng
                 DB::table('doithecao_donhang')->insert([
                     'ma_don' => 'DTC-' . Str::random(10), // Tạo mã đơn ngẫu nhiên
@@ -48,8 +50,10 @@ class DoithecaoDonhangSeeder extends Seeder
                     'so_luong' => $so_luong,
                     'thanh_tien' => $thanh_tien_chiet_khau, // Thành tiền sau chiết khấu
                     'thanhvien_id' => $thanhvien_id,
-                    'ngay_tao' => Carbon::now(),
+                    'ngay_tao' => $now,
                     'trang_thai' => 'cho_xu_ly', // Trạng thái mặc định
+                    'created_at' => $now,
+                    'updated_at' => $now,
                 ]);
             }
         }

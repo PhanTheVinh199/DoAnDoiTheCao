@@ -20,6 +20,9 @@
                 @method('PUT')
                 <!-- Phương thức PUT để cập nhật -->
 
+                <input type="hidden" name="updated_at" value="{{ $rutTien->updated_at }}">
+
+
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mã Đơn</label>
                     <input type="text" name="ma_don" value="{{ $rutTien->ma_don }}"

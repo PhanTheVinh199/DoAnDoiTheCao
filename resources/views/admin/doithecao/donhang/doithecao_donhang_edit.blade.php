@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
+
 <body class="flex items-center justify-center min-h-screen bg-gray-500">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
         <div class="flex justify-between items-center border-b p-4">
@@ -21,6 +22,10 @@
             <form action="{{ route('admin.doithecao.donhang.update', $donhang->id_dondoithe) }}" method="POST">
                 @csrf
                 @method('PUT')
+
+                 <!-- Trường ẩn gửi updated_at -->
+    <input type="hidden" name="updated_at" value="{{ $donhang->updated_at }}">
+
 
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mã Đơn</label>
@@ -48,15 +53,16 @@
 
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Sản Phẩm</label>
-                    <select name="doithecao_id" class="w-full border rounded px-3 py-2" required disabled>
-                        <option value="">-- Chọn sản phẩm --</option>
-                        @foreach (\App\Models\DoithecaoDanhsach::all() as $sanpham)
-                            <option value="{{ $sanpham->id_doithecao }}" 
-                                {{ old('doithecao_id', $donhang->doithecao_id) == $sanpham->id_doithecao ? 'selected' : '' }} >
-                                {{ $sanpham->ten_san_pham ?? 'Sản phẩm #' . $sanpham->id_doithecao }}
-                            </option>
-                        @endforeach
-                    </select>
+                   <select name="doithecao_id" class="w-full border rounded px-3 py-2" required disabled>
+    <option value="">-- Chọn sản phẩm --</option>
+    @foreach (\App\Models\DoithecaoDanhsach::with('nhacungcap')->get() as $sanpham)
+        <option value="{{ $sanpham->id_doithecao }}" 
+            {{ old('doithecao_id', $donhang->doithecao_id) == $sanpham->id_doithecao ? 'selected' : '' }}>
+            {{ ($sanpham->nhacungcap->ten ?? 'Nhà cung cấp') . ' - ' . number_format($sanpham->menh_gia) }} VNĐ
+        </option>
+    @endforeach
+</select>
+
                     @error('doithecao_id')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
@@ -97,6 +103,8 @@
             </form>
         </div>
     </div>
+
+    
 </body>
 
 </html>

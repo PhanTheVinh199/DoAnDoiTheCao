@@ -12,7 +12,7 @@ class DoithecaoDonhang extends Model
 
     protected $table = 'doithecao_donhang';
     protected $primaryKey = 'id_dondoithe';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'ma_don',
