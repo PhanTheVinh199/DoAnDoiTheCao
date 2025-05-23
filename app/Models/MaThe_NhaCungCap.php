@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\File;
 class MaThe_NhaCungCap extends Model
 {
     protected $table = 'mathecao_nhacungcap';
-    public $timestamps = false;
+    const CREATED_AT = 'ngay_tao';
+    const UPDATED_AT = 'ngay_cap_nhat';
+    public $timestamps = true;
     protected $primaryKey = 'id_nhacungcap';
 
     protected $fillable = ['ten', 'hinhanh', 'trang_thai'];

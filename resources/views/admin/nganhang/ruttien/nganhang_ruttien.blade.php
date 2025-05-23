@@ -55,13 +55,15 @@
                                 <td>
                                     <a href="{{ route('admin.nganhang.ruttien.edit', $item->id_lichsurut) }}"
                                         class="btn btn-dark d-inline-block mr-2">Sửa</a>
-                                    <form action="{{ route('admin.nganhang.ruttien.delete', $item->id_lichsurut) }}"
-                                        method="POST" class="d-inline-block"
-                                        onsubmit="return confirm('Bạn có chắc muốn xóa?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-dark">Xóa</button>
-                                    </form>
+                                   <form action="{{ route('admin.nganhang.ruttien.delete', $item->id_lichsurut) }}"
+      method="POST" class="d-inline-block form-delete-{{ $item->id_lichsurut }}">
+    @csrf
+    @method('DELETE')
+    <button type="button" class="btn btn-dark btn-confirm-delete" data-id="{{ $item->id_lichsurut }}">
+        Xóa
+    </button>
+</form>
+
                                 </td>
                             </tr>
                         @empty
@@ -81,3 +83,51 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: "{{ session('error') }}",
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll('.btn-confirm-delete').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa?',
+                text: "Thao tác này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.querySelector(`.form-delete-${id}`).submit();
+                }
+            });
+        });
+    });
+</script>
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Thành Công',
+        text: "{{ session('success') }}",
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+

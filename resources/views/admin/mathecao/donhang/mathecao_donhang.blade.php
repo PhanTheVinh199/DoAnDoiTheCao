@@ -1,6 +1,54 @@
     @include('admin.sidebar')
 
     <div class="main" style="margin-top: 10px; padding: 30px">
+        @if(session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                confirmButtonText: 'Ok',
+            });
+        </script>
+        @endif
+        @if(request()->filled('ma_don') && $dsDonHang->isEmpty())
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Không tìm thấy',
+                text: "Không tìm thấy đơn hàng nào phù hợp với từ khóa '{{ request('ma_don') }}'",
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = "{{ route('admin.mathecao.donhang.index') }}";
+            });
+        </script>
+        @endif
+        @if(session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: "{{ session('error') }}",
+                confirmButtonText: 'OK'
+            });
+        </script>
+        @endif
+
+        @if(session('concurrency_error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cảnh báo',
+                text: "{{ session('concurrency_error') }}",
+                confirmButtonText: 'OK'
+            });
+        </script>
+        @endif
         <div class="container">
             <div class="row d-flex">
 
@@ -9,7 +57,7 @@
                     <form method="GET" action="{{ route('admin.mathecao.donhang.index') }}">
                         <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 900px;">
 
-                            <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto" value="{{ request('ma_don') }}">
+                            <input type="text" name="ma_don" placeholder="Mã Đơn" class="form-control w-auto" value="{{ request('ma_don') }}" maxlength="100">
 
                             <button class="btn btn-primary">Tìm kiếm</button>
                             <!-- <button class="btn btn-danger">Bỏ lọc</button> -->
@@ -18,6 +66,7 @@
                     <div class="d-flex gap-4 mb-4" style="margin-left: 500px;">
 
                     </div>
+
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
@@ -141,18 +190,36 @@
                 <script>
                     jQuery(document).on('submit', '.delete-form', function(e) {
                         e.preventDefault();
-                        const form = this;
+                        const form = $(this);
+
                         Swal.fire({
                             title: 'Bạn có chắc chắn muốn xóa đơn hàng này?',
                             text: "Hành động này sẽ không thể hoàn tác!",
                             icon: 'warning',
                             showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
                             confirmButtonText: 'Đồng ý',
                             cancelButtonText: 'Hủy'
-                        }).then((res) => {
-                            if (res.isConfirmed) form.submit();
+                        }).then(res => {
+                            if (!res.isConfirmed) return;
+
+                            $.ajax({
+                                url: form.attr('action'),
+                                method: 'POST',
+                                data: form.serialize(),
+                                success: function(resp) {
+                                    Swal.fire('Thành công', resp.success, 'success')
+                                        .then(() => {
+                                            form.closest('tr').remove();
+                                        });
+                                },
+                                error: function(xhr) {
+                                    if (xhr.status === 404) {
+                                        Swal.fire('Lỗi', 'Đơn hàng không tồn tại! Vui lòng tải lại trang.', 'error');
+                                    } else {
+                                        Swal.fire('Lỗi', 'Xóa không thành công.', 'error');
+                                    }
+                                }
+                            });
                         });
                     });
                 </script>

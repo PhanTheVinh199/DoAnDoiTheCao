@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class MaThe_DonHang extends Model
 {
     protected $table = 'mathecao_donhang';
-    public $timestamps = false;
+    public $timestamps = true;
+    const CREATED_AT = 'ngay_tao';
+    const UPDATED_AT = 'ngay_cap_nhat';
     protected $primaryKey = 'id_donbanthe';
 
     protected $fillable = [

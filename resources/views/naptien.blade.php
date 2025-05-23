@@ -45,40 +45,67 @@
                 </div>
                 <div class="form-m1">
                     <form action="{{ route('naptien.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-4">
-                            <label class="col-form-label">
-                                Số dư quỹ: <b class="font-weight-bold text-success">{{ number_format(Auth::guard('thanhvien')->user()->so_du) }} VND</b>
-                            </label>
-                        </div>
+    @csrf
 
-                        <div class="mb-4">
-                            <label class="col-form-label fw-bold">Số tiền nạp:</label>
-                            <input name="net_amount" type="number" class="form-control fnum" placeholder="Số tiền nạp"
-                                value="{{ old('net_amount') }}" required min="{{ $soTienToiThieu }}" max="{{ $soTienToiDa }}">
-                            <small class="text-danger">Tối thiểu {{ number_format($soTienToiThieu) }} VND , Tối đa {{ number_format($soTienToiDa) }} VND</small>
-                        </div>
+    {{-- Hiển thị tất cả lỗi validation chung ở đầu form --}}
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-                        <div class="mb-4">
-                            <label class="col-form-label fw-bold">Cổng thanh toán:</label>
-                            <select class="form-control" name="paygate_code" required>
-                                @forelse($banks as $bank)
-                                <option value="{{ $bank->id_danhsach }}">
-                                    {{ $bank->ten_ngan_hang }} - {{ $bank->so_tai_khoan }} ({{ $bank->chu_tai_khoan }})
-                                </option>
-                                @empty
-                                <option value="">Bạn chưa thêm ngân hàng nào</option>
-                                @endforelse
-                            </select>
-                        </div>
+    <div class="mb-4">
+        <label class="col-form-label">
+            Số dư quỹ: <b class="font-weight-bold text-success">{{ number_format(Auth::guard('thanhvien')->user()->so_du) }} VND</b>
+        </label>
+    </div>
 
-                        <div class="text-end">
-                            <input type="hidden" name="hanMucNgay" value="{{ $hanMucNgay }}">
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-dollar-sign"></i> Nạp tiền ngay
-                            </button>
-                        </div>
-                    </form>
+    <div class="mb-4">
+        <label class="col-form-label fw-bold">Số tiền nạp:</label>
+        <input name="net_amount" type="number"
+               class="form-control fnum @error('net_amount') is-invalid @enderror"
+               placeholder="Số tiền nạp"
+               value="{{ old('net_amount') }}"
+               required min="{{ $soTienToiThieu }}" max="{{ $soTienToiDa }}">
+
+        {{-- Lỗi riêng cho trường net_amount --}}
+        @error('net_amount')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+
+        <small class="text-danger">Tối thiểu {{ number_format($soTienToiThieu) }} VND , Tối đa {{ number_format($soTienToiDa) }} VND</small>
+    </div>
+
+    <div class="mb-4">
+        <label class="col-form-label fw-bold">Cổng thanh toán:</label>
+        <select class="form-control @error('paygate_code') is-invalid @enderror" name="paygate_code" required>
+            @forelse($banks as $bank)
+                <option value="{{ $bank->id_danhsach }}" {{ old('paygate_code') == $bank->id_danhsach ? 'selected' : '' }}>
+                    {{ $bank->ten_ngan_hang }} - {{ $bank->so_tai_khoan }} ({{ $bank->chu_tai_khoan }})
+                </option>
+            @empty
+                <option value="">Bạn chưa thêm ngân hàng nào</option>
+            @endforelse
+        </select>
+
+        {{-- Lỗi riêng cho trường paygate_code --}}
+        @error('paygate_code')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+
+    <div class="text-end">
+        <input type="hidden" name="hanMucNgay" value="{{ $hanMucNgay }}">
+        <button type="submit" class="btn btn-primary btn-lg w-100">
+            <i class="fas fa-dollar-sign"></i> Nạp tiền ngay
+        </button>
+    </div>
+</form>
+
                 </div>
             </div>
 

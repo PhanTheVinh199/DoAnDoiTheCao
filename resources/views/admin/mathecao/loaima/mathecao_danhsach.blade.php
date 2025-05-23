@@ -1,6 +1,42 @@
 @include('admin.sidebar')
 
 <div class="main" style="margin-top: 10px; padding: 50px">
+    @if(session('success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: "{{ session('success') }}",
+            timer: 2000,
+            confirmButtonText: 'Ok',
+        });
+    </script>
+    @endif
+    @if(session('error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: "{{ session('error') }}",
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
+@if(session('concurrency_error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Cảnh báo',
+        text: "{{ session('concurrency_error') }}",
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
     <div class="container">
         <div class="row d-flex">
 
@@ -123,7 +159,8 @@
     <script>
         jQuery(document).on('submit', '.delete-form', function(e) {
             e.preventDefault();
-            const form = this;
+            const form = $(this);
+
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
                 text: "Hành động này sẽ không thể hoàn tác!",
@@ -134,7 +171,26 @@
                 confirmButtonText: 'Đồng ý',
                 cancelButtonText: 'Hủy'
             }).then((res) => {
-                if (res.isConfirmed) form.submit();
+                if (!res.isConfirmed) return;
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        Swal.fire('Thành công', response.success, 'success')
+                            .then(() => {
+                                form.closest('tr').remove();
+                            });
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 404) {
+                            Swal.fire('Lỗi', 'Dữ liệu không tồn tại! Vui lòng tải lại trang.', 'error');
+                        } else {
+                            Swal.fire('Lỗi', 'Không thể xóa dữ liệu.', 'error');
+                        }
+                    }
+                });
             });
         });
     </script>

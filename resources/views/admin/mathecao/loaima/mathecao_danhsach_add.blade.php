@@ -12,9 +12,9 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="flex justify-between items-center border-b p-4">
                 <h2 class="text-lg font-semibold">Thêm Sản Phẩm</h2>
-                <button class="text-gray-500 hover:text-gray-700">
+                <a href="{{route('admin.mathecao.loaima.index')}}" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
-                </button>
+                </a>
             </div>
             <div class="p-4">
                 <div class="mb-4">
@@ -38,11 +38,17 @@
 
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mệnh Giá </label>
-                    <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" />
+                    <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" min="10000" max="1000000" step="10000" />
+                    <small id="menh_gia-help" class="text-sm text-gray-500 mt-1 block">
+                        Chỉ được nhập từ 10.000 đến 5.000.000 VND
+                    </small>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Chiếc Khấu</label>
-                    <input type="number" name="chiet_khau" class="w-full border rounded px-3 py-2" />
+                    <input type="number" name="chiet_khau" class="w-full border rounded px-3 py-2" min="0" max="100" step="0.1" />
+                    <small id="chiet_khau-help" class="text-sm text-gray-500 mt-1 block">
+                        Nhập giá trị từ 0 đến 100 (%)
+                    </small>
                 </div>
 
                 <div class="flex justify-end space-x-2">

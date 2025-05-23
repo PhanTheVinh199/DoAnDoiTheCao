@@ -7,7 +7,8 @@
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
-        perspective: 1000px; /* tạo không gian 3D cho con bên trong */
+        perspective: 1000px;
+        /* tạo không gian 3D cho con bên trong */
     }
 
     .price-item {
@@ -218,7 +219,7 @@
                                         <div class="form-theme_item">
                                             <div class="form-theme_item--input">
                                                 <input class="form-control" value="{{ request('order_code') }}" name="order_code"
-                                                    placeholder="Mã đơn">
+                                                    placeholder="Mã đơn" maxlength="50">
                                             </div>
                                         </div>
                                     </div>
@@ -229,9 +230,9 @@
                                             <div class="form-theme_item--input">
                                                 <select name="status" class="form-control">
                                                     <option value="" selected="selected">Trạng thái</option>
-                                                    <option value="Hoạt động" {{ request('status') == 'Hoạt động' ? 'selected' : '' }}>Hoạt động</option>
-                                                    <option value="Đã huỷ" {{ request('status') == 'Đã hủy' ? 'selected' : '' }}>Đã hủy</option>
-                                                    <option value="Chờ xử lý" {{ request('status') == 'Chờ xử lý' ? 'selected' : '' }}>Chờ xử lý</option>
+                                                    <option value="hoat_dong" {{ request('status') == 'hoat_dong' ? 'selected' : '' }}>Hoạt động</option>
+                                                    <option value="da_huy" {{ request('status') == 'da_huy' ? 'selected' : '' }}>Đã hủy</option>
+                                                    <option value="cho_xu_ly" {{ request('status') == 'cho_xu_ly' ? 'selected' : '' }}>Chờ xử lý</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -279,6 +280,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if($dsDonHang->isEmpty())
+                                    <tr>
+                                        <td colspan="7" class="text-center text-danger">
+                                            Không tìm thấy đơn hàng với mã hoặc trạng thái đã chọn.
+                                        </td>
+                                    </tr>
+                                    @else
                                     @foreach($dsDonHang as $dh)
                                     <tr>
                                         <th>{{$dh->ma_don}}</th>
@@ -298,6 +306,8 @@
                                         </th>
                                     </tr>
                                     @endforeach
+                                    @endif
+
                                 </tbody>
                             </table>
                         </div>

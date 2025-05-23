@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ThanhVien extends Authenticatable
@@ -53,8 +55,6 @@ class ThanhVien extends Authenticatable
         return $this->hasMany(RutTien::class, 'thanhvien_id');
     }
 
-    // --- PHẦN XỬ LÝ NGHIỆP VỤ ---
-
     /**
      * Tìm và lọc thành viên có phân trang, tìm kiếm
      */
@@ -73,11 +73,34 @@ class ThanhVien extends Authenticatable
     }
 
     /**
-     * Cập nhật thông tin thành viên, nếu có mật khẩu thì mã hóa
+     * Cập nhật thông tin thành viên, kiểm tra unique tai_khoan và email, mã hóa mật khẩu nếu có
      */
     public static function updateMember($id, array $data)
     {
-        $member = self::findOrFail($id);
+        $member = self::find($id);
+        if (!$member) {
+            return null;
+        }
+
+        // Kiểm tra unique tai_khoan
+        if (isset($data['tai_khoan'])) {
+            $exists = self::where('tai_khoan', $data['tai_khoan'])
+                ->where('id_thanhvien', '!=', $id)
+                ->exists();
+            if ($exists) {
+                throw new \Exception('Tài khoản đã tồn tại.');
+            }
+        }
+
+        // Kiểm tra unique email nếu có
+        if (!empty($data['email'])) {
+            $exists = self::where('email', $data['email'])
+                ->where('id_thanhvien', '!=', $id)
+                ->exists();
+            if ($exists) {
+                throw new \Exception('Email đã tồn tại.');
+            }
+        }
 
         $member->ho_ten = $data['ho_ten'] ?? $member->ho_ten;
         $member->tai_khoan = $data['tai_khoan'] ?? $member->tai_khoan;
@@ -95,28 +118,41 @@ class ThanhVien extends Authenticatable
     }
 
     /**
-     * Xóa thành viên
+     * Xóa thành viên, trả về true nếu thành công, false nếu thất bại
      */
     public static function deleteMember($id)
     {
-        $member = self::findOrFail($id);
+        $member = self::find($id);
+        if (!$member) {
+            return false;
+        }
         return $member->delete();
     }
 
     /**
-     * Cộng hoặc trừ tiền vào tài khoản thành viên
+     * Cộng hoặc trừ tiền vào tài khoản thành viên, dùng transaction + lock để tránh lỗi race condition
      * $amount dương là cộng, âm là trừ
      */
     public function adjustBalance($amount)
     {
-        $this->so_du += $amount;
+        return DB::transaction(function () use ($amount) {
+            // Khóa bản ghi để tránh xung đột
+            $thanhvien = self::where('id_thanhvien', $this->id_thanhvien)->lockForUpdate()->first();
 
-        if ($this->so_du < 0) {
-            throw new \Exception('Số dư không đủ');
-        }
+            if (!$thanhvien) {
+                throw new \Exception('Thành viên không tồn tại');
+            }
 
-        $this->save();
+            $newBalance = $thanhvien->so_du + $amount;
 
-        return $this;
+            if ($newBalance < 0) {
+                throw new \Exception('Số dư không đủ');
+            }
+
+            $thanhvien->so_du = $newBalance;
+            $thanhvien->save();
+
+            return $thanhvien;
+        });
     }
 }

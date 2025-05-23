@@ -13,11 +13,12 @@
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
             <div class="flex justify-between items-center border-b p-4">
                 <h2 class="text-lg font-semibold">Cập Nhật Sản Phẩm</h2>
-                <button class="text-gray-500 hover:text-gray-700">
+                <a href="{{route('admin.mathecao.loaima.index')}}" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
-                </button>
+                </a>
             </div>
             <div class="p-4">
+                <input type="hidden" name="ngay_cap_nhat" value="{{ optional($dsSanPham->ngay_cap_nhat)->format('Y-m-d H:i:s') ?? now()->format('Y-m-d H:i:s') }}">
                 <input name="id_mathecao" type="hidden" value="{{$dsSanPham->id_mathecao}}">
                 <div class="mb-4">
                     <em>
@@ -34,13 +35,21 @@
                     <input type="file" class="w-full border rounded px-3 py-2" />
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-2">Mệnh Giá </label>
-                    <input type="text" name="menh_gia" class="w-full border rounded px-3 py-2" value="{{$dsSanPham->menh_gia}}" />
+                    <label for="menh_gia" class="block text-gray-700 mb-2">Mệnh Giá</label>
+                    <input type="number" name="menh_gia" id="menh_gia" class="w-full border rounded px-3 py-2" value="{{ $dsSanPham->menh_gia }}" required min="10000" max="5000000" step="10000" />
+                    <small id="menh_gia-help" class="text-sm text-gray-500 mt-1 block">
+                        Chỉ được nhập từ 10.000 đến 5.000.000 VND
+                    </small>
                 </div>
+
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-2">Chiếc Khấu</label>
-                    <input type="text" name="chiet_khau" class="w-full border rounded px-3 py-2" value="{{$dsSanPham->chiet_khau}}" />
+                    <label for="chiet_khau" class="block text-gray-700 mb-2">Chiết Khấu</label>
+                    <input type="number" name="chiet_khau" id="chiet_khau" class="w-full border rounded px-3 py-2" value="{{ $dsSanPham->chiet_khau }}" required min="0" max="100" step="0.1" />
+                    <small id="chiet_khau-help" class="text-sm text-gray-500 mt-1 block">
+                        Nhập giá trị từ 0 đến 100 (%)
+                    </small>
                 </div>
+
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Trạng thái</label>
                     <select class="w-full border rounded px-3 py-2" name="trang_thai">
@@ -58,6 +67,19 @@
             </div>
         </div>
 </form>
+@if(session('concurrency_error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Cảnh báo',
+        text: "{{ session('concurrency_error') }}",
+        confirmButtonText: 'OK'
+    }).then(() => {
+        window.location.reload();
+    });
+</script>
+@endif
 </body>
 
 </html>

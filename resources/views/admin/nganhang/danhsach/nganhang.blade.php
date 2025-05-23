@@ -1,8 +1,5 @@
 @include('admin.sidebar')
 
-
-
-
 <div class="main" style="margin-top: 10px; padding: 50px">
     <div class="container">
         <div class="row d-flex">
@@ -21,8 +18,6 @@
                         <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                     </form>
 
-
-
                 </div>
 
                 <table class="table table-bordered">
@@ -39,31 +34,35 @@
                     </thead>
                     <tbody>
                         @forelse($dsNganHang as $item)
-                        <tr>
-                            <td>{{ $item->id_danhsach }}</td>
-                            <td>{{ $item->thanhvien->tai_khoan ?? 'Null' }}</td>
-                            <td>{{ $item->ten_ngan_hang }}</td>
-                            <td>{{ $item->so_tai_khoan }}</td>
-                            <td>{{ $item->chu_tai_khoan }}</td>
-                            <td>
-                                @if($item->trang_thai == 'hoat_dong')
-                                <button type="button" class="btn btn-success">Hoạt Động</button>
-                                @endif
-                            </td>
-                            <td>
-                                <form action="{{ route('admin.nganhang.delete', $item->id_danhsach) }}" method="POST"
-                                    onsubmit="return confirm('Bạn có chắc muốn xóa?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-dark">Xóa</button>
-                                </form>
-                            </td>
+                            <tr>
+                                <td>{{ $item->id_danhsach }}</td>
+                                <td>{{ $item->thanhvien->tai_khoan ?? 'Null' }}</td>
+                                <td>{{ $item->ten_ngan_hang }}</td>
+                                <td>{{ $item->so_tai_khoan }}</td>
+                                <td>{{ $item->chu_tai_khoan }}</td>
+                                <td>
+                                    @if ($item->trang_thai == 'hoat_dong')
+                                        <button type="button" class="btn btn-success">Hoạt Động</button>
+                                    @endif
+                                </td>
+                                <td>
+                                    <form id="delete-form-{{ $item->id_danhsach }}"
+                                        action="{{ route('admin.nganhang.delete', $item->id_danhsach) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-dark btn-delete"
+                                            data-id="{{ $item->id_danhsach }}">Xóa</button>
+                                    </form>
 
-                        </tr>
+                                </td>
+
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="7" class="text-center">Không có dữ liệu phù hợp với tìm kiếm của bạn.</td>
-                        </tr>
+                            <tr>
+                                <td colspan="7" class="text-center">Không có dữ liệu phù hợp với tìm kiếm của bạn.
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -72,10 +71,54 @@
                     {{ $dsNganHang->links('pagination::bootstrap-4') }}
                 </div>
 
-
-
-
-
-
-
             </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    Swal.fire({
+                        title: 'Bạn có chắc muốn xóa?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Có, xóa!',
+                        cancelButtonText: 'Hủy',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('delete-form-' + id).submit();
+                        }
+                    });
+                });
+
+
+});
+</script>
+
+
+ @if (session('success'))
+                   
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        text: "{{ session('success') }}",
+        
+            confirmButtonText: 'OK'
+    });
+</script>
+@endif
+@if (session('error'))
+
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: "{{ session('error') }}",
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
