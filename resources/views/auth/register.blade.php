@@ -114,7 +114,7 @@
         })
 
         document.getElementById("email").addEventListener("input", function() {
-            let regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            let regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,40}$/;
             let inputValue = this.value;
             let error_message = document.getElementById("error_email");
             let correct_message = document.getElementById("correct_email");
@@ -129,13 +129,13 @@
         })
 
         document.getElementById("mat_khau").addEventListener("input", function() {
-            let regex = /^[a-zA-Z0-9!@#$%^&*]{6,}$/;
+            let regex = /^[a-zA-Z0-9!@#$%^&*]{6,30}$/;
             let inputValue = this.value;
             let error_message = document.getElementById("error_password");
             let correct_message = document.getElementById("correct_password");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌ Tối Thiểu 6 ký tự";
+                error_message.textContent = " ❌ Tối Thiểu 6 ký tự và tối đa 30 ký tự";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
