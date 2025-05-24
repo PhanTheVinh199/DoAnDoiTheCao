@@ -1,191 +1,142 @@
 @include('admin.sidebar')
 
-@if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
 <div class="main" style="margin-top: 10px; padding: 50px">
     <div class="container">
         <div class="row d-flex">
             <div class="bg-white p-3 rounded shadow">
                 <h1 class="h2 mb-4">Danh Sách Thẻ</h1>
 
-                <!-- Nút thêm sản phẩm -->
-                <div class="d-flex justify-content-end mb-4">
-                    <a href="{{ route('admin.doithecao.danhsach.create') }}" class="btn btn-danger">
-                        <i class="fas fa-plus mr-1"></i> Thêm Sản Phẩm
-                    </a>
+                <div class="d-flex flex-wrap gap-2 mb-4" style="margin-left: 1000px;">
+                    <a href="{{ route('admin.doithecao.danhsach.create') }}" class="btn btn-danger">Thêm Sản Phẩm</a>
                 </div>
 
-                <!-- Nút chọn nhà cung cấp -->
-                <div class="mb-3" id="supplier-buttons">
-                    @foreach ($nhacungcap as $item)
-                        <button class="btn btn-dark supplier-btn mb-1 {{ $loop->first ? 'active' : '' }}"
-                                data-id="nhacungcap-{{ $item->id_nhacungcap }}">
-                            {{ $item->ten }}
-                        </button>
-                    @endforeach
-                </div>
+                {{-- Tạo nút cho mỗi nhà cung cấp --}}
+                @foreach ($nhacungcap as $item)
+                    <button class="btn btn-dark" onclick="showTable('{{ $item->ten }}')">{{ $item->ten }}</button>
+                @endforeach
 
-                <!-- Bảng sản phẩm theo nhà cung cấp -->
+                <br><br>
+
+                <!-- Lặp qua các bảng sản phẩm của nhà cung cấp -->
                 @foreach ($nhacungcap as $index => $item)
-                    <div class="table-responsive supplier-table"
-                         id="nhacungcap-{{ $item->id_nhacungcap }}"
-                         style="display: {{ $index == 0 ? 'block' : 'none' }};">
-                        <table class="table table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nhà Cung Cấp</th>
-                                    <th>Mệnh Giá</th>
-                                    <th>Chiết Khấu</th>
-                                    <th>Trạng Thái</th>
-                                    <th>Hành Động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php $hasProduct = false; @endphp
-                                @foreach ($danhsach as $product)
-                                    @if ($product->nhacungcap && $product->nhacungcap->id_nhacungcap === $item->id_nhacungcap)
-                                        @php $hasProduct = true; @endphp
-                                        <tr>
-                                            <td>{{ $product->id_doithecao }}</td>
-                                            <td>{{ e($product->nhacungcap->ten) }}</td>
-                                            <td>{{ number_format($product->menh_gia, 0, ',', '.') }} VNĐ</td>
-                                            <td>{{ $product->chiet_khau }}%</td>
-                                            <td>
-                                                <span class="badge bg-{{ $product->trang_thai == 1 ? 'success' : ($product->trang_thai == 2 ? 'warning' : 'secondary') }}">
-                                                    {{ $product->trang_thai == 1 ? 'Hoạt động' : ($product->trang_thai == 2 ? 'Chờ xử lý' : 'Đã hủy') }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('admin.doithecao.danhsach.edit', $product->id_doithecao) }}"
-                                                       class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-edit"></i> Sửa
-                                                    </a>
-                                                    <form action="{{ route('admin.doithecao.danhsach.destroy', $product->id_doithecao) }}"
-                                                          method="POST"
-                                                          class="d-inline delete-form"
-                                                          data-id="{{ $product->id_doithecao }}"
-                                                          data-name="{{ e($product->nhacungcap->ten) }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                                class="btn btn-sm btn-danger delete-btn">
-                                                            <i class="fas fa-trash"></i> Xóa
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                                @if (!$hasProduct)
+                    <table class="table table-bordered" id="{{ $item->ten }}" style="display: {{ $index == 0 ? 'table' : 'none' }};">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Sản Phẩm</th>
+                                <th>Mệnh Giá</th>
+                                <th>Chiết Khấu</th>
+                                <th>Trạng Thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $hasProduct = false; @endphp
+                            @foreach ($danhsach as $product)
+                                @if ($product->nhacungcap && $product->nhacungcap->ten === $item->ten)
+                                    @php $hasProduct = true; @endphp
                                     <tr>
-                                        <td colspan="6" class="text-center">Chưa có sản phẩm</td>
+                                        <td>{{ $product->id_doithecao }}</td>
+                                        <td>{{ $product->nhacungcap->ten }}</td>
+                                        <td>{{ number_format($product->menh_gia, 0, ',', '.') }} VNĐ</td>
+                                        <td>{{ $product->chiet_khau }}%</td>
+                                        <td>
+                                            @if($product->trang_thai == '1')
+                                                <button type="button" class="btn btn-success">Hoạt động</button>
+                                            @elseif($product->trang_thai == '0')
+                                                <button type="button" class="btn btn-danger">Đã hủy</button>
+                                            @elseif($product->trang_thai == '2')
+                                                <button type="button" class="btn btn-warning">Chờ xử lý</button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.doithecao.danhsach.edit', $product->id_doithecao) }}" class="btn btn-sm btn-primary">Sửa</a>
+                                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{ $product->id_doithecao }}', '{{ $product->nhacungcap->ten }}')">Xóa</button>
+
+                                            {{-- Form xóa ẩn --}}
+                                            <form id="delete-form-{{ $product->id_doithecao }}" action="{{ route('admin.doithecao.danhsach.destroy', $product->id_doithecao) }}" method="POST" style="display:none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endif
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                            @if (!$hasProduct)
+                                <tr>
+                                    <td colspan="6" class="text-center">Chưa có sản phẩm</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 @endforeach
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal xác nhận xóa -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Xác nhận xóa</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p id="deleteMessage"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Quản lý tabs nhà cung cấp
-    const supplierButtons = document.querySelectorAll('.supplier-btn');
-    supplierButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.dataset.id;
+    <script>
+        // Hiển thị bảng theo nhà cung cấp
+        function showTable(network) {
+            let tables = document.querySelectorAll("table");
+            tables.forEach(table => table.style.display = "none");
 
-            document.querySelectorAll('.supplier-table').forEach(table => {
-                table.style.display = 'none';
-            });
+            let buttons = document.querySelectorAll("button");
+            buttons.forEach(button => button.classList.remove("active"));
 
-            document.querySelectorAll('.supplier-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            let table = document.getElementById(network);
+            if (table) table.style.display = "table";
 
-            document.getElementById(targetId).style.display = 'block';
-            this.classList.add('active');
-        });
-    });
-
-    // Xử lý xóa với kiểm tra concurrent
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    const deleteMessage = document.getElementById('deleteMessage');
-    const confirmDelete = document.getElementById('confirmDelete');
-    let currentForm = null;
-
-    document.querySelectorAll('.delete-form').forEach(form => {
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            currentForm = this;
-            const productName = this.dataset.name;
-            deleteMessage.textContent = `Bạn có chắc muốn xóa sản phẩm "${productName}"?`;
-            deleteModal.show();
-        });
-    });
-
-    confirmDelete.addEventListener('click', async function() {
-        if (!currentForm) return;
-
-        const deleteBtn = currentForm.querySelector('.delete-btn');
-        const productId = currentForm.dataset.id;
-
-        deleteBtn.disabled = true;
-        deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-
-        try {
-            // Fixed route with proper parameter
-            const checkUrl = "{{ route('admin.doithecao.danhsach.check', ':id') }}".replace(':id', productId);
-            const response = await fetch(checkUrl);
-            const data = await response.json();
-
-            if (!data.exists) {
-                deleteModal.hide();
-                alert('Sản phẩm này đã bị xóa bởi người dùng khác!');
-                location.reload();
-                return;
-            }
-
-            currentForm.submit();
-
-        } catch (error) {
-            console.error('Error:', error);
-            deleteModal.hide();
-            alert('Có lỗi xảy ra, vui lòng thử lại!');
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Xóa';
+            let activeButton = document.querySelector(`button[onclick="showTable('${network}')"]`);
+            if (activeButton) activeButton.classList.add("active");
         }
-    });
-});
-</script>
+
+        // Xác nhận xóa bằng SweetAlert2
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: `Bạn có chắc chắn muốn xóa sản phẩm của nhà cung cấp "${name}"?`,
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gửi form ẩn để xóa
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+
+        // Hiển thị toast khi có session
+        document.addEventListener('DOMContentLoaded', () => {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('success') }}',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 2500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ session('error') }}',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 3500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+            @endif
+        });
+    </script>
+</div>

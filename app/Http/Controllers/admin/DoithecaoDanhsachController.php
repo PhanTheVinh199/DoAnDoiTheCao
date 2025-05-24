@@ -11,7 +11,7 @@ class DoithecaoDanhsachController extends Controller
 {
     public function index()
     {
-        $danhsach = DoithecaoDanhsach::getAllWithSupplier();
+        $danhsach = DoithecaoDanhsach::with('nhacungcap')->get();
         $nhacungcap = DoithecaoDanhsach::getAllSuppliers();
         $newestSupplier = DoithecaoDanhsach::getNewestSupplier();
 
@@ -26,21 +26,25 @@ class DoithecaoDanhsachController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nhacungcap_id' => 'required',
-            'menh_gia' => 'required|numeric',
-            'chiet_khau' => 'required|numeric',
+        $validated = $request->validate([
+            'nhacungcap_id' => 'required|exists:doithecao_nhacungcap,id_nhacungcap',
+            'menh_gia' => 'required|numeric|min:0',
+            'chiet_khau' => 'required|numeric|min:0|max:100',
             'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
         ]);
 
-        DoithecaoDanhsach::createProduct($request->all());
+        DoithecaoDanhsach::createProduct($validated);
 
         return redirect()->route('admin.doithecao.danhsach.index')->with('success', 'Thêm sản phẩm thành công!');
     }
 
     public function edit($id)
     {
-        $sanpham = DoithecaoDanhsach::findOrFail($id);
+        $sanpham = DoithecaoDanhsach::find($id);
+        if (!$sanpham) {
+            return redirect()->route('admin.doithecao.danhsach.index')
+                ->with('error', 'Sản phẩm không tồn tại hoặc đã bị xóa.');
+        }
         $nhacungcaps = DoithecaoDanhsach::getAllSuppliers();
 
         return view('admin.doithecao.danhsach.doithecao_danhsach_edit', compact('sanpham', 'nhacungcaps'));
@@ -48,14 +52,33 @@ class DoithecaoDanhsachController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nhacungcap_id' => 'required',
-            'menh_gia' => 'required|numeric',
-            'chiet_khau' => 'required|numeric',
+        $product = DoithecaoDanhsach::find($id);
+        if (!$product) {
+            return redirect()->route('admin.doithecao.danhsach.index')
+                ->with('error', 'Sản phẩm không tồn tại hoặc đã bị xóa.');
+        }
+
+        $validated = $request->validate([
+            'nhacungcap_id' => 'required|exists:doithecao_nhacungcap,id_nhacungcap',
+            'menh_gia' => 'required|numeric|min:0',
+            'chiet_khau' => 'required|numeric|min:0|max:100',
             'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
+            'updated_at' => 'required',
         ]);
 
-        DoithecaoDanhsach::updateProduct($id, $request->all());
+        // concurrency check
+        $currentUpdatedAt = $product->updated_at ? $product->updated_at->toDateTimeString() : null;
+        if ($validated['updated_at'] !== $currentUpdatedAt) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['concurrency' => 'Sản phẩm đã được cập nhật từ tab khác. Vui lòng tải lại trang trước khi sửa.']);
+        }
+
+        // Loại bỏ updated_at khỏi dữ liệu update
+        $dataToUpdate = $validated;
+        unset($dataToUpdate['updated_at']);
+
+        DoithecaoDanhsach::updateProduct($id, $dataToUpdate);
 
         return redirect()->route('admin.doithecao.danhsach.index')->with('success', 'Cập nhật thành công!');
     }
@@ -74,20 +97,19 @@ class DoithecaoDanhsachController extends Controller
 
             if (!$product) {
                 DB::rollBack();
-                return redirect()->back()
+                return redirect()->route('admin.doithecao.danhsach.index')
                     ->with('error', 'Sản phẩm này đã bị xóa bởi người dùng khác.');
             }
 
             $product->delete();
             DB::commit();
 
-            return redirect()->back()
-                ->with('success', 'Xóa sản phẩm thành công.');
+            return redirect()->route('admin.doithecao.danhsach.index')->with('success', 'Xóa sản phẩm thành công.');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()
-                ->with('error', 'Có lỗi xảy ra khi xóa sản phẩm.');
+            \Log::error('Lỗi xóa sản phẩm ID ' . $id . ': ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi xóa sản phẩm.');
         }
     }
 }

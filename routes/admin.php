@@ -50,6 +50,8 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::put('/update/{id}', [DoithecaoNhacungcapController::class, 'update'])->name('update');
         Route::delete('/{id}', [DoithecaoNhacungcapController::class, 'destroy'])->name('destroy');
         Route::get('/check/{id}', [DoithecaoNhacungcapController::class, 'checkExists'])->name('check');
+                Route::delete('/delete/{nhacungcap}', [DoithecaoNhacungcapController::class, 'destroy'])->name('delete');
+
     });
 
 

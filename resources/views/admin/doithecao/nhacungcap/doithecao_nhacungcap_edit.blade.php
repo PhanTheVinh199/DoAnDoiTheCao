@@ -23,6 +23,8 @@
         <form action="{{ route('admin.doithecao.nhacungcap.update', $nhacungcap->id_nhacungcap) }}" method="POST" enctype="multipart/form-data" class="p-6">
             @csrf
             @method('PUT')
+            <input type="hidden" name="updated_at" value="{{ $nhacungcap->updated_at ? $nhacungcap->updated_at->toDateTimeString() : now()->toDateTimeString() }}">
+
 
             {{-- Tên nhà cung cấp --}}
             <div class="mb-6">
