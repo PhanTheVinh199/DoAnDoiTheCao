@@ -108,14 +108,6 @@
             </div>
         </div>
 
-        <div class="mt-4">
-            @if($order->trang_thai == 'cho_duyet')
-                <form action="{{ route('order.confirm', ['id' => $order->id_lichsunap]) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-success">Xác nhận nạp tiền</button>
-                </form>
-            @endif
-        </div>
 
         <div class="mt-3">
             <a href="{{ route('naptien.form') }}" class="btn btn-secondary">Trở lại</a>
