@@ -19,9 +19,9 @@ class NapTienAdminController extends Controller
         try {
             $newStatus = $request->input('trang_thai');
             NapTien::approveTransaction($id, $newStatus);
-            return redirect()->route('admin.naptien.index')->with('success', 'Trạng thái giao dịch đã được cập nhật.');
+            return redirect()->route('admin.nganhang.naptien.index')->with('success', 'Trạng thái giao dịch đã được cập nhật.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.naptien.index')->with('error', $e->getMessage());
+            return redirect()->route('admin.nganhang.naptien.index')->with('error', $e->getMessage());
         }
     }
 }
