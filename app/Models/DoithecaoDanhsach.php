@@ -11,7 +11,7 @@ class DoithecaoDanhsach extends Model
 
     protected $table = 'doithecao_danhsach';
     protected $primaryKey = 'id_doithecao';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'nhacungcap_id',

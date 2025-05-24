@@ -43,30 +43,15 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
     });
 
     Route::prefix('doithecao/nhacungcap')->name('doithecao.nhacungcap.')->group(function () {
-
-        // Hiển thị danh sách nhà cung cấp
         Route::get('/', [DoithecaoNhacungcapController::class, 'index'])->name('index');
-
-        // Hiển thị form thêm mới nhà cung cấp
         Route::get('/add', [DoithecaoNhacungcapController::class, 'create'])->name('add');
-
-        // Xử lý dữ liệu gửi từ form thêm mới và lưu vào CSDL
-        Route::post('/them', [DoithecaoNhacungcapController::class, 'store'])->name('them');
-
-        // Hiển thị form chỉnh sửa nhà cung cấp theo ID
+        Route::post('/store', [DoithecaoNhacungcapController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [DoithecaoNhacungcapController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [DoithecaoNhacungcapController::class, 'update'])->name('update');
+        Route::delete('/{id}', [DoithecaoNhacungcapController::class, 'destroy'])->name('destroy');
+        Route::get('/check/{id}', [DoithecaoNhacungcapController::class, 'checkExists'])->name('check');
+                Route::delete('/delete/{nhacungcap}', [DoithecaoNhacungcapController::class, 'destroy'])->name('delete');
 
-        // Cập nhật thông tin nhà cung cấp đã chỉnh sửa
-        Route::put('/update/{nhacungcap}', [DoithecaoNhacungcapController::class, 'update'])->name('update');
-
-        // Xoá nhà cung cấp khỏi hệ thống
-        Route::delete('/delete/{nhacungcap}', [DoithecaoNhacungcapController::class, 'destroy'])->name('delete');
-
-        // Ẩn nhà cung cấp (thay đổi trạng thái hoạt động)
-        Route::post('/hide/{id}', [DoithecaoNhacungcapController::class, 'hide'])->name('hide');
-
-        // Hiện nhà cung cấp (kích hoạt lại)
-        Route::post('/show/{id}', [DoithecaoNhacungcapController::class, 'show'])->name('show');
     });
 
 
@@ -78,6 +63,14 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/edit/{id}', [DoithecaoDanhsachController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [DoithecaoDanhsachController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [DoithecaoDanhsachController::class, 'destroy'])->name('destroy');
+
+        // Add check route for concurrent deletion
+        Route::get('/check/{id}', [DoithecaoDanhsachController::class, 'checkExists'])
+             ->name('check');
+
+        // Add version check route
+        Route::get('/version/{id}', [DoithecaoDanhsachController::class, 'getVersion'])
+             ->name('version');
     });
 
 
@@ -88,6 +81,9 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::post('/them', [DoithecaoDonhangController::class, 'store'])->name('store');
         Route::get('/edit/{id_dondoithe}', [DoithecaoDonhangController::class, 'edit'])->name('edit');
         Route::put('/update/{id_dondoithe}', [DoithecaoDonhangController::class, 'update'])->name('update');
+         Route::get('/check/{id}', [DoithecaoDonhangController::class, 'checkExists'])
+             ->name('check')
+             ->where('id', '[0-9]+'); // Add validation for id parameter
         Route::delete('/delete/{id_dondoithe}', [DoithecaoDonhangController::class, 'destroy'])->name('destroy');
         
     });
@@ -113,9 +109,17 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::put('/ruttien/edit/{id}', [NganhangController::class, 'updateRutTien'])->name('ruttien.update');
 
         Route::get('/naptien', [NganhangController::class, 'naptien'])->name('naptien.index');
-        Route::delete('/naptien/delete/{id}', [NganhangController::class, 'destroyNapTien'])->name('naptien.delete');
         Route::get('/naptien/edit/{id}', [NganhangController::class, 'editNapTien'])->name('naptien.edit');
         Route::put('/naptien/edit/{id}', [NganhangController::class, 'updateNapTien'])->name('naptien.update');
+        Route::delete('/naptien/delete/{id}', [NganhangController::class, 'destroyNapTien'])->name('naptien.delete');
+
+        Route::get('/naptien/edit/{id}', [NganhangController::class, 'editNapTien'])->name('naptien.edit');
+
+        Route::get('/naptien/check/{id}', [NganhangController::class, 'checkNapTienExists'])->name('naptien.check');
+
+    // API kiểm tra updated_at (Ajax)
+    Route::get('/naptien/updated_at_check/{id}', [NganhangController::class, 'checkUpdatedAt'])->name('naptien.updated_at_check');
+
     });
 
 
@@ -140,12 +144,26 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::post('/naptien/{id}', [ThanhvienController::class, 'naptien'])->name('naptien.store');
     });
     Route::get('/naptien', [NapTienAdminController::class, 'showHistory'])->name('naptien.index');
+    Route::get('/naptien/edit/{id}', [NapTienAdminController::class, 'edit'])->name('naptien.edit');
+    Route::put('/naptien/update/{id}', [NapTienAdminController::class, 'update'])->name('naptien.update');
+    Route::get('/naptien/check/{id}', [NapTienAdminController::class, 'checkNapTienExists'])->name('naptien.check');
+    Route::get('/naptien/updated_at_check/{id}', [NapTienAdminController::class, 'checkUpdatedAt'])->name('naptien.updated_at_check');
+
 
     Route::prefix('nganhang/admin')->name('nganhang.admin.')->group(function () {
         Route::get('/', [NganhangAdminController::class, 'index'])->name('index');
         Route::get('/create', [NganhangAdminController::class, 'create'])->name('create');
         Route::post('/store', [NganhangAdminController::class, 'store'])->name('store');
         Route::delete('/delete/{id}', [NganhangAdminController::class, 'destroy'])->name('delete');
+
+    });
+
+    Route::prefix('nganhang/naptien')->name('nganhang.naptien.')->group(function () {
+        Route::get('/check/{id}', [NganhangController::class, 'checkExists'])->name('check');
+        Route::delete('/delete/{id}', [NganhangController::class, 'destroyNapTien'])->name('delete');
+        Route::get('/check/{id}', [NganhangController::class, 'checkNapTienExists'])->name('check');
+        Route::get('/updated_at_check/{id}', [NganhangController::class, 'checkUpdatedAt']);
+
     });
 
     Route::fallback(function () {

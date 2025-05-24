@@ -45,7 +45,7 @@ class ThanhVienSeeder extends Seeder
         ]);
 
         // Tạo 20 tài khoản demo ngẫu nhiên tiếp theo
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             ThanhVien::create([
                 'ho_ten' => generateValidName($faker),
                 'tai_khoan' => 'thanhvien' . ($i + 1),

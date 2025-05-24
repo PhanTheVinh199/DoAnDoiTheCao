@@ -31,9 +31,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $hasProduct = false;
-                            @endphp
+                            @php $hasProduct = false; @endphp
                             @foreach ($danhsach as $product)
                                 @if ($product->nhacungcap && $product->nhacungcap->ten === $item->ten)
                                     @php $hasProduct = true; @endphp
@@ -42,17 +40,23 @@
                                         <td>{{ $product->nhacungcap->ten }}</td>
                                         <td>{{ number_format($product->menh_gia, 0, ',', '.') }} VNĐ</td>
                                         <td>{{ $product->chiet_khau }}%</td>
-                                        <td>@if($product->trang_thai == '1')
-                                <button type="button" class="btn btn-success">Hoạt động</button>
-                                @elseif($product->trang_thai == '0')
-                                <button type="button" class="btn btn-success">Hoạt động</button>
-                                @endif</td>
+                                        <td>
+                                            @if($product->trang_thai == '1')
+                                                <button type="button" class="btn btn-success">Hoạt động</button>
+                                            @elseif($product->trang_thai == '0')
+                                                <button type="button" class="btn btn-danger">Đã hủy</button>
+                                            @elseif($product->trang_thai == '2')
+                                                <button type="button" class="btn btn-warning">Chờ xử lý</button>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('admin.doithecao.danhsach.edit', $product->id_doithecao) }}" class="btn btn-sm btn-primary">Sửa</a>
-                                            <form action="{{ route('admin.doithecao.danhsach.destroy', $product->id_doithecao) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{ $product->id_doithecao }}', '{{ $product->nhacungcap->ten }}')">Xóa</button>
+
+                                            {{-- Form xóa ẩn --}}
+                                            <form id="delete-form-{{ $product->id_doithecao }}" action="{{ route('admin.doithecao.danhsach.destroy', $product->id_doithecao) }}" method="POST" style="display:none;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -71,37 +75,68 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        // Hàm hiển thị bảng khi nhấn nút nhà cung cấp
+        // Hiển thị bảng theo nhà cung cấp
         function showTable(network) {
-            // Ẩn tất cả các bảng
             let tables = document.querySelectorAll("table");
-            tables.forEach(table => {
-                table.style.display = "none"; // Ẩn tất cả bảng
-            });
+            tables.forEach(table => table.style.display = "none");
 
-            // Ẩn tất cả các nút active
             let buttons = document.querySelectorAll("button");
-            buttons.forEach(button => {
-                button.classList.remove("active");
-            });
+            buttons.forEach(button => button.classList.remove("active"));
 
-            // Hiển thị bảng tương ứng với nhà cung cấp
             let table = document.getElementById(network);
-            if (table) {
-                table.style.display = "table"; // Hiển thị bảng của nhà cung cấp
-            }
+            if (table) table.style.display = "table";
 
-            // Thêm class active vào nút đã nhấn
             let activeButton = document.querySelector(`button[onclick="showTable('${network}')"]`);
-            if (activeButton) {
-                activeButton.classList.add("active"); // Đánh dấu nút là active
-            }
+            if (activeButton) activeButton.classList.add("active");
         }
 
-       
+        // Xác nhận xóa bằng SweetAlert2
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: `Bạn có chắc chắn muốn xóa sản phẩm của nhà cung cấp "${name}"?`,
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gửi form ẩn để xóa
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+
+        // Hiển thị toast khi có session
+        document.addEventListener('DOMContentLoaded', () => {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ session('success') }}',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 2500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ session('error') }}',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 3500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+            @endif
+        });
     </script>
 </div>
-</body>
-</html>
