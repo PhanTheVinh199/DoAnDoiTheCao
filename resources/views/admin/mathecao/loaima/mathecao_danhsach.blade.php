@@ -14,28 +14,28 @@
     </script>
     @endif
     @if(session('error'))
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Lỗi',
-        text: "{{ session('error') }}",
-        confirmButtonText: 'OK'
-    });
-</script>
-@endif
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: "{{ session('error') }}",
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
 
-@if(session('concurrency_error'))
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    Swal.fire({
-        icon: 'warning',
-        title: 'Cảnh báo',
-        text: "{{ session('concurrency_error') }}",
-        confirmButtonText: 'OK'
-    });
-</script>
-@endif
+    @if(session('concurrency_error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: "{{ session('concurrency_error') }}",
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
 
     <div class="container">
         <div class="row d-flex">
@@ -49,7 +49,7 @@
 
                 <button class="btn btn-dark" onclick="filterBySupplier('all')">All</button>
                 @foreach($dsNhaCungCap as $ncc)
-                <button class="btn btn-dark" onclick="filterBySupplier({{$ncc->id_nhacungcap}})">{{$ncc->ten}}</button>
+                <button class="btn btn-dark" onclick="filterBySupplier('{{$ncc->id_nhacungcap}}')">{{$ncc->ten}}</button>
                 @endforeach
 
                 <br><br>

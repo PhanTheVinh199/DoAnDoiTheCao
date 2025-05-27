@@ -20,23 +20,10 @@
             <input type="hidden" name="ngay_cap_nhat" value="{{ optional($donHang->ngay_cap_nhat)->format('Y-m-d H:i:s') ?? now()->format('Y-m-d H:i:s') }}">
             <input name="id_mathecao" type="hidden" value="{{$donHang->id_mathecao}}">
             <div class="p-4">
-                <!-- <div class="mb-4">
-                    <label class="block text-gray-700 mb-2">Nhà Cung Cấp</label>
-                    <select class="w-full border rounded px-3 py-2" disabled>
-                        <option value="">-- Chọn nhà cung cấp --</option>
-                        <option value="Viettel">Viettel</option>
-                        <option value="Mobifone">Mobifone</option>
-                        <option value="Vinaphone">Vinaphone</option>
-                    </select>
-                </div> -->
                 <em>
                     <h1 style="text-align: center;">Nhà Cung Cấp</h1>
                 </em>
                 <b><label style="text-align: center;" class="block text-gray-700 mb-2">{{$nhaCungCap}}</label></b>
-                <!-- <div class="mb-4">
-                    <label class="block text-gray-700 mb-2">Nhà Cung Cấp</label>
-                    <input type="text" class="w-full border rounded px-3 py-2" value="{{ $nhaCungCap }}" disabled />
-                </div> -->
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mệnh Giá </label>
                     <input type="text" class="w-full border rounded px-3 py-2" value="{{ $donHang->so_luong * $donHang->sanpham->menh_gia }}" disabled />
@@ -54,6 +41,7 @@
                         <option value="hoat_dong" {{ $donHang->trang_thai == 'hoat_dong' ? 'selected' : '' }}>Hoạt Động</option>
                         <option value="cho_xu_ly" {{ $donHang->trang_thai == 'cho_xu_ly' ? 'selected' : '' }}>Chờ Xử Lý</option>
                         <option value="da_huy" {{ $donHang->trang_thai == 'da_huy' ? 'selected' : '' }}>Đã hủy</option>
+                        <!-- <option value="test" {{ $donHang->trang_thai === 'test' ? 'selected' : '' }}>Test Lỗi</option> -->
                     </select>
                 </div>
 

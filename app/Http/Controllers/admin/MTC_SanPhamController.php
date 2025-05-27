@@ -56,25 +56,31 @@ class MTC_SanPhamController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $validTrangThai = ['hoat_dong', 'an'];
+
+            if (!in_array($request->input('trang_thai'), $validTrangThai)) {
+                return redirect()->route('admin.mathecao.loaima.index')
+                    ->withInput()
+                    ->with('error', 'Dữ liệu trạng thái không hợp lệ!');
+            }
+
             $request->validate([
                 'menh_gia' => 'required|numeric|min:1000',
                 'chiet_khau' => 'required|numeric|min:0|max:100',
-                'trang_thai' => 'required|in:hoat_dong,an',
-                'ngay_cap_nhat' => 'required|string',
+                'ngay_cap_nhat' => 'required|string'
             ]);
 
             $dsSanPham = MaThe_SanPham::findOrFail($id);
 
-            // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
             if ($request->input('ngay_cap_nhat') !== $dsSanPham->ngay_cap_nhat->format('Y-m-d H:i:s')) {
                 return redirect()
                     ->route('admin.mathecao.loaima.index')
-                    ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+                    ->with('concurrency_error', 'Cập nhật không thành công do dữ liệu đã bị thay đổi trước đó');
             }
 
             MaThe_SanPham::updateProduct(
                 $id,
-                $request->only('menh_gia', 'chiet_khau', 'trang_thai'),
+                $request->only('menh_gia', 'chiet_khau', 'trang_thai')
             );
 
             return redirect()
@@ -82,7 +88,7 @@ class MTC_SanPhamController extends Controller
                 ->with('success', 'Cập nhật thành công!');
         } catch (ModelNotFoundException $e) {
             return redirect()->route('admin.mathecao.loaima.index')
-                ->with('error', 'Dữ liệu không tồn tại!.');
+                ->with('error', 'Dữ liệu không tồn tại!');
         }
     }
 

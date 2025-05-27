@@ -36,6 +36,7 @@
                     <select class="w-full border rounded px-3 py-2" name="trang_thai">
                         <option value="hoat_dong" {{ $ncc->trang_thai === 'hoat_dong' ? 'selected' : '' }}>Hoạt động</option>
                         <option value="an" {{ $ncc->trang_thai === 'an' ? 'selected' : '' }}>Ẩn</option>
+                        <!-- <option value="test" {{ $ncc->trang_thai === 'test' ? 'selected' : '' }}>Test Lỗi</option> -->
                     </select>
                 </div>
                 <div class="flex justify-end space-x-2">
@@ -53,20 +54,6 @@
             tenCount.textContent = `${tenInput.value.length}/50 ký tự`;
         });
     </script>
-
-    @if(session('concurrency_error'))
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            Swal.fire({
-                icon: 'warning',
-                title: 'Cảnh báo',
-                text: "{{ session('concurrency_error') }}",
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.reload();
-            });
-        </script>
-    @endif
 </body>
 
 </html>
