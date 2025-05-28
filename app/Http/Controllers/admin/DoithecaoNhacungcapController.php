@@ -47,9 +47,31 @@ class DoithecaoNhacungcapController extends Controller
                 'max:255',
                 'unique:doithecao_nhacungcap,ten',
                 function ($attribute, $value, $fail) {
-                    if (trim(preg_replace('/\s+/u', '', $value)) === '') {
-                        $fail('Trường ' . $attribute . ' không được để khoảng trắng hoặc trống.');
-                    }
+                    $trimmed = trim($value);
+                    // 1. Không được chứa khoảng trắng kiểu Nhật (full-width space)
+    if (preg_match('/\x{3000}/u', $trimmed)) {
+        $fail('Trường ' . $attribute . ' không được chứa khoảng trắng kiểu Nhật.');
+        return;
+    }
+
+    // 2. Không được có khoảng trắng liên tiếp (2 dấu cách liền nhau)
+    if (preg_match('/ {2,}/', $trimmed)) {
+        $fail('Trường ' . $attribute . ' không được chứa khoảng trắng liên tiếp.');
+        return;
+    }
+
+    // 3. Đếm số lượng khoảng trắng phải <= 2
+    $spaceCount = substr_count($trimmed, ' ');
+    if ($spaceCount > 2) {
+        $fail('Trường ' . $attribute . ' chỉ được phép chứa tối đa 2 khoảng trắng.');
+        return;
+    }
+
+    // 4. Chỉ được chứa chữ cái unicode (tiếng Việt), số và space
+    if (!preg_match('/^[\p{L}0-9 ]+$/u', $trimmed)) {
+        $fail('Trường ' . $attribute . ' chỉ được chứa chữ cái tiếng Việt, số và khoảng trắng.');
+        return;
+    }
                 },
             ],
             'hinh_anh' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -120,9 +142,31 @@ class DoithecaoNhacungcapController extends Controller
             'max:255',
             \Illuminate\Validation\Rule::unique('doithecao_nhacungcap', 'ten')->ignore($id, 'id_nhacungcap'),
             function ($attribute, $value, $fail) {
-                if (trim(preg_replace('/\s+/u', '', $value)) === '') {
-                    $fail('Trường ' . $attribute . ' không được để khoảng trắng hoặc trống.');
-                }
+                $trimmed = trim($value);
+                // 1. Không được chứa khoảng trắng kiểu Nhật (full-width space)
+    if (preg_match('/\x{3000}/u', $trimmed)) {
+        $fail('Trường ' . $attribute . ' không được chứa khoảng trắng kiểu Nhật.');
+        return;
+    }
+
+    // 2. Không được có khoảng trắng liên tiếp (2 dấu cách liền nhau)
+    if (preg_match('/ {2,}/', $trimmed)) {
+        $fail('Trường ' . $attribute . ' không được chứa khoảng trắng liên tiếp.');
+        return;
+    }
+
+    // 3. Đếm số lượng khoảng trắng phải <= 2
+    $spaceCount = substr_count($trimmed, ' ');
+    if ($spaceCount > 2) {
+        $fail('Trường ' . $attribute . ' chỉ được phép chứa tối đa 2 khoảng trắng.');
+        return;
+    }
+
+    // 4. Chỉ được chứa chữ cái unicode (tiếng Việt), số và space
+    if (!preg_match('/^[\p{L}0-9 ]+$/u', $trimmed)) {
+        $fail('Trường ' . $attribute . ' chỉ được chứa chữ cái tiếng Việt, số và khoảng trắng.');
+        return;
+    }
             },
         ],
         'hinh_anh' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -2,19 +2,19 @@
 
 {{-- Alert Messages --}}
 @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi',
-                text: @json(session('error')),
-                timer: 4000,
-                showConfirmButton: false,
-                position: 'top-end',
-                toast: true
-            });
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: @json(session('error')),
+            timer: 4000,
+            showConfirmButton: false,
+            position: 'top-end',
+            toast: true
         });
-    </script>
+    });
+</script>
 @endif
 
 <div class="main">
@@ -25,88 +25,70 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h1 class="h3 mb-0">Danh Sách Thẻ</h1>
-                            <a href="{{ route('admin.doithecao.danhsach.create') }}"
-                               class="btn btn-primary">
+                            <a href="{{ route('admin.doithecao.danhsach.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Thêm Sản Phẩm
                             </a>
                         </div>
 
-                        {{-- Nhà cung cấp filter buttons --}}
-                        <div class="btn-group mb-4">
+                        <div class="btn-group mb-4" role="group" aria-label="Nhà cung cấp">
                             @foreach ($nhacungcap as $item)
-                                <button class="btn btn-outline-dark me-2"
-                                        onclick="showTable('supplier-{{ $item->id_nhacungcap }}')"
-                                        id="btn-supplier-{{ $item->id_nhacungcap }}">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-dark me-2"
+                                    id="btn-supplier-{{ $item->id_nhacungcap }}"
+                                    onclick="showTable('{{ $item->id_nhacungcap }}')"
+                                >
                                     {{ $item->ten }}
                                 </button>
                             @endforeach
                         </div>
 
-                        {{-- Product Tables --}}
                         @foreach ($nhacungcap as $index => $item)
-                            <div class="table-responsive">
-                                <table class="table table-hover border"
-                                       id="supplier-{{ $item->id_nhacungcap }}"
-                                       style="display: {{ $index == 0 ? 'table' : 'none' }};">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th width="5%">ID</th>
-                                            <th width="20%">Sản Phẩm</th>
-                                            <th width="20%">Mệnh Giá</th>
-                                            <th width="15%">Chiết Khấu</th>
-                                            <th width="20%">Trạng Thái</th>
-                                            <th width="20%">Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php $hasProduct = false; @endphp
-                                        @foreach ($danhsach as $product)
-                                            @if ($product->nhacungcap && $product->nhacungcap->ten === $item->ten)
-                                                @php $hasProduct = true; @endphp
-                                                <tr>
-                                                    <td>{{ $product->id_doithecao }}</td>
-                                                    <td>{{ $product->nhacungcap->ten }}</td>
-                                                    <td>{{ number_format($product->menh_gia, 0, ',', '.') }} VNĐ</td>
-                                                    <td>{{ $product->chiet_khau }}%</td>
-                                                    <td>
-                                                        <span class="badge rounded-pill
-                                                            {{ $product->trang_thai == '1' ? 'bg-success' :
-                                                               ($product->trang_thai == '0' ? 'bg-danger' : 'bg-warning') }}">
-                                                            {{ $product->trang_thai == '1' ? 'Hoạt động' :
-                                                               ($product->trang_thai == '0' ? 'Đã hủy' : 'Chờ xử lý') }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <a href="{{ route('admin.doithecao.danhsach.edit', $product->id_doithecao) }}"
-                                                               class="btn btn-sm btn-outline-primary me-2">
-                                                                <i class="fas fa-edit"></i> Sửa
-                                                            </a>
-                                                            <button class="btn btn-sm btn-outline-danger"
-                                                                onclick="confirmDeleteAjax('{{ $product->id_doithecao }}', '{{ $product->nhacungcap->ten }}', this)">
-                                                                <i class="fas fa-trash"></i> Xóa
-                                                            </button>
-                                                        </div>
-
-                                                        <form id="delete-form-{{ $product->id_doithecao }}"
-                                                              action="{{ route('admin.doithecao.danhsach.destroy', $product->id_doithecao) }}"
-                                                              method="POST"
-                                                              style="display:none;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                        @if (!$hasProduct)
-                                            <tr>
-                                                <td colspan="6" class="text-center">Chưa có sản phẩm</td>
+                        <div class="table-responsive" style="display: {{ $index == 0 ? 'block' : 'none' }};" id="supplier-{{ $item->id_nhacungcap }}-container">
+                            <table class="table table-hover border" id="supplier-{{ $item->id_nhacungcap }}">
+                                    <tr>
+                                        <th width="5%">ID</th>
+                                        <th width="20%">Nhà Cung Cấp</th>
+                                        <th width="20%">Mệnh Giá</th>
+                                        <th width="15%">Chiết Khấu</th>
+                                        <th width="20%">Trạng Thái</th>
+                                        <th width="20%">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php $hasProduct = 0; @endphp
+                                    @foreach ($danhsach as $product)
+                                        @if ($product->nhacungcap && $product->nhacungcap->id_nhacungcap === $item->id_nhacungcap)
+                                            @php $hasProduct++; @endphp
+                                            <tr id="row-{{ $product->id_doithecao }}">
+                                                <td>{{ $product->id_doithecao }}</td>
+                                                <td>{{ $item->ten }}</td>
+                                                <td>{{ number_format($product->menh_gia) }} VNĐ</td>
+                                                <td>{{ $product->chiet_khau }}%</td>
+                                                <td>
+                                                    <span class="badge {{ $product->trang_thai == '1' ? 'bg-success' : ($product->trang_thai == '0' ? 'bg-danger' : 'bg-warning') }}">
+                                                        {{ $product->trang_thai == '1' ? 'Hoạt động' : ($product->trang_thai == '0' ? 'Đã hủy' : 'Chờ xử lý') }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.doithecao.danhsach.edit', $product->id_doithecao) }}" class="btn btn-sm btn-outline-primary me-2">
+                                                        <i class="fas fa-edit"></i> Sửa
+                                                    </a>
+                                                    <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteAjax('{{ $product->id_doithecao }}', '{{ $item->ten }}', this)">
+                                                        <i class="fas fa-trash"></i> Xóa
+                                                    </button>
+                                                </td>
                                             </tr>
                                         @endif
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforeach
+                                    @if ($hasProduct === 0)
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">Chưa có sản phẩm nào.</td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -115,7 +97,6 @@
     </div>
 </div>
 
-{{-- FontAwesome CSS --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
 <style>
@@ -135,19 +116,37 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function showTable(network) {
-        let tables = document.querySelectorAll("table");
-        tables.forEach(table => table.style.display = "none");
+    function showTable(id) {
+    const supplierId = `supplier-${id}`;
+    localStorage.setItem('selectedTab', id);
 
-        let buttons = document.querySelectorAll("button");
-        buttons.forEach(button => button.classList.remove("active"));
+    document.querySelectorAll("div.table-responsive").forEach(div => {
+        div.style.display = "none";
+    });
+    document.querySelectorAll(".btn-group button").forEach(btn => {
+        btn.classList.remove("active");
+    });
 
-        let table = document.getElementById(network);
-        if (table) table.style.display = "table";
+    const container = document.getElementById(supplierId + '-container');
+    if(container) container.style.display = 'block';
 
-        let activeButton = document.getElementById('btn-' + network);
-        if (activeButton) activeButton.classList.add("active");
-    }
+    const btn = document.getElementById('btn-supplier-' + id);
+    if(btn) btn.classList.add('active');
+}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTab = localStorage.getItem('selectedTab');
+        if(savedTab) {
+            showTable(savedTab);
+        } else {
+            const firstBtn = document.querySelector('.btn-group button');
+            if(firstBtn) {
+                firstBtn.classList.add('active');
+            const id = firstBtn.id.replace('btn-supplier-', '');
+            showTable(id);
+            }
+        }
+    });
 
     function confirmDeleteAjax(id, name, btn) {
         Swal.fire({
@@ -160,9 +159,8 @@
             confirmButtonText: 'Xóa',
             cancelButtonText: 'Hủy'
         }).then((result) => {
-            if (result.isConfirmed) {
+            if(result.isConfirmed) {
                 btn.disabled = true;
-
                 fetch(`/admin/doithecao/danhsach/delete/${id}`, {
                     method: 'DELETE',
                     headers: {
@@ -172,13 +170,11 @@
                     },
                 })
                 .then(response => {
-                    if(!response.ok) {
-                        throw new Error('Lỗi server');
-                    }
+                    if(!response.ok) throw new Error('Lỗi server');
                     return response.json();
                 })
                 .then(data => {
-                    if (data.success) {
+                    if(data.success) {
                         Swal.fire({
                             icon: 'success',
                             title: data.message,
@@ -186,13 +182,15 @@
                             position: 'top-end',
                             timer: 2500,
                             showConfirmButton: false,
-                        }).then(() => {
-                            location.reload();
                         });
-
-                        // Xóa dòng tương ứng trên table
-                        const row = btn.closest('tr');
-                        if (row) row.remove();
+                        const row = document.getElementById('row-' + id);
+                        if(row) row.remove();
+                        const tbody = row?.parentElement;
+                        if(tbody && tbody.children.length === 0) {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `<td colspan="6" class="text-center">Chưa có sản phẩm</td>`;
+                            tbody.appendChild(tr);
+                        }
                     } else {
                         Swal.fire({
                             icon: 'error',

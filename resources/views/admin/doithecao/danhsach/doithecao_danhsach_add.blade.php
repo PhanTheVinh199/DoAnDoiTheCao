@@ -28,7 +28,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.doithecao.danhsach.store') }}" method="POST" enctype="multipart/form-data" class="p-4" id="productForm">
+        <form action="{{ route('admin.doithecao.danhsach.store') }}" method="POST" class="p-4" id="productForm">
             @csrf
 
             <div class="mb-4">
@@ -36,27 +36,32 @@
                 <select name="nhacungcap_id" class="w-full border rounded px-3 py-2" required>
                     <option value="">-- Chọn nhà cung cấp --</option>
                     @foreach($nhacungcaps as $nhacungcap)
-                        <option value="{{ $nhacungcap->id_nhacungcap }}">{{ $nhacungcap->ten }}</option>
+                        <option value="{{ $nhacungcap->id_nhacungcap }}" {{ old('nhacungcap_id') == $nhacungcap->id_nhacungcap ? 'selected' : '' }}>
+                            {{ $nhacungcap->ten }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 mb-2">Mệnh Giá</label>
-                <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" required min="0" />
+                <input type="text" name="menh_gia" value="{{ old('menh_gia') }}" class="w-full border rounded px-3 py-2" required />
+                @error('menh_gia')
+                    <div style="color: red;">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 mb-2">Chiết Khấu (%)</label>
-                <input type="number" step="0.01" name="chiet_khau" class="w-full border rounded px-3 py-2" required min="0" max="100" />
+                <input type="number" step="0.01" name="chiet_khau" value="{{ old('chiet_khau') }}" class="w-full border rounded px-3 py-2" required min="0" max="100" />
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 mb-2">Trạng Thái</label>
                 <select name="trang_thai" class="w-full border rounded px-3 py-2" required>
-                    <option value="hoat_dong">Hoạt động</option>
-                    <option value="da_huy">Đã hủy</option>
-                    <option value="cho_xu_ly">Chờ xử lý</option>
+                    <option value="1" {{ old('trang_thai') == '1' ? 'selected' : '' }}>Hoạt động</option>
+                    <option value="0" {{ old('trang_thai') == '0' ? 'selected' : '' }}>Đã hủy</option>
+                    <option value="2" {{ old('trang_thai') == '2' ? 'selected' : '' }}>Chờ xử lý</option>
                 </select>
             </div>
 
@@ -83,34 +88,35 @@
             });
         </script>
     @endif
+
 <script>
-    document.getElementById('productForm').onsubmit = function(e) {
-        e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('productForm');
 
-        Swal.fire({
-            title: 'Bạn có chắc muốn thêm sản phẩm?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Có',
-            cancelButtonText: 'Hủy'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                e.target.submit();
-            }
-        });
-    }
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn submit gốc
 
-     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        if(form) {
-            form.addEventListener('submit', function() {
-                const submitButtons = form.querySelectorAll('button[type="submit"], input[type="submit"]');
-                submitButtons.forEach(button => {
-                    button.disabled = true;
-                    button.innerText = 'Đang xử lý...';
-                });
+            Swal.fire({
+                title: 'Bạn có chắc muốn thêm sản phẩm?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // ✅ submit form thủ công
+                }
             });
-        }
+        });
+
+        // Disable nút submit khi form đang xử lý
+        form.addEventListener('submit', function () {
+            const submitButtons = form.querySelectorAll('button[type="submit"], input[type="submit"]');
+            submitButtons.forEach(button => {
+                button.disabled = true;
+                button.innerText = 'Đang xử lý...';
+            });
+        });
     });
 </script>
 
