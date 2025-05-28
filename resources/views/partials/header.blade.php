@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css">
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #28a745;
@@ -140,6 +141,7 @@
                         @if(Auth::guard('thanhvien')->user()->quyen === 'admin')
                         <a href="{{ route('admin.index') }}" class="dropdown-item">Quản Lý admin</a>
                         @endif
+                        <a href="{{ route('password.change.form') }}" class="dropdown-item">Đổi mật khẩu</a>
                         <a href="{{ route('logout') }}" class="dropdown-item" id="logout-link">Đăng xuất</a>
 
                     </div>
@@ -156,53 +158,6 @@
                 </a>
             </div>
             @endif
-            </div>
-
-            <div class="header-usermb">
-                @if(Auth::guard('thanhvien')->check())
-                {{-- Mobile khi người dùng đã đăng nhập --}}
-                <button type="button" class="btn" id="call-userMB">
-                    <i class="fas fa-user">Tài khoản</i>
-                </button>
-                <div class="header-usermb_list">
-                    <ul class="list-unstyled mb-0">
-                        {{-- <li class="d-inline-block text-center header-usermb_list__logo">
-                            <a href="">
-                                <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo">
-                            </a>
-                        </li> --}}
-                        <li class="d-inline-block">
-                            <a href="{{ route('logout') }}">
-                                <i class="fa fa-sign-out-alt"></i> <strong>Đăng xuất</strong>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                @else
-                {{-- Mobile khi người dùng chưa đăng nhập --}}
-                <button type="button" class="btn" id="call-userMB">
-                    <i class="fas fa-user"></i> Tài khoản
-                </button>
-                <div class="header-usermb_list">
-                    <ul class="list-unstyled mb-0">
-                        <li class="d-inline-block text-center header-usermb_list__logo">
-                            <a href="">
-                                {{-- <img src="https://doithe1s.vn/storage/userfiles/files/doithe1s2019.png" height="40px" alt="Logo"> --}}
-                            </a>
-                        </li>
-                        <li class="d-inline-block">
-                            <a href="{{ route('register') }}">
-                                <i class="fa fa-angle-right"></i> <strong>Đăng ký</strong>
-                            </a>
-                        </li>
-                        <li class="d-inline-block">
-                            <a href="{{ route('login') }}">
-                                <i class="fa fa-angle-right"></i> <strong>Đăng nhập</strong>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                @endif
             </div>
         </nav>
     </header>

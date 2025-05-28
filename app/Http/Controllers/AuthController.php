@@ -20,10 +20,8 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Xử lý đăng nhập
     public function login(Request $request)
     {
-        // Xác nhận các dữ liệu nhập vào
         $request->validate([
             'login_input' => 'required|string',
             'mat_khau' => 'required|string',
@@ -102,5 +100,36 @@ class AuthController extends Controller
 
         // Đăng ký thành công
         return redirect()->route('login')->with('message', 'Đăng ký thành công! Vui lòng đăng nhập.');
+    }
+    public function showChangePasswordForm()
+    {
+        return view('auth.change_password');
+    }
+
+    // Xử lý đổi mật khẩu
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password'      => 'required',
+            'new_password'          => 'required|min:6|confirmed',
+        ], [
+            'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
+            'new_password.required'     => 'Vui lòng nhập mật khẩu mới.',
+            'new_password.confirmed'    => 'Mật khẩu xác nhận không khớp.',
+            'new_password.min'          => 'Mật khẩu mới phải ít nhất 6 ký tự.',
+        ]);
+
+        $user = Auth::guard('thanhvien')->user();
+
+        if (!Hash::check($request->current_password, $user->mat_khau)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng.']);
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->update([
+            'mat_khau' => Hash::make($request->new_password),
+        ]);
+
+        return redirect()->route('index')->with('success', 'Đổi mật khẩu thành công!');
     }
 }
