@@ -47,19 +47,31 @@
         <input type="password" name="mat_khau_confirmation" id="RePassword" placeholder="Nhập lại mật khẩu" autocomplete="off" required>
         <span id="error_repassword" style="color: red; font-size: 15px;"></span><br>
 
+        <div>
+            <label for="captcha_code">Nhập mã xác nhận: <b id="captcha_text" style="user-select: none;"></b></label>
+            <input type="text" id="captcha_code" name="captcha_code" placeholder="Nhập CAPTCHA" required>
+            <span id="error_captcha" style="color: red; font-size: 15px;"></span>
+        </div>
         <input class="submit" type="submit" value="Đăng ký">
 
         <a href="{{route('login')}}">Bạn đã có tài khoản?<span class="dk">Quay lại </span></a>
     </form>
 
+    <script>
+        document.getElementById("tai_khoan").addEventListener("input", function() {
+            let laravelError = document.querySelector("span[style*='color: red'][style*='15px']:not([id])");
+            if (laravelError) laravelError.style.display = "none";
+        });
 
-
-
-
-
-
-
-
+        document.getElementById("email").addEventListener("input", function() {
+            let errorSpans = document.querySelectorAll("span[style*='color: red'][style*='15px']:not([id])");
+            errorSpans.forEach(function(span) {
+                if (span.textContent.includes("email") || span.textContent.includes("Email")) {
+                    span.style.display = "none";
+                }
+            });
+        });
+    </script>
 
     <script>
         document.getElementById("tai_khoan").addEventListener("input", function() {
@@ -69,17 +81,17 @@
             let correct_message = document.getElementById("correct_message");
 
             if (inputValue.length < 6) {
-                error_message.textContent = "❌ Tên quá ngắn! Vui lòng nhập ít nhất 6 ký tự.";
+                error_message.textContent = "Tên quá ngắn! Vui lòng nhập ít nhất 6 ký tự.";
                 correct_message.textContent = "";
             } else if (inputValue.length > 30) {
-                error_message.textContent = "❌ Tên quá dài! Chỉ được tối đa 30 ký tự.";
+                error_message.textContent = "Tên quá dài! Chỉ được tối đa 30 ký tự.";
                 correct_message.textContent = "";
             } else if (!regex.test(inputValue)) {
-                error_message.textContent = "❌ Tên chỉ được chứa chữ cái, số và khoảng trắng.";
+                error_message.textContent = "Tên chỉ được chứa chữ cái, số và khoảng trắng.";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ Tên đăng nhập hợp lệ!";
+                correct_message.textContent = "Tên đăng nhập hợp lệ!";
             }
         })
 
@@ -90,11 +102,11 @@
             let correct_message = document.getElementById("correct_fullname");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌ Tên Không hợp lệ.";
+                error_message.textContent = " Tên Không hợp lệ.";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ Họ tên hợp lệ!";
+                correct_message.textContent = "Họ tên hợp lệ!";
             }
         })
 
@@ -105,11 +117,11 @@
             let correct_message = document.getElementById("correct_phoneNumber");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌Số điện thoại không hợp lệ.";
+                error_message.textContent = " Số điện thoại không hợp lệ.";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ Số điện thoại hợp lệ!";
+                correct_message.textContent = "Số điện thoại hợp lệ!";
             }
         })
 
@@ -120,11 +132,11 @@
             let correct_message = document.getElementById("correct_email");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌ Email không đúng định dạng!";
+                error_message.textContent = " Email không đúng định dạng!";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅Email hợp lệ!";
+                correct_message.textContent = "Email hợp lệ!";
             }
         })
 
@@ -135,11 +147,11 @@
             let correct_message = document.getElementById("correct_password");
 
             if (!regex.test(inputValue)) {
-                error_message.textContent = " ❌ Tối Thiểu 6 ký tự và tối đa 30 ký tự";
+                error_message.textContent = " Tối Thiểu 6 ký tự và tối đa 30 ký tự";
                 correct_message.textContent = "";
             } else {
                 error_message.textContent = "";
-                correct_message.textContent = "✅ hợp lệ!";
+                correct_message.textContent = "hợp lệ!";
             }
         })
 
@@ -149,11 +161,37 @@
             let error_message = document.getElementById("error_repassword");
 
             if (rePassword.trim() !== password.trim()) {
-                error_message.textContent = "❌ Mật khẩu nhập lại không trùng khớp!";
+                error_message.textContent = "Mật khẩu nhập lại không trùng khớp!";
                 event.preventDefault(); // Chặn form gửi đi
             } else {
                 error_message.textContent = ""; // Xóa thông báo lỗi nếu trùng khớp
             }
+        });
+
+        function generateCaptcha(length = 5) {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; // loại bỏ ký tự dễ nhầm
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        let captchaGenerated = generateCaptcha();
+        document.getElementById('captcha_text').textContent = captchaGenerated;
+
+        // Kiểm tra CAPTCHA khi submit
+        document.querySelector("form").addEventListener("submit", function(event) {
+            let captchaInput = document.getElementById("captcha_code").value.trim();
+            let errorCaptcha = document.getElementById("error_captcha");
+
+            if (captchaInput.toLowerCase() !== captchaGenerated.toLowerCase()) {
+                errorCaptcha.textContent = "Mã xác nhận không đúng!";
+                captchaGenerated = generateCaptcha();
+                document.getElementById('captcha_text').textContent = captchaGenerated;
+                event.preventDefault();
+            }
+
         });
     </script>
 </body>
