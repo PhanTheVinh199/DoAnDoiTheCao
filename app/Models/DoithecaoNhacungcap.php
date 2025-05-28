@@ -12,7 +12,7 @@ class DoithecaoNhacungcap extends Model
 
     protected $table = 'doithecao_nhacungcap';
     protected $primaryKey = 'id_nhacungcap';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'ten',
@@ -20,6 +20,9 @@ class DoithecaoNhacungcap extends Model
         'ngay_tao',
         'trang_thai'
     ];
+
+    const CREATED_AT = 'ngay_tao';
+    const UPDATED_AT = 'updated_at';
 
     public function getRouteKeyName()
     {

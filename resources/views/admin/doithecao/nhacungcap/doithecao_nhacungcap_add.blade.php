@@ -15,7 +15,7 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.doithecao.nhacungcap.them') }}" method="POST" enctype="multipart/form-data" class="p-4" autocomplete="off">
+        <form action="{{ route('admin.doithecao.nhacungcap.store') }}" method="POST" enctype="multipart/form-data" class="p-4" autocomplete="off" id="createSupplierForm">
             @csrf
 
             {{-- Tên nhà cung cấp --}}
@@ -85,10 +85,11 @@
             }
         }
 
-        // Optional: disable nút submit sau khi bấm để tránh gửi form nhiều lần
-        document.querySelector('form').addEventListener('submit', function() {
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').innerText = 'Đang xử lý...';
+        // Disable nút submit sau khi bấm để tránh gửi form nhiều lần
+        document.getElementById('createSupplierForm').addEventListener('submit', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Đang xử lý...';
         });
     </script>
 </body>
