@@ -64,16 +64,14 @@
             </div>
         </div>
 </form>
-@if(session('concurrency_error'))
+@if(session('warning'))
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     Swal.fire({
         icon: 'warning',
         title: 'Cảnh báo',
-        text: "{{ session('concurrency_error') }}",
+        text: "{{ session('warning') }}",
         confirmButtonText: 'OK'
-    }).then(() => {
-        window.location.reload();
     });
 </script>
 @endif

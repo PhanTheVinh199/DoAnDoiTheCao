@@ -7,9 +7,19 @@
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-gray-500">
+    @if(session('warning'))
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Cảnh Báo',
+            text: "{{ session('warning') }}",
+            confirmButtonText: 'Ok',
+        });
+    </script>
+    @endif
     <form id="sanpham-form" action="{{ route('admin.mathecao.loaima.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md" style="width: 400px;">
             <div class="flex justify-between items-center border-b p-4">
                 <h2 class="text-lg font-semibold">Thêm Sản Phẩm</h2>
                 <a href="{{route('admin.mathecao.loaima.index')}}" class="text-gray-500 hover:text-gray-700">
@@ -19,7 +29,7 @@
             <div class="p-4">
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Tên Nhà Cung Cấp</label>
-                    <select name="nhacungcap_id" id="nhacungcap_id" class="w-full border rounded px-3 py-2">
+                    <select name="nhacungcap_id" id="nhacungcap_id" class="w-full border rounded px-3 py-2" required>
                         <option value="">-- Chọn nhà cung cấp --</option>
                         @foreach($dsNhaCungCap as $ncc)
                         <option value="{{ $ncc->id_nhacungcap }}">{{ $ncc->ten }}</option>
@@ -38,14 +48,14 @@
 
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Mệnh Giá </label>
-                    <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" min="10000" max="1000000" step="10000" />
+                    <input type="number" name="menh_gia" class="w-full border rounded px-3 py-2" min="10000" max="1000000" step="10000" required />
                     <small id="menh_gia-help" class="text-sm text-gray-500 mt-1 block">
                         Chỉ được nhập từ 10.000 đến 5.000.000 VND
                     </small>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Chiếc Khấu</label>
-                    <input type="number" name="chiet_khau" class="w-full border rounded px-3 py-2" min="0" max="100" step="0.1" />
+                    <input type="number" name="chiet_khau" class="w-full border rounded px-3 py-2" min="0" max="100" step="0.1" required />
                     <small id="chiet_khau-help" class="text-sm text-gray-500 mt-1 block">
                         Nhập giá trị từ 0 đến 100 (%)
                     </small>
@@ -61,7 +71,7 @@
 
     <script>
         const form = document.getElementById('sanpham-form');
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault(); // Ngăn gửi form ngay lập tức
             Swal.fire({
                 title: 'Xác nhận',

@@ -34,7 +34,13 @@ class MTC_SanPhamController extends Controller
             'menh_gia' => 'required|numeric|min:1000',
             'chiet_khau' => 'required|numeric|min:0|max:100',
         ]);
+        $existingProduct = MaThe_SanPham::where('nhacungcap_id', $request->nhacungcap_id)
+            ->where('menh_gia', $request->menh_gia)
+            ->first();
 
+        if ($existingProduct) {
+            return redirect()->route('admin.mathecao.loaima.create')->with('warning', 'Sản phẩm và mệnh giá này đã tồn tại!');
+        }
         MaThe_SanPham::createProduct($request->all());
 
         return redirect()->route('admin.mathecao.loaima.index')->with('success', 'Thêm thẻ cào thành công!');
@@ -77,7 +83,16 @@ class MTC_SanPhamController extends Controller
                     ->route('admin.mathecao.loaima.index')
                     ->with('concurrency_error', 'Cập nhật không thành công do dữ liệu đã bị thay đổi trước đó');
             }
+            $exists = MaThe_SanPham::where('nhacungcap_id', $dsSanPham->nhacungcap_id)
+                ->where('menh_gia', $request->menh_gia)
+                ->where('id_mathecao', '<>', $id)
+                ->exists();
 
+            if ($exists) {
+                return redirect()->route('admin.mathecao.loaima.edit',$id)
+                    ->withInput()
+                    ->with('warning', 'Sản phẩm và mệnh giá này đã tồn tại!');
+            }
             MaThe_SanPham::updateProduct(
                 $id,
                 $request->only('menh_gia', 'chiet_khau', 'trang_thai')
