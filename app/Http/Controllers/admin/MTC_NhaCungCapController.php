@@ -9,11 +9,23 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MTC_NhaCungCapController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dsNhaCungCap = MaThe_NhaCungCap::orderBy('ngay_tao', 'desc')->paginate(10);
+        $query = MaThe_NhaCungCap::orderBy('ngay_tao', 'desc');
+        $dsNhaCungCap = $query->paginate(10);
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $dsNhaCungCap->lastPage()) {
+                return redirect()->route('admin.mathecao.nhacungcap.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
+
         return view('admin.mathecao.nhacungcap.mathecao_nhacungcap', compact('dsNhaCungCap'));
     }
+
 
     public function create()
     {

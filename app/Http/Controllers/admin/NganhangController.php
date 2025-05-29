@@ -18,6 +18,16 @@ class NganhangController extends Controller
     {
         $search = $request->input('search');
         $dsNganHang = NganHang::getBanks($search, 5);
+        $query = NganHang::orderBy('created_at', 'desc');
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $dsNganHang->lastPage()) {
+                return redirect()->route('admin.nganhang.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         return view('admin.nganhang.danhsach.nganhang', compact('dsNganHang'));
     }
 
@@ -39,6 +49,16 @@ class NganhangController extends Controller
     {
         $search = $request->input('search');
         $dsRutTien = NganHang::getRutTiens($search, 5);
+        $query = NganHang::orderBy('created_at', 'desc');
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $dsRutTien->lastPage()) {
+                return redirect()->route('admin.nganhang.ruttien.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         return view('admin.nganhang.ruttien.nganhang_ruttien', compact('dsRutTien'));
     }
 
@@ -102,6 +122,16 @@ class NganhangController extends Controller
     {
         $search = $request->input('ma_don');
         $dsNapTien = NganHang::getNapTiens($search, 5);
+        $query = NganHang::orderBy('created_at', 'desc');
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $dsNapTien->lastPage()) {
+                return redirect()->route('admin.nganhang.naptien.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         return view('admin.nganhang.naptien.nganhang_naptien', compact('dsNapTien'));
     }
 

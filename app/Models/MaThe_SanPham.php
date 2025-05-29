@@ -20,9 +20,6 @@ class MaThe_SanPham extends Model
         return $this->belongsTo(MaThe_NhaCungCap::class, 'nhacungcap_id', 'id_nhacungcap');
     }
 
-    /**
-     * Lấy danh sách sản phẩm, lọc theo nhà cung cấp, phân trang
-     */
     public static function getProducts($supplierId = 'all', $perPage = 10, $page = 1)
     {
         return self::when($supplierId !== 'all', function ($query) use ($supplierId) {
@@ -32,19 +29,12 @@ class MaThe_SanPham extends Model
         ->paginate($perPage, ['*'], 'page', $page);
     }
 
-    /**
-     * Tạo sản phẩm mới
-     */
     public static function createProduct(array $data)
     {
-        // Mặc định trạng thái nếu không có
         $data['trang_thai'] = $data['trang_thai'] ?? 'hoat_dong';
         return self::create($data);
     }
 
-    /**
-     * Cập nhật sản phẩm theo ID
-     */
     public static function updateProduct($id, array $data)
     {
         $product = self::findOrFail($id);
@@ -52,9 +42,6 @@ class MaThe_SanPham extends Model
         return $product;
     }
 
-    /**
-     * Xóa sản phẩm theo ID kèm xóa file ảnh nếu có
-     */
     public static function deleteProduct($id)
     {
         $product = self::findOrFail($id);
@@ -66,11 +53,18 @@ class MaThe_SanPham extends Model
         return $product->delete();
     }
 
-    /**
-     * Lấy tất cả nhà cung cấp để dùng cho select
-     */
     public static function getAllSuppliers()
     {
         return MaThe_NhaCungCap::all();
     }
+    public static function getProductCount($supplierId)
+{
+    $query = self::query();
+
+    if ($supplierId !== 'all') {
+        $query->where('nhacungcap_id', $supplierId);
+    }
+
+    return $query->count();
+}
 }

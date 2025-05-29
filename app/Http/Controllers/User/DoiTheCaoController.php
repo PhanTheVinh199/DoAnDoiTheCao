@@ -43,19 +43,26 @@ public function index(Request $request)
 
 public function lichsudoithe(Request $request)
 {
-    // Lấy giá trị tìm kiếm từ query string (nếu có)
     $search = $request->input('search');
 
-    // Lấy danh sách đơn hàng của người dùng, áp dụng tìm kiếm và phân trang
-    $lichsu = DoithecaoDonhang::with('doithecao', 'doithecao.nhacungcap')  // Lấy thông tin mối quan hệ
-        ->where('thanhvien_id', Auth::user()->id_thanhvien)  // Lọc theo người dùng
-        ->when($search, function ($query, $search) {  // Nếu có tìm kiếm
-            return $query->where('ma_don', 'like', '%' . $search . '%');  // Tìm kiếm mã đơn
+    $lichsu = DoithecaoDonhang::with('doithecao', 'doithecao.nhacungcap') 
+        ->where('thanhvien_id', Auth::user()->id_thanhvien) 
+        ->when($search, function ($query, $search) {  
+            return $query->where('ma_don', 'like', '%' . $search . '%');  
         })
-        ->orderBy('ngay_tao', 'desc')  // Sắp xếp theo ngày tạo, từ mới nhất
-        ->paginate(10); // Sử dụng paginate để phân trang (10 bản ghi mỗi trang)
+        ->orderBy('ngay_tao', 'desc')  
+        ->paginate(10); 
 
-    // Trả về view và truyền dữ liệu cho view
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $lichsu->lastPage()) {
+                return redirect('/lichsudoithe')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
+ 
     return view('lichsudoithe', compact('lichsu'));
 }
 

@@ -12,8 +12,30 @@ class MTC_SanPhamController extends Controller
     public function index(Request $request)
     {
         $supplierId = $request->query('supplier_id', 'all');
-        $perPage = $request->query('per_page', 10);
+
+        if ($supplierId !== 'all') {
+            $validSupplierIds = MaThe_SanPham::getAllSuppliers()->pluck('id_nhacungcap')->toArray();
+
+            if (!in_array($supplierId, $validSupplierIds)) {
+                return redirect()->route('admin.mathecao.loaima.index')
+                    ->with('error', 'Nhà cung cấp không hợp lệ!');
+            }
+        }
+        $perPage = (int) $request->query('per_page', 10);
         $page = $request->query('page', 1);
+
+        if (!ctype_digit((string) $page) || (int)$page < 1) {
+            return redirect()->route('admin.mathecao.loaima.index')
+                ->with('error', 'Trang không hợp lệ!');
+        }
+
+        $totalItems = MaThe_SanPham::getProductCount($supplierId);
+        $lastPage = ceil($totalItems / $perPage);
+
+        if ($lastPage > 0 && $page > $lastPage) {
+            return redirect()->route('admin.mathecao.loaima.index')
+                ->with('error', 'Trang không tồn tại!');
+        }
 
         $dsSanPham = MaThe_SanPham::getProducts($supplierId, $perPage, $page);
         $dsNhaCungCap = MaThe_SanPham::getAllSuppliers();
@@ -89,7 +111,7 @@ class MTC_SanPhamController extends Controller
                 ->exists();
 
             if ($exists) {
-                return redirect()->route('admin.mathecao.loaima.edit',$id)
+                return redirect()->route('admin.mathecao.loaima.edit', $id)
                     ->withInput()
                     ->with('warning', 'Sản phẩm và mệnh giá này đã tồn tại!');
             }

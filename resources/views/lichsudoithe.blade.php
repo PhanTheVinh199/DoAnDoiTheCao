@@ -1,5 +1,16 @@
 @include('partials.header')
 <div class="section-gap ">
+     @if(session('error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: "{{ session('error') }}",
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
     <div class="container">
         <div class="description mb-3">
             <div class="title">
