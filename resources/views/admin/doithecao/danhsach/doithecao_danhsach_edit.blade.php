@@ -57,6 +57,9 @@
                 <label class="block text-gray-700 mb-1">Mệnh Giá</label>
                 <input type="number" name="menh_gia" value="{{ old('menh_gia', $sanpham->menh_gia) }}"
                     class="w-full border rounded px-3 py-2" required />
+                    @error('menh_gia')
+                        <div style="color: red;">{{ $message }}</div>
+                    @enderror
             </div>
 
             <!-- Chiết khấu -->
@@ -70,12 +73,11 @@
             <!-- Trạng thái -->
             <div>
                 <label class="block text-gray-700 mb-1">Trạng Thái</label>
-                <select name="trang_thai" class="w-full border rounded px-3 py-2">
-                    <option value="hoat_dong" {{ $sanpham->trang_thai == 'hoat_dong' ? 'selected' : '' }}>Hoạt động
-                    </option>
-                    <option value="da_huy" {{ $sanpham->trang_thai == 'da_huy' ? 'selected' : '' }}>Đã hủy</option>
-                    <option value="cho_xu_ly" {{ $sanpham->trang_thai == 'cho_xu_ly' ? 'selected' : '' }}>Chờ xử lý
-                    </option>
+                <select name="trang_thai" class="w-full border rounded px-3 py-2" required>
+                    <option value="1" {{ $sanpham->trang_thai == 1 ? 'selected' : '' }}>Hoạt động</option>
+                    <option value="0" {{ $sanpham->trang_thai == 0 ? 'selected' : '' }}>Đã hủy</option>
+                    <option value="2" {{ $sanpham->trang_thai == 2 ? 'selected' : '' }}>Chờ xử lý</option>
+
                 </select>
             </div>
 

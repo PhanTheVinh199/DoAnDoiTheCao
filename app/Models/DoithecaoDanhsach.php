@@ -74,12 +74,13 @@ class DoithecaoDanhsach extends Model
 
     public static function createProduct(array $data)
     {
-        $statusMap = [
-            'hoat_dong' => 1,
-            'da_huy' => 0,
-            'cho_xu_ly' => 2,
-        ];
-        $data['trang_thai'] = $statusMap[$data['trang_thai']] ?? 0;
+
+        // $statusMap = [
+        //     'hoat_dong' => 1,
+        //     'da_huy' => 0,
+        //     'cho_xu_ly' => 2,
+        // ];
+        // $data['trang_thai'] = $statusMap[$data['trang_thai']] ?? 0;
 
         return self::create($data);
     }
@@ -88,12 +89,12 @@ class DoithecaoDanhsach extends Model
 
     public static function updateProduct($id, array $data)
     {
-        $statusMap = [
-            'hoat_dong' => 1,
-            'da_huy' => 0,
-            'cho_xu_ly' => 2,
-        ];
-        $data['trang_thai'] = $statusMap[$data['trang_thai']] ?? 0;
+        // $statusMap = [
+        //     'hoat_dong' => 1,
+        //     'da_huy' => 0,
+        //     'cho_xu_ly' => 2,
+        // ];
+        // $data['trang_thai'] = $statusMap[$data['trang_thai']] ?? 0;
 
         $product = self::findOrFail($id);
         $product->update($data);
