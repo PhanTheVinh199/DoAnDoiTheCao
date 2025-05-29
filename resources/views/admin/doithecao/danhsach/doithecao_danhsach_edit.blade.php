@@ -71,7 +71,7 @@
             </div>
 
             <!-- Trạng thái -->
-            <div>
+            <div hidden>
                 <label class="block text-gray-700 mb-1">Trạng Thái</label>
                 <select name="trang_thai" class="w-full border rounded px-3 py-2" required>
                     <option value="1" {{ $sanpham->trang_thai == 1 ? 'selected' : '' }}>Hoạt động</option>

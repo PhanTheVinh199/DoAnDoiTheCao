@@ -16,6 +16,18 @@
     });
 </script>
 @endif
+ @if(session('success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: "{{ session('success') }}",
+            timer: 2000,
+            confirmButtonText: 'Ok',
+        });
+    </script>
+    @endif
 
 <div class="main">
     <div class="container-fluid px-4 py-5">

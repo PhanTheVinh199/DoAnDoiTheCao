@@ -41,7 +41,7 @@ class DoithecaoDanhsachSeeder extends Seeder
                     'nhacungcap_id' => $nhacungcap_id, // ID nhà cung cấp
                     'menh_gia'      => $menh_gia,     // Mệnh giá
                     'chiet_khau'    => rand(5, 20),   // Chiết khấu ngẫu nhiên từ 5% đến 20%
-                    'trang_thai'    => rand(0, 1),    // Trạng thái ngẫu nhiên: 0 (hủy), 1 (hoạt động)
+                    'trang_thai'    => '1',    // Trạng thái ngẫu nhiên: 0 (hủy), 1 (hoạt động)
                     'created_at'    => Carbon::now(), // Thời gian tạo
                     'updated_at'    => Carbon::now(), // Thời gian cập nhật
                 ]);
