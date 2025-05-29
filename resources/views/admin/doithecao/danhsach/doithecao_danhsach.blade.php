@@ -21,7 +21,7 @@
     <div class="container-fluid px-4 py-5">
         <div class="row">
             <div class="col-12">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm"  style="width: 1300px;">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h1 class="h3 mb-0">Danh Sách Thẻ</h1>
