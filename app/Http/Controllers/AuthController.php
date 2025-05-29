@@ -111,12 +111,12 @@ class AuthController extends Controller
     {
         $request->validate([
             'current_password'      => 'required',
-            'new_password'          => 'required|min:6|confirmed',
+            'new_password'          => 'required|min:6|max:30|confirmed',
         ], [
             'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
             'new_password.required'     => 'Vui lòng nhập mật khẩu mới.',
             'new_password.confirmed'    => 'Mật khẩu xác nhận không khớp.',
-            'new_password.min'          => 'Mật khẩu mới phải ít nhất 6 ký tự.',
+            'new_password.min'          => 'Mật khẩu mới phải ít nhất 6 ký tự đến 30.',
         ]);
 
         $user = Auth::guard('thanhvien')->user();
