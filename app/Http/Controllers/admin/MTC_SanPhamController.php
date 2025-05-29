@@ -53,7 +53,7 @@ class MTC_SanPhamController extends Controller
     {
         $request->validate([
             'nhacungcap_id' => 'required|exists:mathecao_nhacungcap,id_nhacungcap',
-            'menh_gia' => 'required|numeric|min:1000',
+            'menh_gia' => 'required|numeric|min:10000|max:5000000',
             'chiet_khau' => 'required|numeric|min:0|max:100',
         ]);
         $existingProduct = MaThe_SanPham::where('nhacungcap_id', $request->nhacungcap_id)
@@ -93,7 +93,7 @@ class MTC_SanPhamController extends Controller
             }
 
             $request->validate([
-                'menh_gia' => 'required|numeric|min:1000',
+                'menh_gia' => 'required|numeric|min:10000|max:5000000',
                 'chiet_khau' => 'required|numeric|min:0|max:100',
                 'ngay_cap_nhat' => 'required|string'
             ]);
