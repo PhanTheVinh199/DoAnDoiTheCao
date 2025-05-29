@@ -61,11 +61,11 @@ class AuthController extends Controller
     {
         // Xác nhận các dữ liệu nhập vào
         $request->validate([
-            'tai_khoan' => 'required|string|max:50|unique:thanhvien,tai_khoan',
+            'tai_khoan' => 'required|string|min6|max30|unique:thanhvien,tai_khoan',
             'ho_ten'    => 'required|string|max:100',
-            'email'     => 'nullable|email|unique:thanhvien,email', // Kiểm tra email duy nhất
+            'email'     => 'nullable|email|unique:thanhvien,email', 
             'phone'     => 'nullable|string|max:20',
-            'mat_khau' => 'required|string|min:6|confirmed',
+            'mat_khau' => 'required|string|min:6|max:30|confirmed',
         ], [
             'tai_khoan.required' => 'Tài khoản là bắt buộc.',
             'tai_khoan.unique'   => 'Tài khoản đã tồn tại.',

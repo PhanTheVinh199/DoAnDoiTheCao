@@ -96,7 +96,7 @@
         })
 
         document.getElementById("ho_ten").addEventListener("input", function() {
-            let regex = /^[A-Za-zÀ-Ỹà-ỹ\s]{6,30}$/;
+            let regex = /^[A-Za-zÀ-Ỹà-ỹ\s]{6,100}$/;
             let inputValue = this.value;
             let error_message = document.getElementById("error_fullname");
             let correct_message = document.getElementById("correct_fullname");
@@ -111,7 +111,7 @@
         })
 
         document.getElementById("phone").addEventListener("input", function() {
-            let regex = /^0[0-9]{8,10}$/;
+            let regex = /^0[0-9]{8,20}$/;
             let inputValue = this.value;
             let error_message = document.getElementById("error_phoneNumber");
             let correct_message = document.getElementById("correct_phoneNumber");
