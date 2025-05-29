@@ -26,7 +26,19 @@ class LichSuMuaTheController extends Controller
             'from_date' => $request->input('from_date', ''),
         ];
 
-        $dsDonHang = MaThe_DonHang::getUserOrders($user->id_thanhvien, $filters, 10);
+        $pageInput = $request->input('page', '1');
+
+        if (!ctype_digit($pageInput) || (int)$pageInput < 1) {
+            return redirect('/lichsumuathe')->with('error', 'Trang không hợp lệ!');
+        }
+
+        $page = (int) $pageInput;
+        $perPage = 10;
+        $dsDonHang = MaThe_DonHang::getUserOrders($user->id_thanhvien, $filters, $perPage);
+
+        if ($dsDonHang->lastPage() > 0 && $page > $dsDonHang->lastPage()) {
+            return redirect('/lichsumuathe')->with('error', 'Trang không tồn tại!');
+        }
 
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();

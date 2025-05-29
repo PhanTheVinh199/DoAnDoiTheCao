@@ -23,7 +23,17 @@ class MTC_DonHangController extends Controller
             $query->where('ma_don', 'like', '%' . $request->ma_don . '%');
         }
 
-        $dsDonHang = $query->orderBy('ngay_tao', 'desc')->paginate(5);
+        $query = MaThe_DonHang::orderBy('ngay_tao', 'desc');
+        $dsDonHang = $query->paginate(10);
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $dsDonHang->lastPage()) {
+                return redirect()->route('admin.mathecao.nhacungcap.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         $dsSanPham = MaThe_SanPham::all();
         $dsThanhVien = ThanhVien::all();
         $dsNhaCungCap = MaThe_NhaCungCap::all();

@@ -17,8 +17,20 @@ class DoithecaoDonhangController extends Controller
      */
     public function index(Request $request)
     {
+        $query = DoithecaoDonhang::orderBy('ngay_tao', 'desc');
+        $donhang = $query->paginate(10);
+
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $donhang->lastPage()) {
+                return redirect()->route('admin.doithecao.donhang.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         $searchTerm = $request->input('ma_don', '');
         $donhang = DoithecaoDonhang::getDonHangWithFilter($searchTerm, 5);
+
 
         return view('admin.doithecao.donhang.doithecao_donhang', compact('donhang', 'searchTerm'));
     }

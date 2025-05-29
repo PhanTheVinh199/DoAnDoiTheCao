@@ -14,6 +14,15 @@ class ThanhvienController extends Controller
     {
         $search = $request->input('search');
         $dsThanhVien = ThanhVien::getThanhVienWithSearch($search, 5);
+        $query = ThanhVien::orderBy('created_at', 'desc');
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $dsThanhVien->lastPage()) {
+                return redirect()->route('admin.thanhvien.danhsach')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         return view('admin.thanhvien.danhsach', compact('dsThanhVien'));
     }
 

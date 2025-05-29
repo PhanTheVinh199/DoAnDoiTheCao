@@ -13,6 +13,15 @@ class NganhangAdminController extends Controller
     {
         $search = $request->input('search');
         $banks = NganhangAdmin::getBanks($search, 5);
+        $query = NganhangAdmin::orderBy('created_at', 'desc');
+        $page = $request->query('page');
+
+        if (!is_null($page)) {
+            if (!ctype_digit($page) || $page < 1 || $page > $banks->lastPage()) {
+                return redirect()->route('admin.nganhang.admin.index')
+                    ->with('error', 'Trang không hợp lệ!');
+            }
+        }
         return view('admin.NganHangAdmin.nganhangAdmin', compact('banks'));
     }
 
