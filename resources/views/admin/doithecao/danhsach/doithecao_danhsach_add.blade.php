@@ -99,6 +99,19 @@
             }
         });
     }
+
+     document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        if(form) {
+            form.addEventListener('submit', function() {
+                const submitButtons = form.querySelectorAll('button[type="submit"], input[type="submit"]');
+                submitButtons.forEach(button => {
+                    button.disabled = true;
+                    button.innerText = 'Đang xử lý...';
+                });
+            });
+        }
+    });
 </script>
 
 </body>

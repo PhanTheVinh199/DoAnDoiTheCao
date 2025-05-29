@@ -16,7 +16,7 @@ class NganHangSeeder extends Seeder
 
         $tenNganHang = ['Vietcombank', 'Techcombank', 'ACB', 'BIDV', 'VPBank'];
 
-        for ($i = 1; $i <= 21; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             $banks[] = [
                 'thanhvien_id' => $adminId,
                 'ten_ngan_hang' => $tenNganHang[array_rand($tenNganHang)],

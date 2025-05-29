@@ -18,7 +18,7 @@ class NganhangAdminSeeder extends Seeder
             return;
         }
 
-        for ($i = 1; $i <= 21; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             NganhangAdmin::create([
                 'thanhvien_id' => $admin->id_thanhvien,
                 'ten_ngan_hang' => 'Mbbank ' . $i,

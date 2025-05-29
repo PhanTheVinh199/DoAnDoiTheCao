@@ -31,7 +31,7 @@ class DoithecaoNhacungcapSeeder extends Seeder
             ],
             [
                 'ten' => 'Mobifone',
-                'hinh_anh' => 'images/mobifone.png',
+                'hinh_anh' => 'images/the-mobifone.jpeg',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],

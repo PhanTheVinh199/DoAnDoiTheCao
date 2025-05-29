@@ -53,16 +53,22 @@ class MTC_NhaCungCapController extends Controller
         try {
             $ncc = MaThe_NhaCungCap::findOrFail($id);
 
+            $validTrangThai = ['hoat_dong', 'an'];
+            if (!in_array($request->input('trang_thai'), $validTrangThai)) {
+                return redirect()->route('admin.mathecao.nhacungcap.index')
+                    ->withInput()
+                    ->with('error', 'Dữ liệu trạng thái không hợp lệ!');
+            }
+
             $request->validate([
-                'ten'        => 'required|string|max:255',
-                'hinhanh'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'trang_thai' => 'required|in:hoat_dong,an',
+                'ten' => 'required|string|max:255',
+                'hinhanh' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'ngay_cap_nhat' => 'required|string',
             ]);
 
             if ($request->input('ngay_cap_nhat') !== $ncc->ngay_cap_nhat->format('Y-m-d H:i:s')) {
                 return redirect()->route('admin.mathecao.nhacungcap.index')
-                    ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
+                    ->with('concurrency_error', 'Cập nhật không thành công do dữ liệu đã bị thay đổi trước đó');
             }
 
             MaThe_NhaCungCap::updateSupplier(
@@ -75,9 +81,10 @@ class MTC_NhaCungCapController extends Controller
                 ->with('success', 'Cập nhật thành công!');
         } catch (ModelNotFoundException $e) {
             return redirect()->route('admin.mathecao.nhacungcap.index')
-                ->with('error', 'Dữ liệu không tồn tại!.');
+                ->with('error', 'Dữ liệu không tồn tại!');
         }
     }
+
 
     public function destroy(Request $request, $id)
     {

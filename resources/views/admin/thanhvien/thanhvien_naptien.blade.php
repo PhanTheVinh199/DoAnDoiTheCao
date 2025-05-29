@@ -53,6 +53,7 @@
                 <select id="transaction_type" name="transaction_type" class="form-select">
                     <option value="naptien">Nạp Tiền</option>
                     <option value="rutien">Rút Tiền</option>
+                    <!-- <option value="test">test</option> -->
                 </select>
             </div>
 

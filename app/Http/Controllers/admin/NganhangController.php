@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use Illuminate\Support\Carbon;
 use App\Models\NganHang;
 use App\Models\RutTien;
 use App\Models\NapTien;
@@ -45,7 +45,7 @@ class NganhangController extends Controller
     // Xóa lịch sử rút tiền theo id
     public function destroyRutTien($id)
     {
-        try {
+         try {
             NganHang::deleteRutTien($id);
             return redirect()->route('admin.nganhang.ruttien.index')->with('success', 'Đã xóa lịch sử rút tiền thành công.');
         } catch (ModelNotFoundException $e) {
@@ -58,26 +58,42 @@ class NganhangController extends Controller
     // Form sửa lịch sử rút tiền
     public function editRutTien($id)
     {
-        $rutTien = RutTien::findOrFail($id);
-        return view('admin.nganhang.ruttien.nganhang_ruttien_edit', compact('rutTien'));
+        try {
+            $rutTien = RutTien::findOrFail($id);
+            return view('admin.nganhang.ruttien.nganhang_ruttien_edit', compact('rutTien'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.nganhang.ruttien.index')->with('error', 'Lịch sử rút tiền không tồn tại hoặc đã bị xóa.');
+        }
     }
 
-    // Cập nhật lịch sử rút tiền
+    // Cập nhật lịch sử rút tiền (có kiểm tra optimistic locking)
     public function updateRutTien(Request $request, $id)
     {
-        $validated = $request->validate([
-            'ma_don' => 'required|string',
-            'so_tien_rut' => 'required|numeric',
+        $data = $request->validate([
             'trang_thai' => 'required|in:cho_duyet,da_duyet,huy',
+            'updated_at' => 'nullable',
         ]);
 
         try {
-            NganHang::updateRutTien($id, $validated);
-            return redirect()->route('admin.nganhang.ruttien.index')->with('success', 'Cập nhật thành công');
+            $rutTien = RutTien::findOrFail($id);
+
+            if ($request->has('updated_at')) {
+                $formUpdatedAt = Carbon::parse($request->input('updated_at'));
+                $dbUpdatedAt = $rutTien->updated_at;
+
+                if (!$dbUpdatedAt->equalTo($formUpdatedAt)) {
+                    return redirect()->route('admin.nganhang.ruttien.index')->with('error', 'Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang.');
+                }
+            }
+
+            $rutTien->trang_thai = $data['trang_thai'];
+            $rutTien->save();
+
+            return redirect()->route('admin.nganhang.ruttien.index')->with('success', 'Cập nhật thành công.');
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('admin.nganhang.ruttien.index')->with('error', 'Lịch sử rút tiền không tồn tại.');
+            return redirect()->route('admin.nganhang.ruttien.index')->with('error', 'Lịch sử rút tiền không tồn tại hoặc đã bị xóa.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.nganhang.ruttien.index')->with('error', 'Lỗi khi cập nhật lịch sử rút tiền.');
+            return redirect()->route('admin.nganhang.ruttien.index')->with('error', 'Lỗi khi cập nhật: ' . $e->getMessage());
         }
     }
 
@@ -90,87 +106,88 @@ class NganhangController extends Controller
     }
 
     // Xóa lịch sử nạp tiền theo id, check trạng thái và transaction
-   public function destroyNapTien($id)
-{
-    DB::beginTransaction();
-    try {
-        $napTien = NapTien::lockForUpdate()->find($id);
-        if (!$napTien) {
+    public function destroyNapTien($id)
+    {
+        DB::beginTransaction();
+        try {
+            $napTien = NapTien::lockForUpdate()->find($id);
+
+            if (!$napTien) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Đơn nạp không tồn tại hoặc đã bị xóa.');
+            }
+
+            if ($napTien->trang_thai === 'da_duyet') {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Không thể xóa giao dịch đã duyệt.');
+            }
+
+            $napTien->delete();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Xóa đơn nạp thành công.');
+        } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Đơn nạp không tồn tại hoặc đã bị xóa.');
-        }
-        if ($napTien->trang_thai === 'da_duyet') {
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Không thể xóa giao dịch đã duyệt.');
+            \Log::error('Lỗi xóa đơn nạp: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi xóa đơn nạp.');
         }
-
-        $napTien->delete();
-
-        DB::commit();
-        return redirect()->back()->with('success', 'Xóa đơn nạp thành công.');
-    } catch (ModelNotFoundException $e) {
-        DB::rollBack();
-        return redirect()->back()->with('error', 'Đơn nạp không tồn tại hoặc đã bị xóa.');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        \Log::error('Lỗi xóa đơn nạp: ' . $e->getMessage());
-        return redirect()->back()->with('error', 'Có lỗi xảy ra khi xóa đơn nạp.');
     }
-}
-
 
     // Form sửa đơn nạp tiền
     public function editNapTien($id)
     {
         try {
-        $napTien = NapTien::findOrFail($id);
-        return view('admin.nganhang.naptien.nganhang_naptien_edit', compact('napTien'));
-    } catch (ModelNotFoundException $e) {
-        // Bắt ngoại lệ khi không tìm thấy dữ liệu
-        return redirect()->route('admin.nganhang.naptien.index')
-                         ->with('error', 'Đơn nạp tiền không tồn tại hoặc đã bị xóa.');
-    }
+            $napTien = NapTien::findOrFail($id);
+            return view('admin.nganhang.naptien.nganhang_naptien_edit', compact('napTien'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.nganhang.naptien.index')->with('error', 'Đơn nạp tiền không tồn tại hoặc đã bị xóa.');
+        }
     }
 
     // Cập nhật đơn nạp tiền (có kiểm tra optimistic locking)
     public function updateNapTien(Request $request, $id)
-{
-    DB::beginTransaction();
-    try {
-        // Khóa bản ghi để đảm bảo không bị thay đổi đồng thời
-        $napTien = NapTien::lockForUpdate()->find($id);
+    {
+        DB::beginTransaction();
+        try {
+            $napTien = NapTien::lockForUpdate()->find($id);
+            if (!$napTien) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Đơn nạp tiền không tồn tại hoặc đã bị xóa.');
+            }
 
+            // Kiểm tra optimistic locking với updated_at
+            if ($request->input('updated_at') !== $napTien->updated_at->toDateTimeString()) {
+                DB::rollBack();
+                return redirect()->back()->withErrors('Dữ liệu đã được thay đổi bởi người khác. Vui lòng tải lại trang để cập nhật dữ liệu mới nhất.');
+            }
 
+            $validated = $request->validate([
+                'so_tien_nap' => 'required|numeric',
+                'noi_dung' => 'nullable|string',
+                'trang_thai' => 'required|in:cho_duyet,da_duyet,huy',
+            ]);
 
-        // Kiểm tra optimistic locking với updated_at
-        if ($request->input('updated_at') !== $napTien->updated_at->toDateTimeString()) {
+            // Giữ ma_don cố định từ bản ghi hiện tại hoặc tạo mới UUID nếu không có
+            $validated['ma_don'] = $napTien->ma_don ?? $request->ma_don ?? \Illuminate\Support\Str::uuid();
+
+            $napTien->update($validated);
+
+            DB::commit();
+
+            return redirect()->route('admin.nganhang.naptien.index')->with('success', 'Cập nhật thành công');
+        } catch (ModelNotFoundException $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors('Dữ liệu đã được thay đổi bởi người khác. Vui lòng tải lại trang để cập nhật dữ liệu mới nhất.');
+            return redirect()->back()->with('error', 'Đơn nạp không tồn tại hoặc đã bị xóa');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Lỗi cập nhật đơn nạp: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Lỗi khi cập nhật đơn nạp.');
         }
-
-        $validated = $request->validate([
-            'so_tien_nap' => 'required|numeric',
-            'noi_dung' => 'nullable|string',
-            'trang_thai' => 'required|in:cho_duyet,da_duyet,huy',
-        ]);
-
-        // Giữ ma_don cố định từ bản ghi hiện tại hoặc tạo mới UUID nếu không có
-        $validated['ma_don'] = $napTien->ma_don ?? $request->ma_don ?? \Illuminate\Support\Str::uuid();
-
-        $napTien->update($validated);
-
-        DB::commit();
-
-        return redirect()->route('admin.nganhang.naptien.index')->with('success', 'Cập nhật thành công');
-    } catch (ModelNotFoundException $e) {
-        DB::rollBack();
-        return redirect()->back()->withErrors('Đơn nạp không tồn tại hoặc đã bị xóa');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        \Log::error('Lỗi cập nhật đơn nạp: ' . $e->getMessage());
-        return redirect()->back()->withErrors('Lỗi khi cập nhật đơn nạp.');
     }
-}
+
     // Hiển thị form tạo ngân hàng
     public function create()
     {
@@ -219,3 +236,4 @@ class NganhangController extends Controller
         return response()->json(['updated_at' => $napTien->updated_at->toDateTimeString()]);
     }
 }
+

@@ -111,34 +111,42 @@ class MTC_DonHangController extends Controller
      */
 
     public function update(Request $request, $id)
-    {
-        try {
-            $request->validate([
-                'trang_thai' => 'required|in:hoat_dong,da_huy,cho_xu_ly',
-                'ngay_cap_nhat' => 'required|string',
-            ]);
+{
+    try {
+        $validTrangThai = ['hoat_dong', 'da_huy', 'cho_xu_ly'];
 
-            $donHang = MaThe_DonHang::findOrFail($id);
+        if (!in_array($request->input('trang_thai'), $validTrangThai)) {
+            return redirect()->route('admin.mathecao.donhang.index')
+                ->withInput()
+                ->with('error', 'Dữ liệu trạng thái không hợp lệ!');
+        }
 
-            // So sánh ngay_cap_nhat để phát hiện dữ liệu bị thay đổi đồng thời
-            if ($request->input('ngay_cap_nhat') !== $donHang->ngay_cap_nhat->format('Y-m-d H:i:s')) {
-                return redirect()
-                    ->route('admin.mathecao.donhang.index')
-                    ->with('concurrency_error', 'Dữ liệu đã bị thay đổi trước đó, trang sẽ tự động cập nhật dữ liệu mới nhất.');
-            }
+        $request->validate([
+            'ngay_cap_nhat' => 'required|string',
+        ]);
 
-            MaThe_DonHang::updateStatus(
-                $id,
-                $request->input('trang_thai')
-            );
+        $donHang = MaThe_DonHang::findOrFail($id);
+
+        if ($request->input('ngay_cap_nhat') !== $donHang->ngay_cap_nhat->format('Y-m-d H:i:s')) {
             return redirect()
                 ->route('admin.mathecao.donhang.index')
-                ->with('success', 'Cập nhật thành công!');
-        } catch (ModelNotFoundException $e) {
-            return redirect()->route('admin.mathecao.donhang.index')
-                ->with('error', 'Dữ liệu không tồn tại!.');
+                ->with('concurrency_error', 'Cập nhật không thành công do dữ liệu đã bị thay đổi trước đó');
         }
+
+        MaThe_DonHang::updateStatus(
+            $id,
+            $request->input('trang_thai')
+        );
+
+        return redirect()
+            ->route('admin.mathecao.donhang.index')
+            ->with('success', 'Cập nhật thành công!');
+    } catch (ModelNotFoundException $e) {
+        return redirect()->route('admin.mathecao.donhang.index')
+            ->with('error', 'Dữ liệu không tồn tại!');
     }
+}
+
 
     /**
      * Remove the specified resource from storage.

@@ -135,6 +135,30 @@
 </style>
 
 <div class="container tabs-m1 mt-5">
+    @if(session('payment_success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            title: 'Thanh toán thành công!',
+            text: 'Mã đơn hàng của bạn là: {{ session("ma_don") }}',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    </script>
+    @endif
+    @if(session('error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: "{{ session('error') }}",
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
     <ul class="nav nav-tabs justify-content-start mb-4">
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" id="tab-1" href="#cate1">

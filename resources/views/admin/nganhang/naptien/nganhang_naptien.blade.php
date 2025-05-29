@@ -1,6 +1,6 @@
 @include('admin.sidebar')
 
-<!-- Add required CSS -->
+<!-- CSS và các link ... -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -57,21 +57,6 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 </style>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-@if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
 
 <div class="main" style="margin-top: 10px; padding: 50px">
     <div class="container">
@@ -82,13 +67,11 @@
                     <div class="search-box" style="width: 300px;">
                         <form action="{{ route('admin.nganhang.naptien.index') }}" method="GET">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" name="ma_don" placeholder="Tìm kiếm mã đơn..."
-                                   class="form-control" value="{{ request()->input('ma_don') }}">
+                            <input type="text" name="ma_don" placeholder="Tìm kiếm mã đơn..." class="form-control" value="{{ request()->input('ma_don') }}">
                         </form>
                     </div>
                 </div>
 
-                <!-- Update the table status and actions -->
                 <table class="table table-bordered align-middle">
                     <thead class="table-light">
                         <tr>
@@ -128,19 +111,13 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('admin.nganhang.naptien.edit', $item->id_lichsunap) }}"
-                                           class="btn btn-sm btn-primary me-2">
+                                        <a href="{{ route('admin.nganhang.naptien.edit', $item->id_lichsunap) }}" class="btn btn-sm btn-primary me-2">
                                             <i class="fas fa-edit"></i> Sửa
                                         </a>
-                                        <form action="{{ route('admin.nganhang.naptien.delete', $item->id_lichsunap) }}"
-                                              method="POST"
-                                              class="d-inline delete-form"
-                                              data-id="{{ $item->id_lichsunap }}"
-                                              data-madon="{{ $item->ma_don }}">
+                                        <form action="{{ route('admin.nganhang.naptien.delete', $item->id_lichsunap) }}" method="POST" class="d-inline delete-form" data-id="{{ $item->id_lichsunap }}" data-madon="{{ $item->ma_don }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger delete-btn"
-                                                    {{ $item->trang_thai === 'da_duyet' ? 'disabled' : '' }}>
+                                            <button type="submit" class="btn btn-sm btn-danger delete-btn" {{ $item->trang_thai === 'da_duyet' ? 'disabled' : '' }}>
                                                 <i class="fas fa-trash"></i> Xóa
                                             </button>
                                         </form>
@@ -155,7 +132,6 @@
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
                 <div class="d-flex justify-content-end pt-3">
                     {{ $dsNapTien->links('pagination::bootstrap-4') }}
                 </div>
@@ -164,7 +140,7 @@
     </div>
 </div>
 
-<!-- Add confirmation modal -->
+<!-- Modal xác nhận xóa -->
 <div class="modal fade" id="confirmModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
@@ -194,14 +170,6 @@
     </div>
 </div>
 
-<!-- Add alert container -->
-<div id="alert-container" class="position-fixed top-50 start-50 translate-middle" style="z-index: 1060; display: none;">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span id="alert-message"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-</div>
-
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -223,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const maDon = this.dataset.madon;
 
       try {
-        // Kiểm tra tồn tại dữ liệu trước khi xóa
         const response = await fetch(`/admin/nganhang/naptien/check/${id}`);
         const data = await response.json();
 
@@ -253,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Khi xác nhận xóa thật sự
   confirmDeleteBtn.addEventListener('click', function () {
     if (!currentForm) return;
     currentForm.submit();
@@ -269,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const updatedAt = this.querySelector('input[name="updated_at"]').value;
 
       try {
-        // Kiểm tra tồn tại dữ liệu
         let resExist = await fetch(`/admin/nganhang/naptien/check/${id}`);
         let dataExist = await resExist.json();
         if (!dataExist.exists) {
@@ -279,12 +244,10 @@ document.addEventListener('DOMContentLoaded', function () {
             icon: 'error',
             confirmButtonText: 'Đóng'
           });
-          // Sau khi bấm đóng, chuyển về trang danh sách
           window.location.href = '/admin/nganhang/naptien';
           return;
         }
 
-        // Kiểm tra updated_at (để tránh xung đột sửa dữ liệu)
         let resUpdated = await fetch(`/admin/nganhang/naptien/updated_at_check/${id}`);
         let dataUpdated = await resUpdated.json();
 
@@ -299,7 +262,6 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
-        // Nếu mọi thứ ok, submit form thật sự
         this.submit();
 
       } catch (error) {
@@ -313,46 +275,45 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // Hiển thị thông báo flash session bằng SweetAlert2
   @if(session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            text: "{{ session('success') }}",
-            timer: 2500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            position: 'center'
-        });
-    @endif
+    Swal.fire({
+      icon: 'success',
+      title: 'Thành công',
+      text: "{{ session('success') }}",
+      timer: 2500,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      position: 'center'
+    });
+  @endif
 
-    @if(session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi',
-            text: "{{ session('error') }}",
-            timer: 3500,
-            timerProgressBar: true,
-            showConfirmButton: true,
-            position: 'center'
-        });
-    @endif
+  @if(session('error'))
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi',
+      text: "{{ session('error') }}",
+      timer: 3500,
+      timerProgressBar: true,
+      showConfirmButton: true,
+      position: 'center'
+    });
+  @endif
 
-    @if($errors->any())
-        let errorMessages = '';
-        @foreach ($errors->all() as $error)
-            errorMessages += "{{ $error }}<br/>";
-        @endforeach
+  @if($errors->any())
+    let errorMessages = '';
+    @foreach ($errors->all() as $error)
+      errorMessages += "{{ $error }}<br/>";
+    @endforeach
 
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi',
-            html: errorMessages,
-            showConfirmButton: true,
-            position: 'center'
-        });
-    @endif
+    Swal.fire({
+      icon: 'error',
+      title: 'Lỗi',
+      html: errorMessages,
+      showConfirmButton: true,
+      position: 'center'
+    });
+  @endif
 });
-
 </script>
-</body>
-</html>

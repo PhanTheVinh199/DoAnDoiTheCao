@@ -31,12 +31,16 @@ Route::get('/lichsumuathe', [LichSuMuaTheController::class, 'index'])->name('lic
 Route::view('/lichsusodu', 'lichsusodu')->name('lichsusodu');
 Route::view('/naptiendienthoai', 'naptiendienthoai')->name('naptiendienthoai');
 
-// Các trang login_register chỉ dành cho khách
 Route::middleware('guest:thanhvien')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+});
+
+Route::middleware('auth:thanhvien')->group(function () {
+    Route::get('/doi-mat-khau', [AuthController::class, 'showChangePasswordForm'])->name('password.change.form');
+    Route::post('/doi-mat-khau', [AuthController::class, 'changePassword'])->name('password.change');
 });
 
 // Đăng xuất

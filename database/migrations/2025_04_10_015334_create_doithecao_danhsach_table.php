@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('menh_gia');
             $table->decimal('chiet_khau', 5, 2)->default(0);
             $table->boolean('trang_thai')->default(true);
+              $table->timestamps();
         });
     }
 

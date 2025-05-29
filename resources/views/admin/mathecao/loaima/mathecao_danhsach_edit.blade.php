@@ -25,10 +25,6 @@
                         <h1 style="text-align: center;">Nhà Cung Cấp</h1>
                     </em>
                     <b><label style="text-align: center;" class="block text-gray-700 mb-2">{{$dsSanPham->nhaCungCap->ten}}</label></b>
-                    <!-- <select class="w-full border rounded px-3 py-2">
-                        <option value="">-- Chọn nhà cung cấp --</option>
-                        <option value="Viettel">Viettel</option>
-                    </select> -->
                 </div>
                 <div class="mb-4" hidden>
                     <label class="block text-gray-700 mb-2">Hình ảnh</label>
@@ -55,6 +51,7 @@
                     <select class="w-full border rounded px-3 py-2" name="trang_thai">
                         <option value="hoat_dong" {{ $dsSanPham->trang_thai === 'hoat_dong' ? 'selected' : '' }}>Hoạt động</option>
                         <option value="an" {{ $dsSanPham->trang_thai === 'an' ? 'selected' : '' }}>Ẩn</option>
+                        <!-- <option value="test" {{ $dsSanPham->trang_thai === 'test' ? 'selected' : '' }}>Test Lỗi</option> -->
                     </select>
                 </div>
 
@@ -67,16 +64,14 @@
             </div>
         </div>
 </form>
-@if(session('concurrency_error'))
+@if(session('warning'))
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     Swal.fire({
         icon: 'warning',
         title: 'Cảnh báo',
-        text: "{{ session('concurrency_error') }}",
+        text: "{{ session('warning') }}",
         confirmButtonText: 'OK'
-    }).then(() => {
-        window.location.reload();
     });
 </script>
 @endif

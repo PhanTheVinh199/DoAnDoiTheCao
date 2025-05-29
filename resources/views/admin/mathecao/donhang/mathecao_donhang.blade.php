@@ -42,8 +42,8 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             Swal.fire({
-                icon: 'warning',
-                title: 'Cảnh báo',
+                icon: 'error',
+                title: 'Lỗi',
                 text: "{{ session('concurrency_error') }}",
                 confirmButtonText: 'OK'
             });

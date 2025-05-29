@@ -49,7 +49,14 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/edit/{id}', [DoithecaoNhacungcapController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [DoithecaoNhacungcapController::class, 'update'])->name('update');
         Route::delete('/{id}', [DoithecaoNhacungcapController::class, 'destroy'])->name('destroy');
-        Route::get('/check/{id}', [DoithecaoNhacungcapController::class, 'checkExists'])->name('check');
+        Route::delete('/delete/{nhacungcap}', [DoithecaoNhacungcapController::class, 'destroy'])->name('delete');
+
+         // Kiểm tra tên tồn tại (không cần id)
+        Route::get('/check-name', [DoithecaoNhacungcapController::class, 'checkName'])->name('check-name');
+
+        // Kiểm tra tồn tại id
+        Route::get('/check-exists/{id}', [DoithecaoNhacungcapController::class, 'checkExists'])->name('check-exists');
+
     });
 
 
@@ -57,10 +64,18 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
     Route::prefix('doithecao/danhsach')->name('doithecao.danhsach.')->group(function () {
         Route::get('/', [DoithecaoDanhsachController::class, 'index'])->name('index');
         Route::get('/create', [DoithecaoDanhsachController::class, 'create'])->name('create');
-        Route::post('/them', [DoithecaoDanhsachController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [DoithecaoDanhsachController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [DoithecaoDanhsachController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [DoithecaoDanhsachController::class, 'destroy'])->name('destroy');
+        Route::post('/them', [DoithecaoDanhsachController::class, 'store'])
+        ->where('id', '[0-9]+')
+        ->name('store');
+        Route::get('/edit/{id}', [DoithecaoDanhsachController::class, 'edit'])
+        ->where('id', '[0-9]+')
+        ->name('edit');
+        Route::put('/update/{id}', [DoithecaoDanhsachController::class, 'update'])
+        ->where('id', '[0-9]+')
+        ->name('update');
+        Route::delete('/delete/{id}', [DoithecaoDanhsachController::class, 'destroy'])
+        ->where('id', '[0-9]+')
+        ->name('destroy');
 
         // Add check route for concurrent deletion
         Route::get('/check/{id}', [DoithecaoDanhsachController::class, 'checkExists'])
@@ -83,7 +98,7 @@ Route::prefix('')->middleware(AdminMiddleware::class)->group(function () {
              ->name('check')
              ->where('id', '[0-9]+'); // Add validation for id parameter
         Route::delete('/delete/{id_dondoithe}', [DoithecaoDonhangController::class, 'destroy'])->name('destroy');
-        
+
     });
 
     Route::prefix('nganhang')->name('nganhang.')->group(function () {

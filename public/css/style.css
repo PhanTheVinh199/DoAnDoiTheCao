@@ -8114,3 +8114,10 @@ CSS Nick
   margin: 5px 0;
   /* Khoảng cách giữa các đoạn văn */
 }
+
+.img-thumbnail {
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 0.25rem;
+}
