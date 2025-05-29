@@ -24,7 +24,13 @@ class DoithecaoDanhsachSeeder extends Seeder
             2 => 'Vinaphone',
             3 => 'Mobifone',
             4 => 'Zing',
-            5 => 'Appota'
+            5 => 'Appota',
+            6 => 'Garena',
+            7 => 'Vietnamobile',
+            8 => 'Carot',
+            9 => 'Funcard',
+            10 => 'Scoin',
+            11=> 'Vcoin',
         ];
 
         // Lặp qua từng nhà cung cấp
@@ -35,7 +41,7 @@ class DoithecaoDanhsachSeeder extends Seeder
                     'nhacungcap_id' => $nhacungcap_id, // ID nhà cung cấp
                     'menh_gia'      => $menh_gia,     // Mệnh giá
                     'chiet_khau'    => rand(5, 20),   // Chiết khấu ngẫu nhiên từ 5% đến 20%
-                    'trang_thai'    => rand(0,1),    // Trạng thái ngẫu nhiên: 0 (hủy), 1 (hoạt động)
+                    'trang_thai'    => rand(0, 1),    // Trạng thái ngẫu nhiên: 0 (hủy), 1 (hoạt động)
                     'created_at'    => Carbon::now(), // Thời gian tạo
                     'updated_at'    => Carbon::now(), // Thời gian cập nhật
                 ]);

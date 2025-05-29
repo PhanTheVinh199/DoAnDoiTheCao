@@ -31,7 +31,7 @@ class DoithecaoNhacungcapSeeder extends Seeder
             ],
             [
                 'ten' => 'Mobifone',
-                'hinh_anh' => 'images/the-mobifone.jpeg',
+                'hinh_anh' => 'images/mobifone.png',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ],
@@ -42,8 +42,46 @@ class DoithecaoNhacungcapSeeder extends Seeder
                 'trang_thai' => 'hoat_dong',
             ],
             [
+                'ten' => 'Vietnamobile',
+                'hinhanh' => 'images/the-vietnamobile.jpeg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Garena',
+                'hinhanh' => 'images/garena.png',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+
+            [
                 'ten' => 'Appota',
-                'hinh_anh' => 'images/APPOTA_CARD.png',
+                'hinhanh' => 'images/APPOTA_CARD.png',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+
+            [
+                'ten' => 'Carot',
+                'hinhanh' => 'images/the-ca-rot.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Funcard',
+                'hinhanh' => 'images/the-funcard.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Scoin',
+                'hinhanh' => 'images/the-scoin.jpg',
+                'ngay_tao' => Carbon::now(),
+                'trang_thai' => 'hoat_dong',
+            ],
+            [
+                'ten' => 'Vcoin',
+                'hinhanh' => 'images/the-vcoin.png',
                 'ngay_tao' => Carbon::now(),
                 'trang_thai' => 'hoat_dong',
             ]
