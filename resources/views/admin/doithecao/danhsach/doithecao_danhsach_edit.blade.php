@@ -12,6 +12,20 @@
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
+        @if(session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Lỗi!</strong>
+        <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Thành công!</strong>
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+@endif
+
         <div class="flex justify-between items-center border-b p-4">
             <h2 class="text-lg font-semibold text-gray-800">Cập Nhật Sản Phẩm</h2>
             <a href="{{ route('admin.doithecao.danhsach.index') }}" class="text-gray-500 hover:text-gray-700">
