@@ -35,7 +35,7 @@ class DoithecaoNhacungcap extends Model
     }
 
     // Đường dẫn upload ảnh
-    protected static $uploadPath = 'uploads/nhacungcap';
+    protected static $uploadPath = 'uploads';
 
     /**
      * Upload ảnh và trả về đường dẫn lưu ảnh hoặc null
@@ -44,7 +44,7 @@ class DoithecaoNhacungcap extends Model
     {
         if (!$file) return null;
 
-        $fileName = time() . '_' . $file->getClientOriginalName();
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
         $uploadDir = public_path(self::$uploadPath);
 
         if (!File::exists($uploadDir)) {

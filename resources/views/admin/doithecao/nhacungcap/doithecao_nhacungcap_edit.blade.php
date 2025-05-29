@@ -50,8 +50,7 @@
             <div class="mb-4">
                 <p class="text-gray-700 font-semibold mb-2">Ảnh hiện tại:</p>
                 <div class="w-32 h-32 border rounded overflow-hidden mb-2">
-                    <img src="{{ asset($nhacungcap->hinh_anh) }}" alt="{{ $nhacungcap->ten }}" class="w-full h-full object-contain"
-                         onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}'">
+                    <img src="{{ asset($nhacungcap->hinh_anh) }}" alt="{{ $nhacungcap->ten }}" class="w-full h-full object-contain">
                 </div>
                 <p class="text-sm text-gray-600 break-words">{{ basename($nhacungcap->hinh_anh) }}</p>
             </div>
@@ -86,7 +85,7 @@
             </div>
 
             {{-- Trạng thái --}}
-            <div class="mb-6">
+            <div class="mb-6" hidden>
                 <label for="trang_thai" class="block text-gray-700 font-semibold mb-2">Trạng thái</label>
                 <select id="trang_thai" name="trang_thai" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <option value="hoat_dong" {{ old('trang_thai', $nhacungcap->trang_thai) == 'hoat_dong' ? 'selected' : '' }}>Hoạt động</option>

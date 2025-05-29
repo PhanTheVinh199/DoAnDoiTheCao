@@ -72,9 +72,11 @@ class DoithecaoNhacungcapController extends Controller
 
         if ($request->hasFile('hinh_anh')) {
             $file = $request->file('hinh_anh');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('uploads/nhacungcap', $filename, 'public');
-            $nhacungcap->hinh_anh = 'storage/' . $path;
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            $file->move($destinationPath, $filename);
+
+            $nhacungcap->hinh_anh = 'uploads/' . $filename;
         }
 
         $nhacungcap->save();
@@ -99,121 +101,121 @@ class DoithecaoNhacungcapController extends Controller
         return view('admin.doithecao.nhacungcap.doithecao_nhacungcap_edit', compact('nhacungcap'));
     }
 
-   public function update(Request $request, $id)
-{
-    if (!ctype_digit(strval($id)) || intval($id) < 1) {
-        return redirect()->route('admin.doithecao.nhacungcap.index')
-            ->with('error', 'ID không hợp lệ hoặc không tìm thấy nhà cung cấp.');
-    }
-
-    $nhacungcap = DoithecaoNhacungcap::find($id);
-    if (!$nhacungcap) {
-        return redirect()->route('admin.doithecao.nhacungcap.index')
-            ->with('error', 'Không tìm thấy nhà cung cấp.');
-    }
-
-    // Validate dữ liệu đầu vào
-    $validated = $request->validate([
-        'ten' => [
-            'required',
-            'string',
-            'max:255',
-            \Illuminate\Validation\Rule::unique('doithecao_nhacungcap', 'ten')->ignore($id, 'id_nhacungcap'),
-            function ($attribute, $value, $fail) {
-                if (trim(preg_replace('/\s+/u', '', $value)) === '') {
-                    $fail('Trường ' . $attribute . ' không được để khoảng trắng hoặc trống.');
-                }
-            },
-        ],
-        'hinh_anh' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'trang_thai' => 'required|in:hoat_dong,an',
-        'updated_at' => 'nullable|string',
-    ], [
-        'ten.required' => 'Tên nhà cung cấp không được để trống.',
-        'ten.max' => 'Tên nhà cung cấp không được dài quá 255 ký tự.',
-        'ten.unique' => 'Tên nhà cung cấp đã tồn tại.',
-        'hinh_anh.image' => 'File tải lên phải là hình ảnh.',
-        'hinh_anh.mimes' => 'Ảnh chỉ chấp nhận các định dạng: jpeg, png, jpg, gif, svg.',
-        'hinh_anh.max' => 'Kích thước ảnh tối đa 2MB.',
-        'trang_thai.in' => 'Trạng thái không hợp lệ.',
-        'updated_at.required' => 'Dữ liệu không hợp lệ, vui lòng tải lại trang.',
-    ]);
-
-    // Kiểm tra concurrency updated_at
-    $updatedAtInput = $request->input('updated_at');
-    $updatedAtDB = $nhacungcap->updated_at ? $nhacungcap->updated_at->toDateTimeString() : null;
-
-    if ($updatedAtInput && $updatedAtInput !== $updatedAtDB ) {
-        return redirect()->back()
-            ->withInput()
-            ->with('error', 'Dữ liệu đã được cập nhật bởi người khác. Vui lòng tải lại trang trước khi cập nhật.');
-    }
-
-    // Cập nhật dữ liệu
-    $nhacungcap->ten = strip_tags($validated['ten']);
-    $nhacungcap->trang_thai = $validated['trang_thai'];
-
-    if ($request->hasFile('hinh_anh')) {
-        // Xóa ảnh cũ nếu tồn tại
-        if ($nhacungcap->hinh_anh) {
-            $oldImagePath = public_path($nhacungcap->hinh_anh);
-            if (file_exists($oldImagePath)) {
-                @unlink($oldImagePath);
-            }
+    public function update(Request $request, $id)
+    {
+        if (!ctype_digit(strval($id)) || intval($id) < 1) {
+            return redirect()->route('admin.doithecao.nhacungcap.index')
+                ->with('error', 'ID không hợp lệ hoặc không tìm thấy nhà cung cấp.');
         }
 
-        $file = $request->file('hinh_anh');
-        $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-        // Lưu file trong storage/app/public/uploads/nhacungcap
-        $path = $file->storeAs('uploads/nhacungcap', $filename, 'public');
-        // Lưu đường dẫn dạng 'storage/uploads/nhacungcap/filename'
-        $nhacungcap->hinh_anh = 'storage/' . $path;
+        $nhacungcap = DoithecaoNhacungcap::find($id);
+        if (!$nhacungcap) {
+            return redirect()->route('admin.doithecao.nhacungcap.index')
+                ->with('error', 'Không tìm thấy nhà cung cấp.');
+        }
+
+        // Validate dữ liệu đầu vào
+        $validated = $request->validate([
+            'ten' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('doithecao_nhacungcap', 'ten')->ignore($id, 'id_nhacungcap'),
+                function ($attribute, $value, $fail) {
+                    if (trim(preg_replace('/\s+/u', '', $value)) === '') {
+                        $fail('Trường ' . $attribute . ' không được để khoảng trắng hoặc trống.');
+                    }
+                },
+            ],
+            'hinh_anh' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'trang_thai' => 'required|in:hoat_dong,an',
+            'updated_at' => 'nullable|string',
+        ], [
+            'ten.required' => 'Tên nhà cung cấp không được để trống.',
+            'ten.max' => 'Tên nhà cung cấp không được dài quá 255 ký tự.',
+            'ten.unique' => 'Tên nhà cung cấp đã tồn tại.',
+            'hinh_anh.image' => 'File tải lên phải là hình ảnh.',
+            'hinh_anh.mimes' => 'Ảnh chỉ chấp nhận các định dạng: jpeg, png, jpg, gif, svg.',
+            'hinh_anh.max' => 'Kích thước ảnh tối đa 2MB.',
+            'trang_thai.in' => 'Trạng thái không hợp lệ.',
+            'updated_at.required' => 'Dữ liệu không hợp lệ, vui lòng tải lại trang.',
+        ]);
+
+        // Kiểm tra concurrency updated_at
+        $updatedAtInput = $request->input('updated_at');
+        $updatedAtDB = $nhacungcap->updated_at ? $nhacungcap->updated_at->toDateTimeString() : null;
+
+        if ($updatedAtInput && $updatedAtInput !== $updatedAtDB) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Dữ liệu đã được cập nhật bởi người khác. Vui lòng tải lại trang trước khi cập nhật.');
+        }
+
+        // Cập nhật dữ liệu
+        $nhacungcap->ten = strip_tags($validated['ten']);
+        $nhacungcap->trang_thai = $validated['trang_thai'];
+
+        if ($request->hasFile('hinh_anh')) {
+            // Xóa ảnh cũ nếu tồn tại
+            if ($nhacungcap->hinh_anh) {
+                $oldImagePath = public_path($nhacungcap->hinh_anh);
+                if (file_exists($oldImagePath)) {
+                    @unlink($oldImagePath);
+                }
+            }
+
+            $file = $request->file('hinh_anh');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            $file->move($destinationPath, $filename);
+
+            $nhacungcap->hinh_anh = 'uploads/' . $filename;
+        }
+        // Nếu không upload file mới, giữ nguyên ảnh cũ
+
+        $nhacungcap->save();
+
+        return redirect()->route('admin.doithecao.nhacungcap.index')
+            ->with('success', 'Cập nhật nhà cung cấp thành công!');
     }
-    // Nếu không upload file mới, giữ nguyên ảnh cũ
-
-    $nhacungcap->save();
-
-    return redirect()->route('admin.doithecao.nhacungcap.index')
-        ->with('success', 'Cập nhật nhà cung cấp thành công!');
-}
 
 
     public function destroy(Request $request, $id)
-{
-    $nhacungcap = DoithecaoNhacungcap::find($id);
+    {
+        $nhacungcap = DoithecaoNhacungcap::find($id);
 
-    if (!$nhacungcap) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Nhà cung cấp không tồn tại hoặc đã bị xóa.',
-        ], 404);
+        if (!$nhacungcap) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Nhà cung cấp không tồn tại hoặc đã bị xóa.',
+            ], 404);
+        }
+
+        $updatedAtDB = $nhacungcap->updated_at ? $nhacungcap->updated_at->toDateTimeString() : null;
+
+        if ($request->has('updated_at') && $request->updated_at != $updatedAtDB) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu đã bị thay đổi trước đó. Vui lòng tải lại trang.',
+            ], 409);
+        }
+
+        try {
+            $nhacungcap->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa nhà cung cấp thành công!',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Lỗi khi xóa nhà cung cấp ID ' . $id . ': ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xóa nhà cung cấp.',
+            ], 500);
+        }
     }
-
-    $updatedAtDB = $nhacungcap->updated_at ? $nhacungcap->updated_at->toDateTimeString() : null;
-
-    if ($request->has('updated_at') && $request->updated_at != $updatedAtDB) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Dữ liệu đã bị thay đổi trước đó. Vui lòng tải lại trang.',
-        ], 409);
-    }
-
-    try {
-        $nhacungcap->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Xóa nhà cung cấp thành công!',
-        ]);
-    } catch (\Exception $e) {
-        \Log::error('Lỗi khi xóa nhà cung cấp ID ' . $id . ': ' . $e->getMessage());
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Có lỗi xảy ra khi xóa nhà cung cấp.',
-        ], 500);
-    }
-}
 
 
     public function checkExists($id)
@@ -280,6 +282,4 @@ class DoithecaoNhacungcapController extends Controller
 
         return response()->json(['exists' => $exists]);
     }
-
 }
-
